@@ -1,16 +1,18 @@
-package services;
+package com.example.services;
 
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import repository.FileDBRepository;
-import upload.db.model.FileDB;
+import com.example.model.FileDB;
+import com.example.repository.FileDBRepository;
 
 import org.springframework.util.StringUtils;
 import java.util.stream.Stream;
 
+@Service
 public class FileStorageService {
 	
 	@Autowired
