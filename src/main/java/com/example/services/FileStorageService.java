@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.model.FileDB;
+import com.example.model.Pedido;
 import com.example.repository.FileDBRepository;
+import com.example.repository.PedidoDBRepository;
 
 import org.springframework.util.StringUtils;
 import java.util.stream.Stream;
@@ -18,11 +20,14 @@ public class FileStorageService {
 	@Autowired
 	private FileDBRepository fileDBRepository;
 	
+	
 	public FileDB store(MultipartFile file) throws IOException {
 	  String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 	  FileDB FileDB = new FileDB(fileName, file.getContentType(), file.getBytes());
 	  return fileDBRepository.save(FileDB);
 	}
+	
+	
 	public FileDB getFile(String id) {
 	  return fileDBRepository.findById(id).get();
 	}

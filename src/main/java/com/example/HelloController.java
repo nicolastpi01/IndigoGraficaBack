@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.message.ResponseMessage;
+import com.example.model.Pedido;
 import com.example.services.FileStorageService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,7 @@ public class HelloController {
 	      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
 	    }
 	}
+	
+	
 
 }
