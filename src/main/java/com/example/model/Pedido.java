@@ -1,25 +1,14 @@
 package com.example.model;
 
-import java.util.List;
-
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
-
 
 @Entity
 @Table(name = "pedidos")
@@ -36,30 +25,26 @@ public class Pedido {
 	private Integer alto;
 	private Integer ancho;
 	private String descripcion;
-	@ElementCollection
-	@CollectionTable(name = "colores", joinColumns = @JoinColumn(name = "id")) 
-    @Column(name = "colores")
-	private List<String> colores;
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "usuarios_id", referencedColumnName = "id")
-	private Usuario usuario;
-	//tipo: Tipo; 
-	
-	//@Lob
-	//private byte[] data;
-	//boceto?: Blob;
-	/*¨
-	 * 
-     //
-    estado: Estado;
-    editor?: Usuario
-	 */
-	
-	//@ManyToOne(fetch = FetchType.LAZY)
+	private String state;
+	@OneToMany(mappedBy="pedido", cascade = CascadeType.ALL, orphanRemoval=true)
+	private Set<FileDB> files = new HashSet<>();
+	//@ElementCollection
+	//@CollectionTable(name = "colores", joinColumns = @JoinColumn(name = "id")) 
+    //@Column(name = "colores")
+	//private List<String> colores;
+	//@OneToOne(cascade = CascadeType.ALL)
     //@JoinColumn(name = "usuarios_id", referencedColumnName = "id")
+	//private Usuario usuario;
+	//tipo: Tipo; 
+	/*
+	 * 
+   		editor?: Usuario
+	 */
+	// No agregar usuarios, agregar colores, Tipo (para el tipo de Pedido, que existe), y sobre todo requerimientos en FileDB
+	
 	public Pedido() {}
 	
-	public Pedido(String nombre, String nombreExtendido, String tipografia, Integer alto, Integer ancho, String descripcion, Integer cantidad, Usuario usuario, List<String> colores) {
+	public Pedido(String nombre, String nombreExtendido, String tipografia, Integer alto, Integer ancho, String descripcion, Integer cantidad, String state) {
 	  this.setNombre(nombre);
 	  this.setNombreExtendido(nombreExtendido);
 	  this.setTipografia(tipografia);
@@ -67,20 +52,25 @@ public class Pedido {
 	  this.setAncho(ancho);
 	  this.setDescripcion(descripcion);
 	  this.setCantidad(cantidad);
-	  this.setUsuario(usuario);
-	  this.setColores(colores);
+	  this.setState(state);
+	  //this.setUsuario(usuario);
+	  //this.setColores(colores);
 	}
 	
+	public void addFile(FileDB file1) {
+		files.add(file1);
+		file1.setPedido(this);	
+	}
+	public void removeFile(FileDB file) {
+		this.files.remove(file);
+		file.setPedido(null);
+	}
+	
+
 	public String getId() {
 	    return id;
 	}
 	
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-	public Usuario getUsuario() {
-		return this.usuario;
-	}
 	
 	public String getNombre() {
 		return nombre;
@@ -124,14 +114,14 @@ public class Pedido {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-
-	public List<String> getColores() {
-		return colores;
-	}
-
-	public void setColores(List<String> colores) {
-		this.colores = colores;
-	}
 	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 
 }

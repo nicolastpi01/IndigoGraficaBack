@@ -1,9 +1,12 @@
 package com.example.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -19,12 +22,37 @@ public class FileDB {
 	private String type;
 	@Lob
 	private byte[] data;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="pedido_id", nullable=false)
+    private Pedido pedido;
+	
 	public FileDB() {}
+	
 	public FileDB(String name, String type, byte[] data) {
 	  this.name = name;
 	  this.type = type;
 	  this.data = data;
 	}
+	
+	 @Override
+	 public boolean equals(Object o) {
+		if(this == o) return true;
+		if(!(o instanceof FileDB)) return false;
+		return id != null && id.equals(((FileDB) o).getId());
+	 }
+	 
+	 @Override
+	 public int hashCode() {
+		 return getClass().hashCode();
+	 }
+	
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+	public Pedido getPedido() {
+		return this.pedido;
+	}
+	
 	  public String getId() {
 	    return id;
 	  }

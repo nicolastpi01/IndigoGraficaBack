@@ -1,16 +1,10 @@
 package com.example.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -28,27 +22,20 @@ public class Usuario {
 	private String direccion;
 	private String nombre;
 	private String contacto;
-	
-	
-	
-	@OneToOne(mappedBy = "usuario")
-	private Pedido pedido;
+	//@OneToOne(mappedBy = "usuario")
+	//private Pedido pedido;
     
-	
-	
 	public Usuario() {}
 	
-	public Usuario(String direccion, String nombre, String contacto, Pedido pedido) {
+	public Usuario(String direccion, String nombre, String contacto) {
 		this.setDireccion(direccion);
 		this.setNombre(nombre);
 		this.setContacto(contacto);
-		this.setPedido(pedido);
+		//this.setPedido(pedido);
 	}
 	
 	
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;	
-	}
+	
 
 	public String getId() {
 		return this.id;
@@ -78,9 +65,6 @@ public class Usuario {
 		this.contacto = contacto;
 	}
 
-	public Pedido getPedido() {
-		return pedido;
-	}
 	
 
 }

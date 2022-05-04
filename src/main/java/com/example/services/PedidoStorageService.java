@@ -1,6 +1,7 @@
 package com.example.services;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,10 @@ public class PedidoStorageService {
 	
 	public Pedido storePedido(Pedido pedido) throws IOException {
 		  return pedidoDBRepository.save(pedido);
+	}
+
+	public List<Pedido> getAllByState(String state) {
+		return pedidoDBRepository.findByState(state);
 	}
 
 }
