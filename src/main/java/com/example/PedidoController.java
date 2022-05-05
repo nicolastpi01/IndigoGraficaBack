@@ -43,4 +43,8 @@ public class PedidoController {
 	    return ResponseEntity.ok().body(pedidos);
 	  }
 
+	public boolean dummyMethod(){
+		return true;
+	}
+
 }
