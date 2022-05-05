@@ -3,25 +3,16 @@ package com.example;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.Arrays;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.example.repository.PedidoDBRepository;
 
 @SpringBootApplication
 public class DemoApplication {
 	
-	//@Autowired
-	//private PedidoDBRepository pedidoDBRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
@@ -52,11 +43,6 @@ public class DemoApplication {
 			}
 		};
 	}
-	/*
-	@EventListener
-	public void seed(ContextRefreshedEvent event) {
-		PedidoDBRepository.save();
-	}
-	*/
+	
 
 }

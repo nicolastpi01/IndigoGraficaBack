@@ -8,10 +8,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "pedidos")
@@ -29,21 +34,24 @@ public class Pedido {
 	private Integer ancho;
 	private String descripcion;
 	private String state;
+	private String usuarioId;
 	@OneToMany(mappedBy="pedido", cascade = CascadeType.ALL, orphanRemoval=true)
 	private Set<FileDB> files = new HashSet<>();
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="tipo_id", nullable=false)
 	private Tipo tipo;
-	//@ElementCollection
-	//@CollectionTable(name = "colores", joinColumns = @JoinColumn(name = "id")) 
-    //@Column(name = "colores")
-	//private List<String> colores;
+	@ManyToMany
+	@JoinTable(
+	name = "colour_like", 
+	joinColumns = @JoinColumn(name = "pedido_id"), 
+	inverseJoinColumns = @JoinColumn(name = "color_id"))
+	private Set<Color> colores = new HashSet<>();
 	/*
 	 * 	private Usuario usuario;
    		private editor?: Usuario
 	 */
 	// No agregar usuarios, o agregar un string usuarioId
-	// Agregar colores
+	// Agregar Estado, o estado String
 	
 	public Pedido() {}
 	
@@ -58,6 +66,16 @@ public class Pedido {
 	  this.setState(state);
 	}
 	
+	public void addColor(Color color) {
+		colores.add(color);
+		color.getPedidos().add(this);
+	}
+	
+	public void removeColor(Color color) {
+		this.colores.remove(color);
+		color.getPedidos().remove(this);
+	}
+	
 	public void addFile(FileDB file1) {
 		files.add(file1);
 		file1.setPedido(this);	
@@ -65,6 +83,10 @@ public class Pedido {
 	public void removeFile(FileDB file) {
 		this.files.remove(file);
 		file.setPedido(null);
+	}
+	
+	public Set<Color> getColores() {
+		return this.colores;
 	}
 	
 	public String getId() {
@@ -128,6 +150,14 @@ public class Pedido {
 
 	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getUsuarioId() {
+		return usuarioId;
+	}
+
+	public void setUsuarioId(String usuarioId) {
+		this.usuarioId = usuarioId;
 	}
 
 

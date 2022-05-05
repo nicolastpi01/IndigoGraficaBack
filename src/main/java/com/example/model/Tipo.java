@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "tipos")
 public class Tipo {
@@ -22,7 +25,6 @@ public class Tipo {
 	private Integer alto;
 	private Integer ancho;
 	private String tipografia;
-    //colores: string[]
 	@OneToMany(mappedBy="tipo", cascade = CascadeType.ALL, orphanRemoval=true)
 	private Set<Pedido> pedidos = new HashSet<>();
 	
@@ -38,6 +40,7 @@ public class Tipo {
 	public Set<Pedido> getPedidos() {
 		return this.pedidos;
 	}
+	
 	
 	public void addPedido(Pedido pedido) {
 		this.pedidos.add(pedido);

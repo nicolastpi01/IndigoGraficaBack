@@ -4,10 +4,13 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.example.model.Color;
 import com.example.model.FileDB;
 import com.example.model.Pedido;
 import com.example.model.Requerimiento;
 import com.example.model.Tipo;
+import com.example.repository.ColorDBRepository;
 import com.example.repository.PedidoDBRepository;
 import com.example.repository.TipoDBRepository;
 
@@ -19,9 +22,15 @@ public class InitDataLoader {
 	@Autowired
 	private TipoDBRepository tipoRepo;
 	
+	@Autowired
+	private ColorDBRepository colorRepo;
+	
 	@PostConstruct
 	public void loadSeed() {
 		//System.out.println("Saved Pedido en Repo?: ");
+		
+		Color Azul = new Color("Rojo", "#FF0000");
+		Color Rojo = new Color("Azul", "#0000FF");
 		
 		Tipo tipo = new Tipo("Logo", 60, 60, "sans serif");
 		
@@ -39,8 +48,17 @@ public class InitDataLoader {
 		pedido1.addFile(file1);
 		pedido1.addFile(file2);
 		
+		colorRepo.save(Rojo);
+		colorRepo.save(Azul);
+		
+		pedido1.addColor(Rojo);
+		pedido1.addColor(Azul);
+		
+		
 		//usuarioRepo.save(usuario1);
 		//pedidoRepo.save(pedido1);
+		
+		
 		tipo.addPedido(pedido1);
 		
 		tipoRepo.save(tipo);
