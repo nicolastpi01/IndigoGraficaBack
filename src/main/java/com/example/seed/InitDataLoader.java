@@ -7,17 +7,24 @@ import org.springframework.stereotype.Component;
 import com.example.model.FileDB;
 import com.example.model.Pedido;
 import com.example.model.Requerimiento;
+import com.example.model.Tipo;
 import com.example.repository.PedidoDBRepository;
+import com.example.repository.TipoDBRepository;
 
 @Component
 public class InitDataLoader {
 	
 	@Autowired
 	private PedidoDBRepository pedidoRepo;
+	@Autowired
+	private TipoDBRepository tipoRepo;
 	
 	@PostConstruct
 	public void loadSeed() {
 		//System.out.println("Saved Pedido en Repo?: ");
+		
+		Tipo tipo = new Tipo("Logo", 60, 60, "sans serif");
+		
 		Pedido pedido1 = new Pedido("Indigo Gráfica", "Esto es un nombre extendido", "Sans serif", 60, 60, "Esto es una descripcion", 10, "algo");
 		//Usuario usuario1 = new Usuario("Av, Millazo", "Matias Maranguello", "1556203506");
 		
@@ -33,8 +40,10 @@ public class InitDataLoader {
 		pedido1.addFile(file2);
 		
 		//usuarioRepo.save(usuario1);
-		//pedido1.setUsuario(usuario1);
-		pedidoRepo.save(pedido1);
+		//pedidoRepo.save(pedido1);
+		tipo.addPedido(pedido1);
+		
+		tipoRepo.save(tipo);
 	}
 	
 	@PreDestroy

@@ -4,8 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
@@ -28,20 +31,19 @@ public class Pedido {
 	private String state;
 	@OneToMany(mappedBy="pedido", cascade = CascadeType.ALL, orphanRemoval=true)
 	private Set<FileDB> files = new HashSet<>();
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="tipo_id", nullable=false)
+	private Tipo tipo;
 	//@ElementCollection
 	//@CollectionTable(name = "colores", joinColumns = @JoinColumn(name = "id")) 
     //@Column(name = "colores")
 	//private List<String> colores;
-	//@OneToOne(cascade = CascadeType.ALL)
-    //@JoinColumn(name = "usuarios_id", referencedColumnName = "id")
-	//
-	//tipo: Tipo; 
 	/*
 	 * 	private Usuario usuario;
    		private editor?: Usuario
 	 */
 	// No agregar usuarios, o agregar un string usuarioId
-	// Agregar colores, Tipo (para el tipo de Pedido, que existe)
+	// Agregar colores
 	
 	public Pedido() {}
 	
@@ -54,8 +56,6 @@ public class Pedido {
 	  this.setDescripcion(descripcion);
 	  this.setCantidad(cantidad);
 	  this.setState(state);
-	  //this.setUsuario(usuario);
-	  //this.setColores(colores);
 	}
 	
 	public void addFile(FileDB file1) {
@@ -67,11 +67,9 @@ public class Pedido {
 		file.setPedido(null);
 	}
 	
-
 	public String getId() {
 	    return id;
 	}
-	
 	
 	public String getNombre() {
 		return nombre;
@@ -122,6 +120,14 @@ public class Pedido {
 
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public Tipo getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Tipo tipo) {
+		this.tipo = tipo;
 	}
 
 

@@ -1,0 +1,85 @@
+package com.example.model;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "tipos")
+public class Tipo {
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+	private String nombre; // Boceto, Logo, Imagen, Fotografia, etc
+	private Integer alto;
+	private Integer ancho;
+	private String tipografia;
+    //colores: string[]
+	@OneToMany(mappedBy="tipo", cascade = CascadeType.ALL, orphanRemoval=true)
+	private Set<Pedido> pedidos = new HashSet<>();
+	
+	public Tipo() {}
+	
+	public Tipo(String nombre, Integer alto, Integer ancho, String tipografia) {
+		this.nombre = nombre;
+		this.alto = alto;
+		this.ancho = ancho;
+		this.tipografia = tipografia;
+	}
+	
+	public Set<Pedido> getPedidos() {
+		return this.pedidos;
+	}
+	
+	public void addPedido(Pedido pedido) {
+		this.pedidos.add(pedido);
+		pedido.setTipo(this);
+	}
+	
+	public void removePedido(Pedido pedido) {
+		this.pedidos.remove(pedido);
+		pedido.setTipo(null);
+	}
+	
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public Integer getAlto() {
+		return alto;
+	}
+	public void setAlto(Integer alto) {
+		this.alto = alto;
+	}
+	public Integer getAncho() {
+		return ancho;
+	}
+	public void setAncho(Integer ancho) {
+		this.ancho = ancho;
+	}
+	public String getTipografia() {
+		return tipografia;
+	}
+	public void setTipografia(String tipografia) {
+		this.tipografia = tipografia;
+	}
+	 
+}
