@@ -34,13 +34,14 @@ public class Pedido {
 	//private List<String> colores;
 	//@OneToOne(cascade = CascadeType.ALL)
     //@JoinColumn(name = "usuarios_id", referencedColumnName = "id")
-	//private Usuario usuario;
+	//
 	//tipo: Tipo; 
 	/*
-	 * 
-   		editor?: Usuario
+	 * 	private Usuario usuario;
+   		private editor?: Usuario
 	 */
-	// No agregar usuarios, agregar colores, Tipo (para el tipo de Pedido, que existe), y sobre todo requerimientos en FileDB
+	// No agregar usuarios, o agregar un string usuarioId
+	// Agregar colores, Tipo (para el tipo de Pedido, que existe)
 	
 	public Pedido() {}
 	
