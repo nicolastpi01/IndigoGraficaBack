@@ -37,15 +37,15 @@ public class Pedido {
 	private String usuarioId;
 	@OneToMany(mappedBy="pedido", cascade = CascadeType.ALL, orphanRemoval=true)
 	private Set<FileDB> files = new HashSet<>();
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="tipo_id", nullable=false)
-	private Tipo tipo;
-	@ManyToMany
-	@JoinTable(
-	name = "colour_like", 
-	joinColumns = @JoinColumn(name = "pedido_id"), 
-	inverseJoinColumns = @JoinColumn(name = "color_id"))
-	private Set<Color> colores = new HashSet<>();
+	//@ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name="tipo_id", nullable=false)
+	//private Tipo tipo;
+	//@ManyToMany
+	//@JoinTable(
+	//name = "colour_like", 
+	//joinColumns = @JoinColumn(name = "pedido_id"), 
+	//inverseJoinColumns = @JoinColumn(name = "color_id"))
+	//private Set<Color> colores = new HashSet<>();
 	/*
 	 * 	private Usuario usuario;
    		private editor?: Usuario
@@ -66,6 +66,14 @@ public class Pedido {
 	  this.setState(state);
 	}
 	
+	public Set<FileDB> getFiles() {
+		return this.files;
+	}
+	
+	public void setFiles(Set<FileDB> files) {
+		this.files = files;
+	}
+	/*
 	public void addColor(Color color) {
 		colores.add(color);
 		color.getPedidos().add(this);
@@ -75,6 +83,7 @@ public class Pedido {
 		this.colores.remove(color);
 		color.getPedidos().remove(this);
 	}
+	*/
 	
 	public void addFile(FileDB file1) {
 		files.add(file1);
@@ -84,13 +93,17 @@ public class Pedido {
 		this.files.remove(file);
 		file.setPedido(null);
 	}
-	
+	/*
 	public Set<Color> getColores() {
 		return this.colores;
 	}
+	*/
 	
 	public String getId() {
 	    return id;
+	}
+	public void setId(String id) {
+	    this.id = id;
 	}
 	
 	public String getNombre() {
@@ -143,7 +156,7 @@ public class Pedido {
 	public void setState(String state) {
 		this.state = state;
 	}
-
+	/*
 	public Tipo getTipo() {
 		return tipo;
 	}
@@ -151,6 +164,7 @@ public class Pedido {
 	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
 	}
+	*/
 
 	public String getUsuarioId() {
 		return usuarioId;

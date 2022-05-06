@@ -1,6 +1,7 @@
 package com.example;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,15 +14,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.dto.PedidoDTO;
 import com.example.message.ResponseMessage;
 import com.example.model.Pedido;
 import com.example.services.PedidoStorageService;
+import com.example.utils.Helper;
 
 @Controller
 public class PedidoController {
 	
 	@Autowired
 	private PedidoStorageService pedidoService;
+	private Helper helper = new Helper();
 	
 	@PostMapping("/pedidos")
 	public ResponseEntity<ResponseMessage> altaPedido(@RequestBody Pedido pedido) {
@@ -40,6 +44,7 @@ public class PedidoController {
 	  @ResponseBody
 	  public ResponseEntity<List<Pedido>> getPedidosByState(@RequestParam String state) {
 	    List<Pedido> pedidos = pedidoService.getAllByState(state);
+	    pedidos = pedidos.stream().map(pedido -> helper.pedidoFromDTO(new PedidoDTO(pedido))).collect(Collectors.toList());
 	    return ResponseEntity.ok().body(pedidos);
 	  }
 

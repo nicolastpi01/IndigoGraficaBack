@@ -25,8 +25,8 @@ public class Tipo {
 	private Integer alto;
 	private Integer ancho;
 	private String tipografia;
-	@OneToMany(mappedBy="tipo", cascade = CascadeType.ALL, orphanRemoval=true)
-	private Set<Pedido> pedidos = new HashSet<>();
+	//@OneToMany(mappedBy="tipo", cascade = CascadeType.ALL, orphanRemoval=true)
+	//private Set<Pedido> pedidos = new HashSet<>();
 	
 	public Tipo() {}
 	
@@ -37,6 +37,7 @@ public class Tipo {
 		this.tipografia = tipografia;
 	}
 	
+	/*
 	public Set<Pedido> getPedidos() {
 		return this.pedidos;
 	}
@@ -51,6 +52,7 @@ public class Tipo {
 		this.pedidos.remove(pedido);
 		pedido.setTipo(null);
 	}
+	*/
 	
 	
 	public long getId() {
