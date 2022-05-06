@@ -1,3 +1,5 @@
+![example workflow](https://github.com/nicolastpi01/IndigoGraficaBack/actions/workflows/build.yml/badge.svg)
+
 # IndigoGraficaBack
 
 Hay que modificar el application.properties segun tu confuguración
