@@ -2,7 +2,6 @@ package com.example.model;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,9 +18,8 @@ public class Color {
     private long id;
 	private String nombre;
 	private String hexCode;
-	
-	//@ManyToMany(mappedBy = "colores")
-	//private Set<Pedido> pedidos = new HashSet<>();
+	@ManyToMany(mappedBy = "colores")
+	private Set<Pedido> pedidos = new HashSet<>();
 	
 	
 	public Color() {}
@@ -30,11 +28,10 @@ public class Color {
 		this.nombre = nombre;
 		this.hexCode = hexCode;
 	}
-	/*
+	
 	public Set<Pedido> getPedidos() {
 		return this.pedidos;
 	}
-	*/
 	
 	public String getHexCode() {
 		return hexCode;
@@ -49,10 +46,16 @@ public class Color {
 		this.nombre = nombre;
 	}
 
-	/*
 	public void addPedido(Pedido pedido) {
 		this.pedidos.add(pedido);
 	}
-	*/
+
+	public long getId() {
+		return this.id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 }

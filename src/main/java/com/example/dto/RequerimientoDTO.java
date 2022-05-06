@@ -14,7 +14,6 @@ public class RequerimientoDTO {
 		this.id = req.getId();
 		this.descripcion = req.getDescripcion();
 		this.chequeado = req.getChequeado();
-		//this.file = null;
 	}
 	
 	public FileDB getFile() {

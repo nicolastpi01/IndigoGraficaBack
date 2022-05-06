@@ -15,9 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
 @Table(name = "pedidos")
 public class Pedido {
@@ -33,29 +30,24 @@ public class Pedido {
 	private Integer alto;
 	private Integer ancho;
 	private String descripcion;
-	private String state;
-	private String usuarioId;
+	private String state; // Por ahora el estado es un string
+	private String propietario; // El propietario que pidio el encargo del pedido 
+	private String encargado; // El editor encargado de resolver el pedido
 	@OneToMany(mappedBy="pedido", cascade = CascadeType.ALL, orphanRemoval=true)
 	private Set<FileDB> files = new HashSet<>();
-	//@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name="tipo_id", nullable=false)
-	//private Tipo tipo;
-	//@ManyToMany
-	//@JoinTable(
-	//name = "colour_like", 
-	//joinColumns = @JoinColumn(name = "pedido_id"), 
-	//inverseJoinColumns = @JoinColumn(name = "color_id"))
-	//private Set<Color> colores = new HashSet<>();
-	/*
-	 * 	private Usuario usuario;
-   		private editor?: Usuario
-	 */
-	// No agregar usuarios, o agregar un string usuarioId
-	// Agregar Estado, o estado String
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="tipo_id", nullable=false)
+	private Tipo tipo;
+	@ManyToMany
+	@JoinTable(
+	name = "colour_like", 
+	joinColumns = @JoinColumn(name = "pedido_id"), 
+	inverseJoinColumns = @JoinColumn(name = "color_id"))
+	private Set<Color> colores = new HashSet<>();
 	
 	public Pedido() {}
 	
-	public Pedido(String nombre, String nombreExtendido, String tipografia, Integer alto, Integer ancho, String descripcion, Integer cantidad, String state) {
+	public Pedido(String nombre, String nombreExtendido, String tipografia, Integer alto, Integer ancho, String descripcion, Integer cantidad, String state, String propietario) {
 	  this.setNombre(nombre);
 	  this.setNombreExtendido(nombreExtendido);
 	  this.setTipografia(tipografia);
@@ -64,6 +56,7 @@ public class Pedido {
 	  this.setDescripcion(descripcion);
 	  this.setCantidad(cantidad);
 	  this.setState(state);
+	  this.setPropietario(propietario);
 	}
 	
 	public Set<FileDB> getFiles() {
@@ -73,7 +66,7 @@ public class Pedido {
 	public void setFiles(Set<FileDB> files) {
 		this.files = files;
 	}
-	/*
+	
 	public void addColor(Color color) {
 		colores.add(color);
 		color.getPedidos().add(this);
@@ -83,7 +76,7 @@ public class Pedido {
 		this.colores.remove(color);
 		color.getPedidos().remove(this);
 	}
-	*/
+	
 	
 	public void addFile(FileDB file1) {
 		files.add(file1);
@@ -93,11 +86,10 @@ public class Pedido {
 		this.files.remove(file);
 		file.setPedido(null);
 	}
-	/*
+	
 	public Set<Color> getColores() {
 		return this.colores;
 	}
-	*/
 	
 	public String getId() {
 	    return id;
@@ -156,7 +148,7 @@ public class Pedido {
 	public void setState(String state) {
 		this.state = state;
 	}
-	/*
+	
 	public Tipo getTipo() {
 		return tipo;
 	}
@@ -164,14 +156,25 @@ public class Pedido {
 	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
 	}
-	*/
 
-	public String getUsuarioId() {
-		return usuarioId;
+	public String getPropietario() {
+		return this.propietario;
 	}
 
-	public void setUsuarioId(String usuarioId) {
-		this.usuarioId = usuarioId;
+	public void setPropietario(String propietario) {
+		this.propietario = propietario;
+	}
+
+	public void setColores(Set<Color> colores) {
+		this.colores = colores;
+	}
+
+	public String getEncargado() {
+		return encargado;
+	}
+
+	public void setEncargado(String encargado) {
+		this.encargado = encargado;
 	}
 
 

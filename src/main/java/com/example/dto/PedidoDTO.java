@@ -3,15 +3,10 @@ package com.example.dto;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.persistence.CascadeType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.GenericGenerator;
+import com.example.model.Color;
 import com.example.model.FileDB;
 import com.example.model.Pedido;
+import com.example.model.Tipo;
 import com.example.utils.Helper;
 
 public class PedidoDTO {
@@ -26,8 +21,11 @@ public class PedidoDTO {
 	private Integer ancho;
 	private String descripcion;
 	private String state;
-	private String usuarioId;
+	private String propietario;
+	private String encargado;
 	private Set<FileDB> files = new HashSet<>();
+	private Tipo tipo;
+	private Set<Color> colores;
 	private Helper helper = new Helper();
 	
 	public PedidoDTO(Pedido pedido) {
@@ -39,8 +37,11 @@ public class PedidoDTO {
 		this.ancho = (Integer) pedido.getAncho();
 		this.descripcion = pedido.getDescripcion();
 		this.state = pedido.getState();
-		this.usuarioId = pedido.getUsuarioId();
+		this.propietario = pedido.getPropietario();
+		this.encargado = pedido.getEncargado();
 		this.files = pedido.getFiles().stream().map(file -> helper.fileFromDTO(new FileDTO(file))).collect(Collectors.toSet());
+		this.tipo = helper.tipoFromDTO(new TipoDTO(pedido.getTipo()));
+		this.colores = pedido.getColores().stream().map(color -> helper.colorFromDTO(new ColorDTO(color))).collect(Collectors.toSet());
 	}
 	
 	public String getId() {
@@ -91,12 +92,7 @@ public class PedidoDTO {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	public String getUsuarioId() {
-		return usuarioId;
-	}
-	public void setUsuarioId(String usuarioId) {
-		this.usuarioId = usuarioId;
-	}
+	
 	public String getState() {
 		return state;
 	}
@@ -108,6 +104,38 @@ public class PedidoDTO {
 	}
 	public void setFiles(Set<FileDB> files) {
 		this.files = files;
+	}
+
+	public Tipo getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Tipo tipo) {
+		this.tipo = tipo;
+	}
+
+	public Set<Color> getColores() {
+		return colores;
+	}
+
+	public void setColores(Set<Color> colores) {
+		this.colores = colores;
+	}
+
+	public String getPropietario() {
+		return propietario;
+	}
+
+	public void setPropietario(String propietario) {
+		this.propietario = propietario;
+	}
+
+	public String getEncargado() {
+		return encargado;
+	}
+
+	public void setEncargado(String encargado) {
+		this.encargado = encargado;
 	}
 
 }
