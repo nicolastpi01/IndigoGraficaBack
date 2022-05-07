@@ -16,6 +16,11 @@ public class RequerimientoDTO {
 	
 	public RequerimientoDTO() {}
 	
+	public Requerimiento toRequerimiento() {
+		Requerimiento requerimiento = new Requerimiento(this.descripcion, this.chequeado);
+		return requerimiento;
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -34,4 +39,6 @@ public class RequerimientoDTO {
 	public void setChequeado(Boolean chequeado) {
 		this.chequeado = chequeado;
 	}
+
+	
 }

@@ -13,12 +13,12 @@ public class PedidoDTO {
 	
 	
 	private String id;
-	private Number cantidad;
+	private Integer cantidad;
 	private String nombre;
 	private String nombreExtendido;
 	private String tipografia;
-	private Number alto;
-	private Number ancho;
+	private Integer alto;
+	private Integer ancho;
 	private String descripcion;
 	private String state;
 	private String propietario;
@@ -62,7 +62,7 @@ public class PedidoDTO {
 	public Number getCantidad() {
 		return cantidad;
 	}
-	public void setCantidad(Number cantidad) {
+	public void setCantidad(Integer cantidad) {
 		this.cantidad = cantidad;
 	}
 	public String getNombre() {

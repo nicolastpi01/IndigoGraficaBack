@@ -26,6 +26,16 @@ public class FileDTO {
 	
 	public FileDTO() {}
 	
+	public FileDB toFile() {
+		FileDB file = new FileDB(this.name, this.type, this.data);
+		Set<Requerimiento> requerimientosResult = this.requerimientos.stream().map((reqDTO -> reqDTO.toRequerimiento())).collect(Collectors.toSet());
+		//file.setRequerimientos(requerimientosRet);
+		requerimientosResult.forEach(req -> {
+			file.addRequerimiento(req);
+		});
+		return file;
+	}
+	
 	
 	public String getId() {
 		return id;
@@ -58,5 +68,7 @@ public class FileDTO {
 	public void setData(byte[] data) {
 		this.data = data;
 	}
+
+	
 
 }

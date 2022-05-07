@@ -23,12 +23,12 @@ public class Pedido {
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	private String id;
-	private Number cantidad;
+	private Integer cantidad;
 	private String nombre;
 	private String nombreExtendido;
 	private String tipografia;
-	private Number alto;
-	private Number ancho;
+	private Integer alto;
+	private Integer ancho;
 	private String descripcion;
 	private String state; // Por ahora el estado es un string
 	private String propietario; // El propietario que pidio el encargo del pedido 
@@ -47,7 +47,7 @@ public class Pedido {
 	
 	public Pedido() {}
 	
-	public Pedido(String nombre, String nombreExtendido, String tipografia, Number alto, Number ancho, String descripcion, Number cantidad, String state, String propietario) {
+	public Pedido(String nombre, String nombreExtendido, String tipografia, Integer alto, Integer ancho, String descripcion, Integer cantidad, String state, String propietario) {
 	  this.setNombre(nombre);
 	  this.setNombreExtendido(nombreExtendido);
 	  this.setTipografia(tipografia);
@@ -104,10 +104,10 @@ public class Pedido {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public Number getCantidad() {
+	public Integer getCantidad() {
 		return cantidad;
 	}
-	public void setCantidad(Number cantidad) {
+	public void setCantidad(Integer cantidad) {
 		this.cantidad = cantidad;
 	}
 	public String getNombreExtendido() {
@@ -122,16 +122,16 @@ public class Pedido {
 	public void setTipografia(String tipografia) {
 		this.tipografia = tipografia;
 	}
-	public Number getAlto() {
+	public Integer getAlto() {
 		return alto;
 	}
-	public void setAlto(Number alto) {
+	public void setAlto(Integer alto) {
 		this.alto = alto;
 	}
-	public Number getAncho() {
+	public Integer getAncho() {
 		return ancho;
 	}
-	public void setAncho(Number ancho) {
+	public void setAncho(Integer ancho) {
 		this.ancho = ancho;
 	}
 	public String getDescripcion() {
