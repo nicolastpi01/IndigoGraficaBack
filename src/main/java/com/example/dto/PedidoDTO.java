@@ -8,7 +8,6 @@ import com.example.model.Color;
 import com.example.model.FileDB;
 import com.example.model.Pedido;
 import com.example.model.Tipo;
-import com.example.utils.Helper;
 
 public class PedidoDTO {
 	

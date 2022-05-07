@@ -15,15 +15,13 @@ import com.example.dto.PedidoDTO;
 import com.example.message.ResponseMessage;
 import com.example.model.Pedido;
 import com.example.services.PedidoStorageService;
-import com.example.utils.Helper;
 
 @Controller
 public class PedidoController {
 	
 	@Autowired
 	private PedidoStorageService pedidoService;
-	private Helper helper = new Helper();
-	
+
 	@PostMapping("/pedidos")
 	public ResponseEntity<ResponseMessage> altaPedido(@RequestBody PedidoDTO pedidoDTO) {
 		String message = "";

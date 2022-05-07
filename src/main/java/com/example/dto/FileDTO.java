@@ -3,11 +3,9 @@ package com.example.dto;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import com.example.model.FileDB;
 import com.example.model.Pedido;
 import com.example.model.Requerimiento;
-import com.example.utils.Helper;
 
 public class FileDTO {
 	
