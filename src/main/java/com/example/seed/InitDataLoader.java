@@ -4,7 +4,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.example.model.Color;
 import com.example.model.FileDB;
 import com.example.model.Pedido;

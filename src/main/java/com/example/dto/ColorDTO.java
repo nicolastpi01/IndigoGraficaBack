@@ -1,16 +1,13 @@
 package com.example.dto;
 
 
-import java.util.Set;
 import com.example.model.Color;
-import com.example.model.Pedido;
 
 public class ColorDTO {
 	
 	private long id;
 	private String nombre;
 	private String hexCode;
-	private Set<Pedido> pedidos;
 	
 	public ColorDTO(Color color) {
 		this.id = color.getId();
@@ -36,11 +33,6 @@ public class ColorDTO {
 	public void setHexCode(String hexCode) {
 		this.hexCode = hexCode;
 	}
-	public Set<Pedido> getPedidos() {
-		return pedidos;
-	}
-	public void setPedidos(Set<Pedido> pedidos) {
-		this.pedidos = pedidos;
-	}
+	
 
 }

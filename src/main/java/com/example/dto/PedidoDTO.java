@@ -13,35 +13,35 @@ public class PedidoDTO {
 	
 	
 	private String id;
-	private Integer cantidad;
+	private Number cantidad;
 	private String nombre;
 	private String nombreExtendido;
 	private String tipografia;
-	private Integer alto;
-	private Integer ancho;
+	private Number alto;
+	private Number ancho;
 	private String descripcion;
 	private String state;
 	private String propietario;
 	private String encargado;
-	private Set<FileDB> files = new HashSet<>();
-	private Tipo tipo;
-	private Set<Color> colores;
-	private Helper helper = new Helper();
+	private Set<FileDTO> files;  //= new HashSet<>();
+	private TipoDTO tipo;
+	private Set<ColorDTO> colores;
 	
 	public PedidoDTO(Pedido pedido) {
 		this.id = pedido.getId();
 		this.nombre = pedido.getNombre();
 		this.nombreExtendido = pedido.getNombreExtendido();
 		this.tipografia = pedido.getTipografia();
-		this.alto = (Integer) pedido.getAlto();
-		this.ancho = (Integer) pedido.getAncho();
+		this.alto = pedido.getAlto();
+		this.ancho = pedido.getAncho();
 		this.descripcion = pedido.getDescripcion();
 		this.state = pedido.getState();
 		this.propietario = pedido.getPropietario();
 		this.encargado = pedido.getEncargado();
-		this.files = pedido.getFiles().stream().map(file -> helper.fileFromDTO(new FileDTO(file))).collect(Collectors.toSet());
-		this.tipo = helper.tipoFromDTO(new TipoDTO(pedido.getTipo()));
-		this.colores = pedido.getColores().stream().map(color -> helper.colorFromDTO(new ColorDTO(color))).collect(Collectors.toSet());
+		this.cantidad = pedido.getCantidad();
+		this.files = pedido.getFiles().stream().map(file -> (new FileDTO(file))).collect(Collectors.toSet());
+		this.tipo = new TipoDTO(pedido.getTipo());
+		this.colores = pedido.getColores().stream().map(color -> (new ColorDTO(color))).collect(Collectors.toSet());
 	}
 	
 	public String getId() {
@@ -50,10 +50,10 @@ public class PedidoDTO {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public Integer getCantidad() {
+	public Number getCantidad() {
 		return cantidad;
 	}
-	public void setCantidad(Integer cantidad) {
+	public void setCantidad(Number cantidad) {
 		this.cantidad = cantidad;
 	}
 	public String getNombre() {
@@ -74,13 +74,13 @@ public class PedidoDTO {
 	public void setTipografia(String tipografia) {
 		this.tipografia = tipografia;
 	}
-	public Integer getAlto() {
+	public Number getAlto() {
 		return alto;
 	}
 	public void setAlto(Integer alto) {
 		this.alto = alto;
 	}
-	public Integer getAncho() {
+	public Number getAncho() {
 		return ancho;
 	}
 	public void setAncho(Integer ancho) {
@@ -99,26 +99,26 @@ public class PedidoDTO {
 	public void setState(String state) {
 		this.state = state;
 	}
-	public Set<FileDB> getFiles() {
+	public Set<FileDTO> getFiles() {
 		return files;
 	}
-	public void setFiles(Set<FileDB> files) {
+	public void setFiles(Set<FileDTO> files) {
 		this.files = files;
 	}
 
-	public Tipo getTipo() {
+	public TipoDTO getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(Tipo tipo) {
+	public void setTipo(TipoDTO tipo) {
 		this.tipo = tipo;
 	}
 
-	public Set<Color> getColores() {
+	public Set<ColorDTO> getColores() {
 		return colores;
 	}
 
-	public void setColores(Set<Color> colores) {
+	public void setColores(Set<ColorDTO> colores) {
 		this.colores = colores;
 	}
 

@@ -4,7 +4,6 @@ package com.example.dto;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import com.example.model.Pedido;
 import com.example.model.Tipo;
 
@@ -15,7 +14,6 @@ public class TipoDTO {
 	private Integer alto;
 	private Integer ancho;
 	private String tipografia;
-	private Set<Pedido> pedidos;
 	
 	public TipoDTO(Tipo tipo) {
 		this.id = tipo.getId();
@@ -54,12 +52,6 @@ public class TipoDTO {
 	}
 	public void setTipografia(String tipografia) {
 		this.tipografia = tipografia;
-	}
-	public Set<Pedido> getPedidos() {
-		return pedidos;
-	}
-	public void setPedidos(Set<Pedido> pedidos) {
-		this.pedidos = pedidos;
 	}
 
 }

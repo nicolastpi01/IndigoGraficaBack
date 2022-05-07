@@ -1,6 +1,5 @@
 package com.example.dto;
 
-import com.example.model.FileDB;
 import com.example.model.Requerimiento;
 
 public class RequerimientoDTO {
@@ -8,7 +7,6 @@ public class RequerimientoDTO {
 	private String id;
 	private String descripcion;
 	private Boolean chequeado;
-	private FileDB file = null;
 	
 	public RequerimientoDTO(Requerimiento req) {
 		this.id = req.getId();
@@ -16,9 +14,6 @@ public class RequerimientoDTO {
 		this.chequeado = req.getChequeado();
 	}
 	
-	public FileDB getFile() {
-		return file;
-	}
 	public String getId() {
 		return id;
 	}

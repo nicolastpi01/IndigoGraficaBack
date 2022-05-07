@@ -20,7 +20,6 @@ public class FileStorageService {
 	@Autowired
 	private FileDBRepository fileDBRepository;
 	
-	
 	public FileDB store(MultipartFile file) throws IOException {
 	  String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 	  FileDB FileDB = new FileDB(fileName, file.getContentType(), file.getBytes());

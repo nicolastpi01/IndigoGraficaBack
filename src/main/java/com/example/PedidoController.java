@@ -39,10 +39,10 @@ public class PedidoController {
 	
 	  @GetMapping("/pedidos")
 	  @ResponseBody
-	  public ResponseEntity<List<Pedido>> getPedidosByState(@RequestParam String state) {
+	  public ResponseEntity<List<PedidoDTO>> getPedidosByState(@RequestParam String state) {
 	    List<Pedido> pedidos = pedidoService.getAllByState(state);
-	    pedidos = pedidos.stream().map(pedido -> helper.pedidoFromDTO(new PedidoDTO(pedido))).collect(Collectors.toList());
-	    return ResponseEntity.ok().body(pedidos);
+	    List<PedidoDTO> pedidosDTO = pedidos.stream().map(pedido -> (new PedidoDTO(pedido))).collect(Collectors.toList());
+	    return ResponseEntity.ok().body(pedidosDTO);
 	  }
 
 }

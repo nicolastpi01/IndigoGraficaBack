@@ -15,20 +15,15 @@ public class FileDTO {
 	private String name;
 	private String type;
 	private byte[] data;
-    private Pedido pedido;
-	private Set<Requerimiento> requerimientos = new HashSet<>();
-	private Helper helper = new Helper();
-	
-	
+	private Set<RequerimientoDTO> requerimientos; //  = new HashSet<>()
+	//private Helper helper = new Helper();
+		
 	public FileDTO(FileDB file) {
 		this.id = file.getId();
 		this.name = file.getName();
 		this.type = file.getType();
 		this.data = file.getData();
-		this.pedido = null;
-		// pedido.getFiles().stream().map(file -> helper.fileFromDTO(new FileDTO(file))).collect(Collectors.toSet());
-		System.out.println("Requerimientos?: " + file.getRequerimientos());
-		this.requerimientos = file.getRequerimientos().stream().map(requerimiento -> helper.requerimientoFromDTO(new RequerimientoDTO(requerimiento))).collect(Collectors.toSet());
+		this.requerimientos = file.getRequerimientos().stream().map(requerimiento -> (new RequerimientoDTO(requerimiento))).collect(Collectors.toSet());
 	}
 	
 	
@@ -50,16 +45,11 @@ public class FileDTO {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public Pedido getPedido() {
-		return pedido;
-	}
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
-	public Set<Requerimiento> getRequerimientos() {
+	
+	public Set<RequerimientoDTO> getRequerimientos() {
 		return requerimientos;
 	}
-	public void setRequerimientos(Set<Requerimiento> requerimientos) {
+	public void setRequerimientos(Set<RequerimientoDTO> requerimientos) {
 		this.requerimientos = requerimientos;
 	}
 	public byte[] getData() {
