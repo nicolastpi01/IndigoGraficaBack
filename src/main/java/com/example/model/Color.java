@@ -24,6 +24,12 @@ public class Color {
 	
 	public Color() {}
 	
+	public Color(long id, String nombre, String hexCode) {
+		this.id = id;
+		this.nombre = nombre;
+		this.hexCode = hexCode;
+	}
+	
 	public Color(String nombre, String hexCode) {
 		this.nombre = nombre;
 		this.hexCode = hexCode;

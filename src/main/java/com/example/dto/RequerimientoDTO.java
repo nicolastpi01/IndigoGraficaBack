@@ -14,6 +14,8 @@ public class RequerimientoDTO {
 		this.chequeado = req.getChequeado();
 	}
 	
+	public RequerimientoDTO() {}
+	
 	public String getId() {
 		return id;
 	}

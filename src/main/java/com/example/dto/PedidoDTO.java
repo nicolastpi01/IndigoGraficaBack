@@ -1,6 +1,7 @@
 package com.example.dto;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
 import com.example.model.Color;
@@ -42,6 +43,15 @@ public class PedidoDTO {
 		this.files = pedido.getFiles().stream().map(file -> (new FileDTO(file))).collect(Collectors.toSet());
 		this.tipo = new TipoDTO(pedido.getTipo());
 		this.colores = pedido.getColores().stream().map(color -> (new ColorDTO(color))).collect(Collectors.toSet());
+	}
+	
+	public PedidoDTO() {}
+	
+	public Pedido toPedido() {
+		Pedido pedido = new Pedido(this.nombre, this.nombreExtendido, this.tipografia, this.alto, 
+							this.ancho, this.descripcion, this.cantidad, this.state, this.propietario);
+		
+		return pedido;
 	}
 	
 	public String getId() {

@@ -47,7 +47,7 @@ public class Pedido {
 	
 	public Pedido() {}
 	
-	public Pedido(String nombre, String nombreExtendido, String tipografia, Integer alto, Integer ancho, String descripcion, Number cantidad, String state, String propietario) {
+	public Pedido(String nombre, String nombreExtendido, String tipografia, Number alto, Number ancho, String descripcion, Number cantidad, String state, String propietario) {
 	  this.setNombre(nombre);
 	  this.setNombreExtendido(nombreExtendido);
 	  this.setTipografia(tipografia);

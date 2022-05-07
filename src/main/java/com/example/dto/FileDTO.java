@@ -26,6 +26,8 @@ public class FileDTO {
 		this.requerimientos = file.getRequerimientos().stream().map(requerimiento -> (new RequerimientoDTO(requerimiento))).collect(Collectors.toSet());
 	}
 	
+	public FileDTO() {}
+	
 	
 	public String getId() {
 		return id;

@@ -25,14 +25,14 @@ public class PedidoController {
 	private Helper helper = new Helper();
 	
 	@PostMapping("/pedidos")
-	public ResponseEntity<ResponseMessage> altaPedido(@RequestBody Pedido pedido) {
+	public ResponseEntity<ResponseMessage> altaPedido(@RequestBody PedidoDTO pedidoDTO) {
 		String message = "";
 	    try {
-	      pedidoService.storePedido(pedido);
-	      message = "Uploaded the file successfully: " + pedido.getNombre();
+	      pedidoService.storePedido(pedidoDTO);
+	      message = "Uploaded the file successfully: " + pedidoDTO.getNombre();
 	      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
 	    } catch (Exception e) {
-	      message = "Could not upload the file: " + pedido.getNombre() + "!";
+	      message = "Could not upload the file: " + pedidoDTO.getNombre() + "!";
 	      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
 	    }
 	}

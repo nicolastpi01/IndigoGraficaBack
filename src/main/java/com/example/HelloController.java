@@ -16,7 +16,7 @@ public class HelloController {
 	
 	@Autowired
 	private FileStorageService storageService;
-	
+	/*
 	@PostMapping("/upload")
 	public ResponseEntity<ResponseMessage> index(@RequestParam("file") MultipartFile file) {
 		String message = "";
@@ -29,6 +29,7 @@ public class HelloController {
 	      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
 	    }
 	}
+	*/
 	
 	
 

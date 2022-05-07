@@ -1,10 +1,6 @@
 package com.example.dto;
 
 
-
-import java.util.HashSet;
-import java.util.Set;
-import com.example.model.Pedido;
 import com.example.model.Tipo;
 
 public class TipoDTO {
@@ -22,6 +18,8 @@ public class TipoDTO {
 		this.ancho = tipo.getAncho();
 		this.tipografia = tipo.getTipografia();
 	}
+	
+	public TipoDTO() {}
 	
 	public long getId() {
 		return id;
@@ -52,6 +50,11 @@ public class TipoDTO {
 	}
 	public void setTipografia(String tipografia) {
 		this.tipografia = tipografia;
+	}
+
+	public Tipo toTipo() {
+		Tipo tipo = new Tipo(this.nombre, this.alto, this.ancho, this.tipografia);
+		return tipo;
 	}
 
 }

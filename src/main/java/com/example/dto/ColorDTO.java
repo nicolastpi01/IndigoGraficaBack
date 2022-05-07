@@ -15,6 +15,14 @@ public class ColorDTO {
 		this.hexCode = color.getHexCode();
 	}
 	
+	public ColorDTO() {}
+	
+
+	public Color toColor() {
+		Color color = new Color(this.nombre, this.hexCode);
+		return color;
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -33,6 +41,7 @@ public class ColorDTO {
 	public void setHexCode(String hexCode) {
 		this.hexCode = hexCode;
 	}
+
 	
 
 }
