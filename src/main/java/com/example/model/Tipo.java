@@ -19,27 +19,35 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Tipo {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 	private String nombre; // Boceto, Logo, Imagen, Fotografia, etc
 	private Integer alto;
 	private Integer ancho;
 	private String tipografia;
-	@OneToMany(mappedBy="tipo", cascade = CascadeType.ALL, orphanRemoval=true)
-	private Set<Pedido> pedidos = new HashSet<>();
+	//@OneToMany(mappedBy="tipo", cascade = CascadeType.ALL, orphanRemoval=true)
+	//private Set<Pedido> pedidos = new HashSet<>(); // Revisar la relaciones by direccionales. Volar esta relación.
 	
 	public Tipo() {}
 	
-	public Tipo(String nombre, Integer alto, Integer ancho, String tipografia) {
+	public Tipo(long id, String nombre, Integer alto, Integer ancho, String tipografia) {
+		this.id = id;
 		this.nombre = nombre;
 		this.alto = alto;
 		this.ancho = ancho;
 		this.tipografia = tipografia;
 	}
 	
+	
+	/*
 	public Set<Pedido> getPedidos() {
 		return this.pedidos;
 	}
+	
+	public void setPedidos(Set<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+	
 	
 	public void addPedido(Pedido pedido) {
 		this.pedidos.add(pedido);
@@ -50,6 +58,7 @@ public class Tipo {
 		this.pedidos.remove(pedido);
 		pedido.setTipo(null);
 	}
+	*/
 	
 	public long getId() {
 		return id;
@@ -82,5 +91,24 @@ public class Tipo {
 	public void setTipografia(String tipografia) {
 		this.tipografia = tipografia;
 	}
+/*
+	public Set<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(Set<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+	
+
+	public Set<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(Set<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+	*/
+
 	 
 }

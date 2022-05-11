@@ -53,7 +53,7 @@ public class TipoDTO {
 	}
 
 	public Tipo toTipo() {
-		Tipo tipo = new Tipo(this.nombre, this.alto, this.ancho, this.tipografia);
+		Tipo tipo = new Tipo(1, this.nombre, this.alto, this.ancho, this.tipografia);
 		return tipo;
 	}
 

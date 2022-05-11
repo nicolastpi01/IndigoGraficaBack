@@ -1,13 +1,20 @@
 package com.example.services;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.dto.ColorDTO;
 import com.example.dto.PedidoDTO;
@@ -15,6 +22,7 @@ import com.example.dto.UsuarioDTO;
 import com.example.model.Color;
 import com.example.model.FileDB;
 import com.example.model.Pedido;
+import com.example.model.Requerimiento;
 import com.example.model.Tipo;
 import com.example.repository.ColorDBRepository;
 import com.example.repository.PedidoDBRepository;
@@ -30,36 +38,39 @@ public class PedidoStorageService {
 	@Autowired
 	private ColorDBRepository colorRepo;
 	
-	public Tipo storePedido(PedidoDTO pedidoDTO) throws IOException {
+	@Transactional
+	public Pedido store(MultipartFile[] files, Pedido pedido, List<List<Requerimiento>> requerimientos) {
 		
-		Pedido pedido = pedidoDTO.toPedido();
-		Tipo tipo = pedidoDTO.getTipo().toTipo();
+		Set<FileDB> filesDB = new HashSet<>();
 		
-		Set<Color> colores = pedidoDTO.getColores().stream().map((colorDTO -> colorDTO.toColor())).collect(Collectors.toSet());
-		Set<FileDB> files = pedidoDTO.getFiles().stream().map((fileDTO -> fileDTO.toFile())).collect(Collectors.toSet());
-		
-		colores.forEach(color -> {
-			colorRepo.save(color);
-		});
-		colores.forEach(color -> {
-			pedido.addColor(color);
-		});
-		
-		files.forEach((file -> {
-			//file.setRequerimientos(new HashSet<>());
-			pedido.addFile(file);
-		}));
-		
-		//pedido.setFiles(new HashSet<>());
-		
-		tipo.addPedido(pedido);
-		return tipoRepo.save(tipo);
+    	Arrays.asList(files).stream().forEach((file) -> {
+    		int index = 0;
+    		try {
+				FileDB FileDB = new FileDB(StringUtils.cleanPath(file.getOriginalFilename()), file.getContentType(), file.getBytes());
+				if(!requerimientos.isEmpty()) {
+					if(requerimientos.get(index) != null) {
+						FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toSet()));
+						System.out.println("Index: " + index); // El problema es el Index que esta las dos veces (Dos Files) en cero!
+						index= index + 1;
+					}
+				}
+				filesDB.add(FileDB);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+			}
+      });
+    	
+    	pedido.setFiles(filesDB);
+    	return pedidoDBRepository.save(pedido);
 	}
 
+	@Transactional(readOnly=true)
 	public List<Pedido> getAllByState(String state) {
 		return pedidoDBRepository.findByState(state) ;
 	}
 
+	@Transactional
 	public void reservar(String id, UsuarioDTO usuarioDTO) throws IOException {
 		Pedido pedido = pedidoDBRepository.findById(id).get();
 		pedido.setState("reservado");

@@ -24,11 +24,26 @@ public class InitDataLoader {
 	
 	@PostConstruct
 	public void loadSeed() {
-	 
+		Tipo tipo1 = new Tipo(1,"Logo", 60, 60, "sans serif");
+		Tipo tipo2 = new Tipo(2,"Folleto", 60, 60, "sans serif");
+		Tipo tipo3 = new Tipo(3,"Carta", 60, 60, "sans serif");
+		Tipo tipo4 = new Tipo(4,"Fotografia", 60, 60, "sans serif");
+		
+		tipoRepo.save(tipo1);
+		tipoRepo.save(tipo2);
+		tipoRepo.save(tipo3);
+		tipoRepo.save(tipo4);
+		
+		Color color1 = new Color(10, "Rojo", "#FF0000");
+		Color color2 = new Color(9, "Azul", "#0000FF");
+		
+		colorRepo.save(color1);
+		colorRepo.save(color2);
+	 /*
 		Color Azul = new Color("Rojo", "#FF0000");
 		Color Rojo = new Color("Azul", "#0000FF");
 		
-		Tipo tipo = new Tipo("Logo", 60, 60, "sans serif");
+		
 		
 		Pedido pedido1 = new Pedido("Indigo Gráfica", "Esto es un nombre extendido", "Sans serif", 60, 60, "Esto es una descripcion", 10, "algo", "Nicolas owner");
 		//Usuario usuario1 = new Usuario("Av, Millazo", "Matias Maranguello", "1556203506");
@@ -56,7 +71,7 @@ public class InitDataLoader {
 		
 		//pedidoRepo.save(pedido1);
 		tipoRepo.save(tipo);
-	
+	*/
 		 
 	}
 	
