@@ -33,17 +33,17 @@ public class Pedido {
 	private String state; // Por ahora el estado es un string
 	private String propietario; // El propietario que pidio el encargo del pedido 
 	private String encargado; // El editor encargado de resolver el pedido
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) // Esto esta bien
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
 	private Set<FileDB> files = new HashSet<>();
-	//@ManyToOne(fetch = FetchType.LAZY) // sacar Lazy
-    //@JoinColumn(name="tipo_id", nullable=false)
-	//private Tipo tipo;
-	//@ManyToMany
-	//@JoinTable(
-	//name = "colour_like", 
-	//joinColumns = @JoinColumn(name = "pedido_id"), // Que si sea Lazy
-	//inverseJoinColumns = @JoinColumn(name = "color_id"))
-	//private Set<Color> colores = new HashSet<>();
+	@ManyToOne //(fetch = FetchType.LAZY) //(fetch = FetchType.LAZY) // sacar Lazy
+	@JoinColumn(name="tipo_id", nullable=false)
+	private Tipo tipo;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+	name = "colour_like", 
+	joinColumns = @JoinColumn(name = "pedido_id"), // Que si sea Lazy
+	inverseJoinColumns = @JoinColumn(name = "color_id"))
+	private Set<Color> colores = new HashSet<>();
 	
 	public Pedido() {}
 	/*
@@ -60,7 +60,7 @@ public class Pedido {
 	}
 	*/
 	
-	public Pedido(String nombre, String nombreExtendido, String tipografia, Integer alto, Integer ancho, String descripcion, Integer cantidad, String state) {
+	public Pedido(String nombre, String nombreExtendido, String tipografia, Integer alto, Integer ancho, String descripcion, Integer cantidad, String state, Tipo tipo) {
 		  this.setNombre(nombre);
 		  this.setNombreExtendido(nombreExtendido);
 		  this.setTipografia(tipografia);
@@ -69,6 +69,7 @@ public class Pedido {
 		  this.setDescripcion(descripcion);
 		  this.setCantidad(cantidad);
 		  this.setState(state);
+		  this.setTipo(tipo);
 	}
 	
 	
@@ -100,11 +101,11 @@ public class Pedido {
 		file.setPedido(null);
 	}
 	
-	
+	*/
 	public Set<Color> getColores() {
 		return this.colores;
 	}
-	*/
+	
 	public String getId() {
 	    return id;
 	}
@@ -162,7 +163,8 @@ public class Pedido {
 	public void setState(String state) {
 		this.state = state;
 	}
-	/*
+	
+	
 	public Tipo getTipo() {
 		return tipo;
 	}
@@ -170,13 +172,12 @@ public class Pedido {
 	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
 	}
-
 	
 
 	public void setColores(Set<Color> colores) {
 		this.colores = colores;
 	}
-	*/
+	
 	
 	public String getPropietario() {
 		return this.propietario;
@@ -193,6 +194,15 @@ public class Pedido {
 	public void setEncargado(String encargado) {
 		this.encargado = encargado;
 	}
+	/*
+	public Tipo getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Tipo tipo) {
+		this.tipo = tipo;
+	}
+	*/
 
 
 }

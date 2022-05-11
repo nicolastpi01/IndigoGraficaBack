@@ -30,6 +30,7 @@ public class PedidoController {
 
 	@PostMapping("/pedidos")
 	public ResponseEntity<ResponseMessage> altaPedido(@RequestParam("files[]") MultipartFile[] files, @RequestPart("pedido") Pedido pedido) {
+		System.out.print("algo"+ pedido);
 		String message = "";
 	    try {
 	      pedidoService.store(files, pedido);

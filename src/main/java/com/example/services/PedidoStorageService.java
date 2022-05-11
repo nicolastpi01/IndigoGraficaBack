@@ -53,6 +53,10 @@ public class PedidoStorageService {
           //fileNames.add(file.getOriginalFilename());
       });
     	
+    	//tipoRepo.save(pedido.getTipo());
+    	
+    	
+    	
     	pedido.setFiles(filesDB);
     	
     	return pedidoDBRepository.save(pedido);

@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Tipo {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 	private String nombre; // Boceto, Logo, Imagen, Fotografia, etc
 	private Integer alto;
@@ -30,17 +30,25 @@ public class Tipo {
 	
 	public Tipo() {}
 	
-	public Tipo(String nombre, Integer alto, Integer ancho, String tipografia) {
+	public Tipo(long id, String nombre, Integer alto, Integer ancho, String tipografia) {
+		this.id = id;
 		this.nombre = nombre;
 		this.alto = alto;
 		this.ancho = ancho;
 		this.tipografia = tipografia;
 	}
 	
-	//public Set<Pedido> getPedidos() {
-	//	return this.pedidos;
-	//}
+	
 	/*
+	public Set<Pedido> getPedidos() {
+		return this.pedidos;
+	}
+	
+	public void setPedidos(Set<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+	
+	
 	public void addPedido(Pedido pedido) {
 		this.pedidos.add(pedido);
 		pedido.setTipo(this);
@@ -83,5 +91,24 @@ public class Tipo {
 	public void setTipografia(String tipografia) {
 		this.tipografia = tipografia;
 	}
+/*
+	public Set<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(Set<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+	
+
+	public Set<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(Set<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+	*/
+
 	 
 }
