@@ -46,19 +46,6 @@ public class Pedido {
 	private Set<Color> colores = new HashSet<>();
 	
 	public Pedido() {}
-	/*
-	public Pedido(String nombre, String nombreExtendido, String tipografia, Integer alto, Integer ancho, String descripcion, Integer cantidad, String state, String propietario) {
-	  this.setNombre(nombre);
-	  this.setNombreExtendido(nombreExtendido);
-	  this.setTipografia(tipografia);
-	  this.setAlto(alto);
-	  this.setAncho(ancho);
-	  this.setDescripcion(descripcion);
-	  this.setCantidad(cantidad);
-	  this.setState(state);
-	  this.setPropietario(propietario);
-	}
-	*/
 	
 	public Pedido(String nombre, String nombreExtendido, String tipografia, Integer alto, Integer ancho, String descripcion, Integer cantidad, String state, Tipo tipo) {
 		  this.setNombre(nombre);

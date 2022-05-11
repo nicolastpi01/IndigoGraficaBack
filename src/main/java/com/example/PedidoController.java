@@ -20,6 +20,7 @@ import com.example.dto.PedidoDTO;
 import com.example.dto.UsuarioDTO;
 import com.example.message.ResponseMessage;
 import com.example.model.Pedido;
+import com.example.model.Requerimiento;
 import com.example.services.PedidoStorageService;
 
 @Controller
@@ -29,11 +30,10 @@ public class PedidoController {
 	private PedidoStorageService pedidoService;
 
 	@PostMapping("/pedidos")
-	public ResponseEntity<ResponseMessage> altaPedido(@RequestParam("files[]") MultipartFile[] files, @RequestPart("pedido") Pedido pedido) {
-		System.out.print("algo"+ pedido);
+	public ResponseEntity<ResponseMessage> altaPedido(@RequestParam("files[]") MultipartFile[] files, @RequestPart("pedido") Pedido pedido, @RequestPart("requerimientos") List<List<Requerimiento>> requerimientos) {
 		String message = "";
 	    try {
-	      pedidoService.store(files, pedido);
+	      pedidoService.store(files, pedido, requerimientos);
 	      message = "Se Agrego el pedido: " + pedido.getNombre();
 	      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
 	    } catch (Exception e) {

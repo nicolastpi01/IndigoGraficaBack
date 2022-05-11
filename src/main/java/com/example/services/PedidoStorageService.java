@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import com.example.dto.UsuarioDTO;
 import com.example.model.Color;
 import com.example.model.FileDB;
 import com.example.model.Pedido;
+import com.example.model.Requerimiento;
 import com.example.model.Tipo;
 import com.example.repository.ColorDBRepository;
 import com.example.repository.PedidoDBRepository;
@@ -37,57 +39,30 @@ public class PedidoStorageService {
 	private ColorDBRepository colorRepo;
 	
 	@Transactional
-	public Pedido store(MultipartFile[] files,Pedido pedido) {
+	public Pedido store(MultipartFile[] files, Pedido pedido, List<List<Requerimiento>> requerimientos) {
 		
 		Set<FileDB> filesDB = new HashSet<>();
-		//List<String> fileNames = new ArrayList<>();
-    	Arrays.asList(files).stream().forEach(file -> {
+		
+    	Arrays.asList(files).stream().forEach((file) -> {
+    		int index = 0;
     		try {
 				FileDB FileDB = new FileDB(StringUtils.cleanPath(file.getOriginalFilename()), file.getContentType(), file.getBytes());
+				if(!requerimientos.isEmpty()) {
+					if(requerimientos.get(index) != null) {
+						FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toSet()));
+						System.out.println("Index: " + index); // El problema es el Index que esta las dos veces (Dos Files) en cero!
+						index= index + 1;
+					}
+				}
 				filesDB.add(FileDB);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
 			}
-          //storageService.store(file);
-          //fileNames.add(file.getOriginalFilename());
       });
     	
-    	//tipoRepo.save(pedido.getTipo());
-    	
-    	
-    	
     	pedido.setFiles(filesDB);
-    	
     	return pedidoDBRepository.save(pedido);
-		
-		//Pedido pedido = pedidoDTO.toPedido();
-		//Tipo tipo = pedidoDTO.getTipo().toTipo();
-		
-		// Llevarlo al Controller
-		//Set<Color> colores = pedidoDTO.getColores().stream().map((colorDTO -> colorDTO.toColor())).collect(Collectors.toSet());
-		//Set<FileDB> files = pedidoDTO.getFiles().stream().map((fileDTO -> fileDTO.toFile())).collect(Collectors.toSet());
-		
-		// No deberia estar // Cargar antes los colores
-		//colores.forEach(color -> {
-		//	colorRepo.save(color);
-		//});
-		
-		// No deberia ir
-		//colores.forEach(color -> {
-		//	pedido.addColor(color);
-		//});
-		
-		// Van en cascada
-		//files.forEach((file -> {
-		//	//file.setRequerimientos(new HashSet<>());
-		//	pedido.addFile(file);
-		//}));
-		
-		//pedido.setFiles(new HashSet<>());
-		
-		//tipo.addPedido(pedido);
-		//return tipoRepo.save(tipo);
 	}
 
 	@Transactional(readOnly=true)

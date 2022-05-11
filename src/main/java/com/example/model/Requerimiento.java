@@ -30,18 +30,6 @@ public class Requerimiento {
 		this.chequeado = check;
 	}
 	
-	 @Override
-	 public boolean equals(Object o) {
-		if(this == o) return true;
-		if(!(o instanceof Requerimiento)) return false;
-		return id != null && id.equals(((Requerimiento) o).getId());
-	 }
-	 
-	 @Override
-	 public int hashCode() {
-		 return getClass().hashCode();
-	 }
-	
 	public String getId() {
 	    return id;
 	}
@@ -68,15 +56,7 @@ public class Requerimiento {
 	public void setChequeado(Boolean check) {
 		this.chequeado = check;
 	}
-	/*
-	public FileDB getFile() {
-		return file;
-	}
-
-	public void setFile(FileDB file) {
-		this.file = file;
-	}
-	*/
+	
 
 	
 	
