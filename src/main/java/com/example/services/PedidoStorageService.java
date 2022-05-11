@@ -1,6 +1,8 @@
 package com.example.services;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,6 +10,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.dto.ColorDTO;
 import com.example.dto.PedidoDTO;
@@ -30,36 +36,62 @@ public class PedidoStorageService {
 	@Autowired
 	private ColorDBRepository colorRepo;
 	
-	public Tipo storePedido(PedidoDTO pedidoDTO) throws IOException {
+	@Transactional
+	public Pedido store(MultipartFile[] files,Pedido pedido) {
 		
-		Pedido pedido = pedidoDTO.toPedido();
-		Tipo tipo = pedidoDTO.getTipo().toTipo();
+		Set<FileDB> filesDB = new HashSet<>();
+		//List<String> fileNames = new ArrayList<>();
+    	Arrays.asList(files).stream().forEach(file -> {
+    		try {
+				FileDB FileDB = new FileDB(StringUtils.cleanPath(file.getOriginalFilename()), file.getContentType(), file.getBytes());
+				filesDB.add(FileDB);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+			}
+          //storageService.store(file);
+          //fileNames.add(file.getOriginalFilename());
+      });
+    	
+    	pedido.setFiles(filesDB);
+    	
+    	return pedidoDBRepository.save(pedido);
 		
-		Set<Color> colores = pedidoDTO.getColores().stream().map((colorDTO -> colorDTO.toColor())).collect(Collectors.toSet());
-		Set<FileDB> files = pedidoDTO.getFiles().stream().map((fileDTO -> fileDTO.toFile())).collect(Collectors.toSet());
+		//Pedido pedido = pedidoDTO.toPedido();
+		//Tipo tipo = pedidoDTO.getTipo().toTipo();
 		
-		colores.forEach(color -> {
-			colorRepo.save(color);
-		});
-		colores.forEach(color -> {
-			pedido.addColor(color);
-		});
+		// Llevarlo al Controller
+		//Set<Color> colores = pedidoDTO.getColores().stream().map((colorDTO -> colorDTO.toColor())).collect(Collectors.toSet());
+		//Set<FileDB> files = pedidoDTO.getFiles().stream().map((fileDTO -> fileDTO.toFile())).collect(Collectors.toSet());
 		
-		files.forEach((file -> {
-			//file.setRequerimientos(new HashSet<>());
-			pedido.addFile(file);
-		}));
+		// No deberia estar // Cargar antes los colores
+		//colores.forEach(color -> {
+		//	colorRepo.save(color);
+		//});
+		
+		// No deberia ir
+		//colores.forEach(color -> {
+		//	pedido.addColor(color);
+		//});
+		
+		// Van en cascada
+		//files.forEach((file -> {
+		//	//file.setRequerimientos(new HashSet<>());
+		//	pedido.addFile(file);
+		//}));
 		
 		//pedido.setFiles(new HashSet<>());
 		
-		tipo.addPedido(pedido);
-		return tipoRepo.save(tipo);
+		//tipo.addPedido(pedido);
+		//return tipoRepo.save(tipo);
 	}
 
+	@Transactional(readOnly=true)
 	public List<Pedido> getAllByState(String state) {
 		return pedidoDBRepository.findByState(state) ;
 	}
 
+	@Transactional
 	public void reservar(String id, UsuarioDTO usuarioDTO) throws IOException {
 		Pedido pedido = pedidoDBRepository.findById(id).get();
 		pedido.setState("reservado");

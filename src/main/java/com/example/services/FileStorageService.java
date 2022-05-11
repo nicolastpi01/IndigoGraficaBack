@@ -20,10 +20,14 @@ public class FileStorageService {
 	@Autowired
 	private FileDBRepository fileDBRepository;
 	
-	public FileDB store(MultipartFile file) throws IOException {
-	  String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-	  FileDB FileDB = new FileDB(fileName, file.getContentType(), file.getBytes());
-	  return fileDBRepository.save(FileDB);
+	public FileDB store(MultipartFile file) {
+		try {
+	    	String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+	        FileDB FileDB = new FileDB(fileName, file.getContentType(), file.getBytes());
+	    	return fileDBRepository.save(FileDB);
+	    } catch (Exception e) {
+	    	throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+	    }
 	}
 	
 	

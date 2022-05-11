@@ -29,11 +29,11 @@ public class FileDB {
 	private String type;
 	@Lob
 	private byte[] data;
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="pedido_id", nullable=false)
-    private Pedido pedido;
-	@OneToMany(mappedBy="file", cascade = CascadeType.ALL, orphanRemoval=true)
-	private Set<Requerimiento> requerimientos = new HashSet<>();
+	//@ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name="pedido_id", nullable=false)
+    //private Pedido pedido;
+	//@OneToMany(mappedBy="file", cascade = CascadeType.ALL, orphanRemoval=true)
+	//private Set<Requerimiento> requerimientos = new HashSet<>();
 	
 	public FileDB() {}
 	
@@ -42,7 +42,7 @@ public class FileDB {
 	  this.type = type;
 	  this.data = data;
 	}
-	
+	/*
 	public Set<Requerimiento> getRequerimientos() {
 		return this.requerimientos;
 	}
@@ -56,24 +56,27 @@ public class FileDB {
 		requerimiento.setFile(null);
 	}
 	
+	
 	 @Override
 	 public boolean equals(Object o) {
 		if(this == o) return true;
 		if(!(o instanceof FileDB)) return false;
 		return id != null && id.equals(((FileDB) o).getId());
 	 }
+	 */
 	 
 	 @Override
 	 public int hashCode() {
 		 return getClass().hashCode();
 	 }
-	
+	/*
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}
 	public Pedido getPedido() {
 		return this.pedido;
 	}
+	*/
 	
 	  public String getId() {
 	    return id;
@@ -100,9 +103,10 @@ public class FileDB {
 	  public void setData(byte[] data) {
 	    this.data = data;
 	  }
-
+	  /*
 	public void setRequerimientos(Set<Requerimiento> requerimientos) {
 		this.requerimientos = requerimientos;
 	}
+	*/
 
 }

@@ -19,9 +19,9 @@ public class Requerimiento {
 	private String id;
 	private String descripcion;
 	private Boolean chequeado;
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="file_id", nullable=false)
-	private FileDB file;
+	//@ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name="file_id", nullable=false)
+	//private FileDB file;
 	
 	public Requerimiento() {}
 	
@@ -68,7 +68,7 @@ public class Requerimiento {
 	public void setChequeado(Boolean check) {
 		this.chequeado = check;
 	}
-
+	/*
 	public FileDB getFile() {
 		return file;
 	}
@@ -76,6 +76,7 @@ public class Requerimiento {
 	public void setFile(FileDB file) {
 		this.file = file;
 	}
+	*/
 
 	
 	

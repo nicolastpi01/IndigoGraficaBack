@@ -21,7 +21,7 @@ public class FileDTO {
 		this.name = file.getName();
 		this.type = file.getType();
 		this.data = file.getData();
-		this.requerimientos = file.getRequerimientos().stream().map(requerimiento -> (new RequerimientoDTO(requerimiento))).collect(Collectors.toSet());
+		//this.requerimientos = file.getRequerimientos().stream().map(requerimiento -> (new RequerimientoDTO(requerimiento))).collect(Collectors.toSet());
 	}
 	
 	public FileDTO() {}
@@ -30,9 +30,9 @@ public class FileDTO {
 		FileDB file = new FileDB(this.name, this.type, this.data);
 		Set<Requerimiento> requerimientosResult = this.requerimientos.stream().map((reqDTO -> reqDTO.toRequerimiento())).collect(Collectors.toSet());
 		//file.setRequerimientos(requerimientosRet);
-		requerimientosResult.forEach(req -> {
-			file.addRequerimiento(req);
-		});
+		//requerimientosResult.forEach(req -> {
+		//	file.addRequerimiento(req);
+		//});
 		return file;
 	}
 	

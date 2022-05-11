@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.dto.PedidoDTO;
 import com.example.dto.UsuarioDTO;
 import com.example.message.ResponseMessage;
@@ -26,24 +29,24 @@ public class PedidoController {
 	private PedidoStorageService pedidoService;
 
 	@PostMapping("/pedidos")
-	public ResponseEntity<ResponseMessage> altaPedido(@RequestBody PedidoDTO pedidoDTO) {
+	public ResponseEntity<ResponseMessage> altaPedido(@RequestParam("files[]") MultipartFile[] files, @RequestPart("pedido") Pedido pedido) {
 		String message = "";
 	    try {
-	      pedidoService.storePedido(pedidoDTO);
-	      message = "Se Agrego el pedido: " + pedidoDTO.getNombre();
+	      pedidoService.store(files, pedido);
+	      message = "Se Agrego el pedido: " + pedido.getNombre();
 	      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
 	    } catch (Exception e) {
-	      message = "No se pudo agregar el pedido: " + pedidoDTO.getNombre() + "!";
+	      message = "No se pudo agregar el pedido: " + pedido.getNombre() + "!";
 	      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
 	    }
 	}
 	
 	  @GetMapping("/pedidos")
 	  @ResponseBody
-	  public ResponseEntity<List<PedidoDTO>> getPedidosByState(@RequestParam String state) {
+	  public ResponseEntity<List<Pedido>> getPedidosByState(@RequestParam String state) {
 	    List<Pedido> pedidos = pedidoService.getAllByState(state);
-	    List<PedidoDTO> pedidosDTO = pedidos.stream().map(pedido -> (new PedidoDTO(pedido))).collect(Collectors.toList());
-	    return ResponseEntity.ok().body(pedidosDTO);
+	    //List<PedidoDTO> pedidosDTO = pedidos.stream().map(pedido -> (new PedidoDTO(pedido))).collect(Collectors.toList());
+	    return ResponseEntity.ok().body(pedidos);
 	  }
 	  
 	  @PutMapping("/pedidos/{id}")
@@ -54,7 +57,8 @@ public class PedidoController {
 			pedidoService.reservar(id, usuarioDTO);
 			message = "Se reservo el pedido con id: " + id;
 		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-		} catch (Exception e) {
+		}
+		catch (Exception e) { // Revisar el try catch. Atomizar las excepciones.. Ver 3.3 en docu discord
 		    message = "No se pudo reservar el pedido con id: " + id + "!";
 		    return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
 		}

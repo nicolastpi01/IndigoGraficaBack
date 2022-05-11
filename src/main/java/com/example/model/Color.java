@@ -18,8 +18,8 @@ public class Color {
     private long id;
 	private String nombre;
 	private String hexCode;
-	@ManyToMany(mappedBy = "colores")
-	private Set<Pedido> pedidos = new HashSet<>();
+	//@ManyToMany(mappedBy = "colores") // no se necesita ver los pedidos desde los colores. Evitar relaciones bidireccionales al menos que se necesite si o si
+	//private Set<Pedido> pedidos = new HashSet<>();
 	
 	
 	public Color() {}
@@ -35,9 +35,9 @@ public class Color {
 		this.hexCode = hexCode;
 	}
 	
-	public Set<Pedido> getPedidos() {
-		return this.pedidos;
-	}
+	//public Set<Pedido> getPedidos() {
+	//	return this.pedidos;
+	//}
 	
 	public String getHexCode() {
 		return hexCode;
@@ -52,9 +52,9 @@ public class Color {
 		this.nombre = nombre;
 	}
 
-	public void addPedido(Pedido pedido) {
-		this.pedidos.add(pedido);
-	}
+	//public void addPedido(Pedido pedido) {
+	//	this.pedidos.add(pedido);
+	//}
 
 	public long getId() {
 		return this.id;

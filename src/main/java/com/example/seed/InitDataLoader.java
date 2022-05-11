@@ -24,7 +24,7 @@ public class InitDataLoader {
 	
 	@PostConstruct
 	public void loadSeed() {
-	 
+	 /*
 		Color Azul = new Color("Rojo", "#FF0000");
 		Color Rojo = new Color("Azul", "#0000FF");
 		
@@ -56,7 +56,7 @@ public class InitDataLoader {
 		
 		//pedidoRepo.save(pedido1);
 		tipoRepo.save(tipo);
-	
+	*/
 		 
 	}
 	
