@@ -64,6 +64,21 @@ public class PedidoController {
 		    return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
 		}
 	  }
+	  
+	  @PutMapping("/pedidos")
+	  @ResponseBody
+	  public ResponseEntity<ResponseMessage> update(@RequestBody Pedido pedido) {
+		String message = "";
+		try {
+			pedidoService.actualizar(pedido);
+			message = "Se actualizo el pedido con id: " + pedido.getId();
+		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+		}
+		catch (IllegalArgumentException e) { // Revisar el try catch. Atomizar las excepciones.. Ver 3.3 en docu discord
+		    message = "No se pudo actualizar el pedido con id: " + pedido.getId() + "!";
+		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+		}
+	  }
 
 	public boolean dummyMethod(){
 		return true;

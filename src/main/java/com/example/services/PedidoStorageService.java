@@ -95,4 +95,10 @@ public class PedidoStorageService {
 		pedidoDBRepository.save(pedido);
 	}
 
+	@Transactional
+	public void actualizar(Pedido pedido) throws IllegalArgumentException {
+		pedidoDBRepository.save(pedido);
+		
+	}
+
 }
