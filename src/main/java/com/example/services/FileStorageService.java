@@ -1,16 +1,10 @@
 package com.example.services;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.example.model.FileDB;
-import com.example.model.Pedido;
 import com.example.repository.FileDBRepository;
-import com.example.repository.PedidoDBRepository;
-
 import org.springframework.util.StringUtils;
 import java.util.stream.Stream;
 
