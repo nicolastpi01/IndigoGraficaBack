@@ -42,9 +42,10 @@ public class PedidoStorageService {
 	public Pedido store(MultipartFile[] files, Pedido pedido, List<List<Requerimiento>> requerimientos) {
 		
 		Set<FileDB> filesDB = new HashSet<>();
-		
+		//int index = 0;	
+		/*
     	Arrays.asList(files).stream().forEach((file) -> {
-    		int index = 0;
+    		int index = 0;	
     		try {
 				FileDB FileDB = new FileDB(StringUtils.cleanPath(file.getOriginalFilename()), file.getContentType(), file.getBytes());
 				if(!requerimientos.isEmpty()) {
@@ -60,6 +61,22 @@ public class PedidoStorageService {
 				throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
 			}
       });
+      */
+		for(int index = 0;index < files.length; index++) {
+			try {
+				MultipartFile file = Arrays.asList(files).get(index);
+				FileDB FileDB = new FileDB(StringUtils.cleanPath(file.getOriginalFilename()), file.getContentType(), file.getBytes());
+				if(!requerimientos.isEmpty()) {
+					if(requerimientos.get(index) != null) {
+						FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toSet()));
+						System.out.println("Index: " + index); 
+					}
+				}
+				filesDB.add(FileDB);
+			} catch (IOException e) {
+				throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+			}
+		}
     	
     	pedido.setFiles(filesDB);
     	return pedidoDBRepository.save(pedido);
