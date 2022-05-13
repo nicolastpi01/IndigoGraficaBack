@@ -7,4 +7,6 @@ import com.example.model.Color;
 @Repository
 public interface ColorDBRepository extends JpaRepository<Color, Long> {
 
+	
+
 }
