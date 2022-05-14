@@ -185,7 +185,7 @@ public class Pedido {
 	}
 
 	public void validar() throws PedidoIncorrectoException {
-		if(!(getAlto() > 0) || getAncho() > 0){
+		if(!(getAlto() > 0) || !(getAncho() > 0)){
 			throw new PedidoIncorrectoException(PedidoIncorrectoException.ALTO_O_ANCHO_INVALIDOS);
 		}
 	}

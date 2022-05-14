@@ -2,6 +2,7 @@ package com.example.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.model.FileDB;
 import com.example.repository.FileDBRepository;
@@ -14,6 +15,7 @@ public class FileStorageService {
 	@Autowired
 	private FileDBRepository fileDBRepository;
 	
+	@Transactional
 	public FileDB store(MultipartFile file) {
 		try {
 	    	String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -24,11 +26,12 @@ public class FileStorageService {
 	    }
 	}
 	
-	
+	@Transactional(readOnly=true)
 	public FileDB getFile(String id) {
 	  return fileDBRepository.findById(id).get();
 	}
-	  
+	
+	@Transactional(readOnly=true)
 	public Stream<FileDB> getAllFiles() {
 	  return fileDBRepository.findAll().stream();
 	}
