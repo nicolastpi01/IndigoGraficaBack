@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.example.exception.PedidoIncorrectoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +40,7 @@ public class PedidoStorageService {
 	private ColorDBRepository colorRepo;
 	
 	@Transactional
-	public Pedido store(MultipartFile[] files, Pedido pedido, List<List<Requerimiento>> requerimientos) {
+	public Pedido store(MultipartFile[] files, Pedido pedido, List<List<Requerimiento>> requerimientos) throws PedidoIncorrectoException {
 		
 		Set<FileDB> filesDB = new HashSet<>();
 		//int index = 0;	
@@ -62,6 +63,8 @@ public class PedidoStorageService {
 			}
       });
       */
+		//Validaciones!
+		pedido.validar();
 		for(int index = 0;index < files.length; index++) {
 			try {
 				MultipartFile file = Arrays.asList(files).get(index);

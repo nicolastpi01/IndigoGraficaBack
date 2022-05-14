@@ -2,6 +2,8 @@ package com.example;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.example.exception.PedidoIncorrectoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,9 @@ public class PedidoController {
 	      pedidoService.store(files, pedido, requerimientos);
 	      message = "Se Agrego el pedido: " + pedido.getNombre();
 	      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+		} catch (PedidoIncorrectoException e) {
+			message = e.getMessage() + ". Pedido: " + pedido.getNombre() + "!";
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
 	    } catch (Exception e) {
 	      message = "No se pudo agregar el pedido: " + pedido.getNombre() + "!";
 	      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));

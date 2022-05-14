@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.example.exception.PedidoIncorrectoException;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -180,6 +182,12 @@ public class Pedido {
 
 	public void setEncargado(String encargado) {
 		this.encargado = encargado;
+	}
+
+	public void validar() throws PedidoIncorrectoException {
+		if(!(getAlto() > 0) || getAncho() > 0){
+			throw new PedidoIncorrectoException(PedidoIncorrectoException.ALTO_O_ANCHO_INVALIDOS);
+		}
 	}
 	/*
 	public Tipo getTipo() {
