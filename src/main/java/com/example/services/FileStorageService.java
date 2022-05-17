@@ -18,7 +18,7 @@ public class FileStorageService {
 	@Transactional
 	public FileDB store(MultipartFile file) {
 		try {
-	    	String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+	    	String fileName = StringUtils.cleanPath(file.getOriginalFilename());	    
 	        FileDB FileDB = new FileDB(fileName, file.getContentType(), file.getBytes());
 	    	return fileDBRepository.save(FileDB);
 	    } catch (Exception e) {

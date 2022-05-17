@@ -47,6 +47,19 @@ public class PedidoController {
 	    }
 	}
 	
+	@PostMapping("/pedidos/create")
+	public ResponseEntity<Pedido> create(@RequestBody Pedido pedido) {
+		//String message = "";
+	    try {
+	      Pedido pedidoRet = pedidoService.create(pedido);
+	      //message = "Se Agrego el pedido: " + pedido.getNombre();
+	      return ResponseEntity.status(HttpStatus.OK).body(pedidoRet);
+		} catch (Exception e) {
+	      //message = "No se pudo agregar el pedido: " + pedido.getNombre() + "!";
+	      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pedido);
+	    }
+	}
+	
 	  @GetMapping("/pedidos")
 	  @ResponseBody
 	  public ResponseEntity<List<Pedido>> getPedidosByState(@RequestParam String state) {
@@ -70,19 +83,19 @@ public class PedidoController {
 		}
 	  }
 	  
-	  @PutMapping("/pedidos")
+	  @PutMapping("/pedidos/update")
 	  @ResponseBody
-	  public ResponseEntity<ResponseMessage> update(@RequestBody Pedido pedido) {
-		String message = "";
-		try {
-			pedidoService.actualizar(pedido);
-			message = "Se actualizo el pedido con id: " + pedido.getId();
-		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-		}
-		catch (IllegalArgumentException e) { // Revisar el try catch. Atomizar las excepciones.. Ver 3.3 en docu discord
-		    message = "No se pudo actualizar el pedido con id: " + pedido.getId() + "!";
-		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
-		}
+	  public ResponseEntity<Pedido> update(@RequestBody Pedido pedido) {
+		//String message = "";
+		//try {
+			Pedido pedidoActualizado = pedidoService.actualizar(pedido);
+			//message = "Se actualizo el pedido con id: " + pedido.getId();
+		    return ResponseEntity.status(HttpStatus.OK).body(pedidoActualizado);
+		//}
+		//catch (IllegalArgumentException e) { // Revisar el try catch. Atomizar las excepciones.. Ver 3.3 en docu discord
+		    //message = "No se pudo actualizar el pedido con id: " + pedido.getId() + "!";
+		    //return ResponseEntity.status(HttpStatus.BAD_REQUEST);
+		//}
 	  }
 
 	public boolean dummyMethod(){

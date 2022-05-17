@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.message.ResponseMessage;
+import com.example.model.FileDB;
 import com.example.services.FileStorageService;
 
 import java.util.ArrayList;
@@ -23,22 +24,22 @@ public class HelloController {
 	private FileStorageService storageService;
 	
 	@PostMapping("/upload")
-	public ResponseEntity<ResponseMessage> index(@RequestParam("files[]") MultipartFile[] files) {
-		String message = "";
+	public ResponseEntity<FileDB> index(@RequestParam("file") MultipartFile file) {
+		FileDB fileRet = null;
 	    try {
 	    	
 	    	List<String> fileNames = new ArrayList<>();
-	    	Arrays.asList(files).stream().forEach(file -> {
-	          storageService.store(file);
-	          fileNames.add(file.getOriginalFilename());
-	      });
+	    	//Arrays.asList(files).stream().forEach(file -> {
+	        fileRet = storageService.store(file);
+	        fileNames.add(file.getOriginalFilename());
+	      //});
 	      //storageService.store(file);
 
-	      message = "Uploaded the file successfully: " + files;
-	      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+	      //message = "Uploaded the files successfully: " + fileRet.getName();
+	      return ResponseEntity.status(HttpStatus.OK).body(fileRet);
 	    } catch (Exception e) {
-	    	message = "Fail to upload files!";
-		    return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+	    	//message = "Fail to upload files!";
+		    return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(fileRet);
 	    }
 	}
 	
