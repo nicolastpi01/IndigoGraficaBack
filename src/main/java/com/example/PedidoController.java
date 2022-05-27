@@ -101,6 +101,7 @@ public class PedidoController {
 		//}
 	  }
 	  
+	  
 	  @DeleteMapping("/pedidos/{id}")
 	  @ResponseBody
 	  public ResponseEntity<ResponseMessage> eliminar(@PathVariable String id) {
