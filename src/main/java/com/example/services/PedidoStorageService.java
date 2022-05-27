@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import com.example.exception.PedidoIncorrectoException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -71,6 +73,16 @@ public class PedidoStorageService {
 	@Transactional
 	public Pedido create(Pedido pedido)  throws IllegalArgumentException {
 		return pedidoDBRepository.save(pedido);
+	}
+
+	@Transactional
+	public void delete(String id) throws IOException {
+		pedidoDBRepository.deleteById(id);
+	}
+
+	@Transactional(readOnly=true)
+	public Optional<Pedido> findPedido(String id) {
+		return pedidoDBRepository.findById(id);
 	}
 
 }

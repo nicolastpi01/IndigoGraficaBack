@@ -1,6 +1,8 @@
 package com.example;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.example.exception.PedidoIncorrectoException;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -96,6 +99,28 @@ public class PedidoController {
 		    //message = "No se pudo actualizar el pedido con id: " + pedido.getId() + "!";
 		    //return ResponseEntity.status(HttpStatus.BAD_REQUEST);
 		//}
+	  }
+	  
+	  @DeleteMapping("/pedidos/{id}")
+	  @ResponseBody
+	  public ResponseEntity<ResponseMessage> eliminar(@PathVariable String id) {
+		  String message = "";
+			try {
+				pedidoService.delete(id);
+				message = "Se elimino el pedido con id: " + id;
+			    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+			}
+			catch (IOException e) { 
+			    message = "No se pudo eliminar el pedido con id: " + id + "!";
+			    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+			}
+	  }
+	  
+	  @GetMapping("/pedidos/{id}")
+	  @ResponseBody
+	  public ResponseEntity<Pedido> getPedido(@PathVariable String id) {
+		  Optional<Pedido> pedido = pedidoService.findPedido(id);
+		  return ResponseEntity.status(HttpStatus.OK).body(pedido.get());
 	  }
 
 	public boolean dummyMethod(){

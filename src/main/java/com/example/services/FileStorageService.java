@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.model.FileDB;
 import com.example.repository.FileDBRepository;
 import org.springframework.util.StringUtils;
+
+import java.io.IOException;
 import java.util.stream.Stream;
 
 @Service
@@ -31,9 +33,19 @@ public class FileStorageService {
 	  return fileDBRepository.findById(id).get();
 	}
 	
+	@Transactional
+	public FileDB update(FileDB file) {
+	  return fileDBRepository.save(file);
+	}
+	
 	@Transactional(readOnly=true)
 	public Stream<FileDB> getAllFiles() {
 	  return fileDBRepository.findAll().stream();
+	}
+
+	@Transactional
+	public void delete(String id) throws IOException {
+		fileDBRepository.deleteById(id);
 	}
 
 }
