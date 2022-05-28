@@ -2,13 +2,11 @@ package com.example.seed;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+
+import com.example.model.*;
+import com.example.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.example.model.Color;
-import com.example.model.FileDB;
-import com.example.model.Pedido;
-import com.example.model.Requerimiento;
-import com.example.model.Tipo;
 import com.example.repository.ColorDBRepository;
 import com.example.repository.PedidoDBRepository;
 import com.example.repository.TipoDBRepository;
@@ -21,6 +19,9 @@ public class InitDataLoader {
 	private TipoDBRepository tipoRepo;
 	@Autowired
 	private ColorDBRepository colorRepo;
+
+	@Autowired
+	private RoleRepository roleRepository;
 	
 	@PostConstruct
 	public void loadSeed() {
@@ -56,7 +57,13 @@ public class InitDataLoader {
 		colorRepo.save(color8);
 		colorRepo.save(color9);
 		colorRepo.save(color10);
-		 
+
+		Role cliente = new Role(ERole.ROLE_USER);
+		Role encargado = new Role(ERole.ROLE_ENCARGADO);
+
+		roleRepository.save(cliente);
+		roleRepository.save(encargado);
+
 	}
 	
 	@PreDestroy
