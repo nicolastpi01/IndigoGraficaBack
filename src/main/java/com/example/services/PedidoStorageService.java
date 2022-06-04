@@ -19,12 +19,15 @@ import com.example.model.FileDB;
 import com.example.model.Pedido;
 import com.example.model.Requerimiento;
 import com.example.repository.PedidoDBRepository;
+import com.example.repository.PosicionDBRepository;
 
 @Service
 public class PedidoStorageService {
 	
 	@Autowired
 	private PedidoDBRepository pedidoDBRepository;
+	@Autowired
+	private PosicionDBRepository posDBRepository;
 	
 	@Transactional
 	public Pedido store(MultipartFile[] files, Pedido pedido, List<List<Requerimiento>> requerimientos) throws PedidoIncorrectoException {
@@ -67,7 +70,6 @@ public class PedidoStorageService {
 	@Transactional
 	public Pedido actualizar(Pedido pedido) throws IllegalArgumentException {
 		return pedidoDBRepository.save(pedido);
-		
 	}
 
 	@Transactional

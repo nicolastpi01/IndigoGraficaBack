@@ -1,6 +1,8 @@
 package com.example.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -35,6 +37,9 @@ public class FileDB {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) //(mappedBy="file",
 	private Set<Requerimiento> requerimientos = new HashSet<>();
 	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
+	private List<Comentario> comentarios = new ArrayList<>();
+	
 	public FileDB() {}
 	
 	public FileDB(String name, String type, byte[] data) {
@@ -45,6 +50,10 @@ public class FileDB {
 	
 	public Set<Requerimiento> getRequerimientos() {
 		return this.requerimientos;
+	}
+	
+	public List<Comentario> getComentarios() {
+		return this.comentarios;
 	}
 	/*
 	public void addRequerimiento(Requerimiento requerimiento) {
