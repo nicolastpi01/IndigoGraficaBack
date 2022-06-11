@@ -13,7 +13,15 @@ public class SignupRequest {
     @Size(max = 50)
     @Email
     private String email;
-
+    
+    private String nombre;
+    
+    private String apellido;
+    
+    private String ubicacion;
+    
+    private String contacto;
+    
     private Set<String> role;
 
     @NotBlank
@@ -51,4 +59,37 @@ public class SignupRequest {
     public void setRole(Set<String> role) {
         this.role = role;
     }
+
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public String getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
+	}
+
+	public String getUbicacion() {
+		return ubicacion;
+	}
+
+	public void setUbicacion(String ubicacion) {
+		this.ubicacion = ubicacion;
+	}
 }

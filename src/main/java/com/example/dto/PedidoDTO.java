@@ -36,7 +36,7 @@ public class PedidoDTO {
 		this.ancho = pedido.getAncho();
 		this.descripcion = pedido.getDescripcion();
 		this.state = pedido.getState();
-		this.propietario = pedido.getPropietario();
+		//this.propietario = pedido.getPropietario();
 		this.encargado = pedido.getEncargado();
 		this.cantidad = pedido.getCantidad();
 		this.files = pedido.getFiles().stream().map(file -> (new FileDTO(file))).collect(Collectors.toSet());

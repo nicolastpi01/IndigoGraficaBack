@@ -27,6 +27,14 @@ public class User {
     @Size(max = 50)
     @Email
     private String email;
+    
+    private String ubicacion;
+    
+    private String apellido;
+    
+    private String nombre;
+    
+    private String contacto;
 
     @NotBlank
     @Size(max = 120)
@@ -41,9 +49,13 @@ public class User {
     public User() {
     }
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String nombre, String apellido, String ubicacion, String contacto, String password) {
         this.username = username;
         this.email = email;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.ubicacion = ubicacion;
+        this.contacto = contacto;
         this.password = password;
     }
 
@@ -86,4 +98,36 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+	public String getUbicacion() {
+		return ubicacion;
+	}
+
+	public void setUbicacion(String ubicacion) {
+		this.ubicacion = ubicacion;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
+	}
 }

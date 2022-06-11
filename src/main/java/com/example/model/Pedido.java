@@ -1,5 +1,6 @@
 package com.example.model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -32,8 +33,11 @@ public class Pedido {
 	private Integer alto;
 	private Integer ancho;
 	private String descripcion;
+	private Date fechaEntrega;
 	private String state; // Por ahora el estado es un string
-	private String propietario; // El propietario que pidio el encargo del pedido 
+	@ManyToOne 
+	@JoinColumn(name="user_id", nullable=false)
+	private User propietario; // El propietario que pidio el encargo del pedido 
 	private String encargado; // El editor encargado de resolver el pedido
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
 	private Set<FileDB> files = new HashSet<>();
@@ -168,11 +172,11 @@ public class Pedido {
 	}
 	
 	
-	public String getPropietario() {
+	public User getPropietario() {
 		return this.propietario;
 	}
 
-	public void setPropietario(String propietario) {
+	public void setPropietario(User propietario) {
 		this.propietario = propietario;
 	}
 
@@ -198,6 +202,14 @@ public class Pedido {
 		this.tipo = tipo;
 	}
 	*/
+
+	public Date getFechaEntrega() {
+		return fechaEntrega;
+	}
+
+	public void setFechaEntrega(Date fechaEntrega) {
+		this.fechaEntrega = fechaEntrega;
+	}
 
 
 }

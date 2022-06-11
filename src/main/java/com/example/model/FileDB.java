@@ -31,6 +31,11 @@ public class FileDB {
 	private String type;
 	@Lob
 	private byte[] data;
+	
+	
+	//@Lob
+	// Persisto la url por comodidad
+	//private byte[] url;
 	//@ManyToOne(fetch = FetchType.LAZY)
     //@JoinColumn(name="pedido_id", nullable=false)
     //private Pedido pedido;
@@ -111,6 +116,14 @@ public class FileDB {
 	  public void setData(byte[] data) {
 	    this.data = data;
 	  }
+	  /*
+	  public byte[] getUrl() {
+		  return url;
+	  }
+	  public void setUrl(byte[] url) {
+		  this.url = url;
+	  }
+	  */
 	
 	  public void setRequerimientos(Set<Requerimiento> requerimientos) {
 		this.requerimientos = requerimientos;

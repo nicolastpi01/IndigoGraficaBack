@@ -4,14 +4,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import com.example.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Objects;
 
 public class UserDetailsImpl implements UserDetails{
     private static final long serialVersionUID = 1L;
@@ -21,19 +19,31 @@ public class UserDetailsImpl implements UserDetails{
     private String username;
 
     private String email;
+    
+    private String contacto;
+    
+    private String nombre;
+    
+    private String apellido;
+    
+    private String ubicacion;
 
     @JsonIgnore
     private String password;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username, String email, String password,
+    public UserDetailsImpl(Long id, String username, String email, String password, String contacto, String nombre, String apellido, String ubicacion,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
+        this.setContacto(contacto);
+        this.setNombre(nombre);
+        this.setApellido(apellido);
+        this.setUbicacion(ubicacion);
     }
 
     public static UserDetailsImpl build(User user) {
@@ -46,6 +56,10 @@ public class UserDetailsImpl implements UserDetails{
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
+                user.getContacto(),
+                user.getNombre(),
+                user.getApellido(),
+                user.getUbicacion(),
                 authorities);
     }
 
@@ -101,4 +115,36 @@ public class UserDetailsImpl implements UserDetails{
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
     }
+
+	public String getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public String getUbicacion() {
+		return ubicacion;
+	}
+
+	public void setUbicacion(String ubicacion) {
+		this.ubicacion = ubicacion;
+	}
 }

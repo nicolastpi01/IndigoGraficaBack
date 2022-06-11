@@ -68,6 +68,10 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
+                loginRequest.getNombre(), 
+                loginRequest.getApellido(),
+                loginRequest.getUbicacion(),
+                loginRequest.getContacto(),
                 roles));
     }
 
@@ -88,6 +92,10 @@ public class AuthController {
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
+                signUpRequest.getNombre(),
+                signUpRequest.getApellido(),
+                signUpRequest.getUbicacion(),
+                signUpRequest.getContacto(),
                 encoder.encode(signUpRequest.getPassword()));
 
         Set<String> strRoles = signUpRequest.getRole();
