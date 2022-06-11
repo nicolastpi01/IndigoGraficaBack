@@ -11,6 +11,7 @@ import com.example.model.Pedido;
 public interface PedidoDBRepository extends JpaRepository<Pedido, String> {
 	
 	List<Pedido> findByState(String state);
+	List<Pedido> findByPropietario(String userName);
 }
 
 

@@ -59,6 +59,11 @@ public class PedidoStorageService {
 		return pedidoDBRepository.findByState(state) ;
 	}
 
+	@Transactional(readOnly=true)
+	public List<Pedido> getAllByPropietario(String userName) {
+		return pedidoDBRepository.findByPropietario(userName);
+	}
+
 	@Transactional
 	public void reservar(String id, UsuarioDTO usuarioDTO) throws IOException {
 		Pedido pedido = pedidoDBRepository.findById(id).get();
