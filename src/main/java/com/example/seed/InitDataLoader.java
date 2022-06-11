@@ -60,7 +60,10 @@ public class InitDataLoader {
 
 		Role cliente = new Role(ERole.ROLE_USER);
 		Role encargado = new Role(ERole.ROLE_ENCARGADO);
+		cliente.setId(1);
+		encargado.setId(2);
 
+		//
 		roleRepository.save(cliente);
 		roleRepository.save(encargado);
 
@@ -68,8 +71,6 @@ public class InitDataLoader {
 	
 	@PreDestroy
 	public void removeData() {
-		System.out.print("Me ejecute");
-		pedidoRepo.deleteAll();
 		//usuarioRepo.deleteAll();
 	}
 	
