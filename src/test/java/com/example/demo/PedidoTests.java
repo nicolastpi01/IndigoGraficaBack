@@ -46,11 +46,13 @@ class PedidoTests {
 
 	private Tipo tipo = new Tipo(1, "Fotografia", 30, 30, "Arial");;
 	private Pedido pedido = new Pedido("Pedido test", "Pedido sub", "Arial", 30, 30, "Desc", 1, "Solicitado", tipo);
+	private String accessToken;
 
 	@Transactional
 	@Test
 	void nuevoPedido() throws Exception{
 
+		// Reemplazarlo por un save directo al repository y hacerlo en un @BeforeAll / @BeforeEach
 		SignupRequest signupRequest = new SignupRequest();
 		signupRequest.setEmail("a@a");
 		signupRequest.setUsername("user");
@@ -64,7 +66,10 @@ class PedidoTests {
 		LoginRequest loginRequest = new LoginRequest();
 		loginRequest.setUsername("user");
 		loginRequest.setPassword("password");
+		//
 
+		// Esto debería ir en un @beforeAll / @beforeEach
+		// y guardar el token en la variable de instancia del test
 		MockHttpServletResponse login = mockMvc.perform(MockMvcRequestBuilders.post("/noRequireAuth/signin")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(JsonUtil.toJson(loginRequest)))
@@ -75,6 +80,7 @@ class PedidoTests {
 
 		String token = map.get("accessToken");
 		String userName = jwtUtils.getUserNameFromJwtToken(token);
+		//
 
 		MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/pedidos/create")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -82,6 +88,7 @@ class PedidoTests {
 				.content(JsonUtil.toJson(pedido)))
 				.andReturn().getResponse();
 		assertEquals(200, response.getStatus());
+		// Hacer búsqueda por alguno de los datos ingresados en el pedido que se generó
 		Pedido pedido = pedidoDBRepository.findAll().get(0);
 		Assertions.assertTrue(response.getContentAsString().contains(pedido.getId()));
 	}
