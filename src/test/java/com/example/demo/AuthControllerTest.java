@@ -22,8 +22,8 @@ public class AuthControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    private User user1 = new User("diego", "a@a", "password1");
-    private User user2 = new User("diego", "a@a ", "password2");
+    private User user1 = new User("diego", "a@a","Diego", "Apellido", "Ubicacion", "Contacto", "password1");
+    private User user2 = new User("diego", "a@a ","Diego", "Apellido", "Ubicacion", "Contacto", "password2");
 
     @Transactional
     @Test

@@ -56,7 +56,8 @@ public class PedidoController {
 			//busco al usuario de este token
 			String token = authorization.split(" ")[1];
 			String userName = jwtUtils.getUserNameFromJwtToken(token);
-			pedido.setPropietario(userName);
+			
+			//pedido.setPropietario(userName);
 	      Pedido pedidoRet = pedidoService.create(pedido);
 	      //message = "Se Agrego el pedido: " + pedido.getNombre();
 	      return ResponseEntity.status(HttpStatus.OK).body(pedidoRet);
