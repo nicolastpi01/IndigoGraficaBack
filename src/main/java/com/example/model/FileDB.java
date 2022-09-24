@@ -40,7 +40,7 @@ public class FileDB {
     //@JoinColumn(name="pedido_id", nullable=false)
     //private Pedido pedido;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) //(mappedBy="file",
-	private Set<Requerimiento> requerimientos = new HashSet<>();
+	private List<Requerimiento> requerimientos = new ArrayList<>();
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
 	private List<Comentario> comentarios = new ArrayList<>();
@@ -53,7 +53,7 @@ public class FileDB {
 	  this.data = data;
 	}
 	
-	public Set<Requerimiento> getRequerimientos() {
+	public List<Requerimiento> getRequerimientos() {
 		return this.requerimientos;
 	}
 	
@@ -125,7 +125,7 @@ public class FileDB {
 	  }
 	  */
 	
-	  public void setRequerimientos(Set<Requerimiento> requerimientos) {
+	  public void setRequerimientos(List<Requerimiento> requerimientos) {
 		this.requerimientos = requerimientos;
 	  }
 

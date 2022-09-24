@@ -1,7 +1,9 @@
 package com.example.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -40,7 +42,11 @@ public class Pedido {
 	private User propietario; // El propietario que pidio el encargo del pedido 
 	private String encargado; // El editor encargado de resolver el pedido
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
-	private Set<FileDB> files = new HashSet<>();
+	private List<FileDB> files = new ArrayList<>();
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
+	private List<Solucion> solutions = new ArrayList<>();
+	
 	@ManyToOne //(fetch = FetchType.LAZY) //(fetch = FetchType.LAZY) // sacar Lazy
 	@JoinColumn(name="tipo_id", nullable=false)
 	private Tipo tipo;
@@ -66,12 +72,20 @@ public class Pedido {
 	}
 	
 	
-	public Set<FileDB> getFiles() {
+	public List<FileDB> getFiles() {
 		return this.files;
 	}
 	
-	public void setFiles(Set<FileDB> files) {
+	public void setFiles(List<FileDB> files) {
 		this.files = files;
+	}
+	
+	public List<Solucion> getSolutions() {
+		return this.solutions;
+	}
+	
+	public void setSolutions(List<Solucion> soluciones) {
+		this.solutions = soluciones;
 	}
 	
 	/*
