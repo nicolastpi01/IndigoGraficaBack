@@ -31,6 +31,7 @@ public class Comentario {
 	private Integer numero;
 	private Boolean terminado;
 	private Boolean isVisible;
+	private Boolean respondido;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
 	private List<Interaccion> interacciones = new ArrayList<>();
 	
@@ -87,6 +88,16 @@ public class Comentario {
 
 	public void setY(Integer y) {
 		this.y = y;
+	}
+
+
+	public Boolean getRespondido() {
+		return respondido;
+	}
+
+
+	public void setRespondido(Boolean respondido) {
+		this.respondido = respondido;
 	}
 	
 
