@@ -1,6 +1,7 @@
 package com.example.services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -32,7 +33,7 @@ public class PedidoStorageService {
 	@Transactional
 	public Pedido store(MultipartFile[] files, Pedido pedido, List<List<Requerimiento>> requerimientos) throws PedidoIncorrectoException {
 		
-		Set<FileDB> filesDB = new HashSet<>();
+		List<FileDB> filesDB = new ArrayList<>();
 		pedido.validar();
 		for(int index = 0;index < files.length; index++) {
 			try {
@@ -40,7 +41,8 @@ public class PedidoStorageService {
 				FileDB FileDB = new FileDB(StringUtils.cleanPath(file.getOriginalFilename()), file.getContentType(), file.getBytes());
 				if(!requerimientos.isEmpty()) {
 					if(requerimientos.get(index) != null) {
-						FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toSet()));
+						//FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toSet()));
+						FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toList()));
 						System.out.println("Index: " + index); 
 					}
 				}
