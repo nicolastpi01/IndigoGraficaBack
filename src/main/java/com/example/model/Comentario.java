@@ -1,12 +1,14 @@
 package com.example.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,26 +22,27 @@ import org.hibernate.annotations.GenericGenerator;
 public class Comentario {
 	
 	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	private String id;
-	//@OneToOne 
-	//@JoinColumn(name="posicion_id", nullable=false)
-	//private Posicion pos;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	private Integer x;
 	private Integer y;
 	private Integer numero;
 	private Boolean terminado;
 	private Boolean isVisible;
 	private Boolean respondido;
+	private Date creationDate;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
 	private List<Interaccion> interacciones = new ArrayList<>();
 	
 	public Comentario() {}
 	
 	
-	public String getId() {
+	public Long getId() {
 		return this.id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	public List<Interaccion> getInteracciones() {
@@ -99,8 +102,17 @@ public class Comentario {
 	public void setRespondido(Boolean respondido) {
 		this.respondido = respondido;
 	}
-	
 
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+	
 }
 
 

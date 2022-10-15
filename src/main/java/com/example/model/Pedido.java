@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -16,7 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import com.example.exception.PedidoIncorrectoException;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -25,9 +25,8 @@ import org.hibernate.annotations.GenericGenerator;
 public class Pedido {
 	
 	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	private Integer cantidad;
 	private String nombre;
 	private String nombreExtendido;
@@ -42,11 +41,11 @@ public class Pedido {
 	private User propietario; // El propietario que pidio el encargo del pedido 
 	private String encargado; // El editor encargado de resolver el pedido
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
-	private List<FileDB> files = new ArrayList<>();
-	
+	private List<FileDB> files = new ArrayList<>();	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
 	private List<Solucion> solutions = new ArrayList<>();
-	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
+	private List<Interaccion> interacciones = new ArrayList<>();
 	@ManyToOne //(fetch = FetchType.LAZY) //(fetch = FetchType.LAZY) // sacar Lazy
 	@JoinColumn(name="tipo_id", nullable=false)
 	private Tipo tipo;
@@ -69,6 +68,7 @@ public class Pedido {
 		  this.setCantidad(cantidad);
 		  this.setState(state);
 		  this.setTipo(tipo);
+		  //this.setNumero(numero);
 	}
 	
 	
@@ -86,6 +86,14 @@ public class Pedido {
 	
 	public void setSolutions(List<Solucion> soluciones) {
 		this.solutions = soluciones;
+	}
+	
+	public List<Interaccion> getInteracciones() {
+		return this.interacciones;
+	}
+	
+	public void setInteracciones(List<Interaccion> interacciones) {
+		this.interacciones = interacciones;
 	}
 	
 	/*
@@ -113,12 +121,21 @@ public class Pedido {
 		return this.colores;
 	}
 	
-	public String getId() {
+	public Long getId() {
 	    return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 	    this.id = id;
 	}
+	
+	/*
+	public Long getNumero() {
+	    return this.numero;
+	}
+	public void setNumero(Long numero) {
+	    this.numero = numero;
+	}
+	*/
 	
 	public String getNombre() {
 		return nombre;

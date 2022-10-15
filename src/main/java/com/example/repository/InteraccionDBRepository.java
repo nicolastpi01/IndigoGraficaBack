@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import com.example.model.Interaccion;
 
 @Repository
-public interface InteraccionDBRepository extends JpaRepository<Interaccion, String> {
+public interface InteraccionDBRepository extends JpaRepository<Interaccion, Long> {
 
 }

@@ -1,6 +1,7 @@
 package com.example;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,8 +17,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.example.dto.PedidoDTO;
 import com.example.dto.UsuarioDTO;
 import com.example.message.ResponseMessage;
 import com.example.model.Pedido;
@@ -33,6 +32,7 @@ public class PedidoController {
 	@Autowired
 	JwtUtils jwtUtils;
 
+	/*
 	@PostMapping("/pedidos")
 	public ResponseEntity<ResponseMessage> altaPedido(@RequestParam("files[]") MultipartFile[] files, @RequestPart("pedido") Pedido pedido, @RequestPart("requerimientos") List<List<Requerimiento>> requerimientos) {
 		String message = "";
@@ -48,6 +48,7 @@ public class PedidoController {
 	      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
 	    }
 	}
+	*/
 	
 	@PostMapping("/pedidos/create")
 	public ResponseEntity<Pedido> create(@RequestBody Pedido pedido, @RequestHeader("authorization") String authorization) {
@@ -69,8 +70,8 @@ public class PedidoController {
 	
 	  @GetMapping("/pedidos")
 	  @ResponseBody
-	  public ResponseEntity<List<Pedido>> getPedidosByState(@RequestParam String state) {
-	    List<Pedido> pedidos = pedidoService.getAllByState(state);
+	  public ResponseEntity<ArrayList<Pedido>> getPedidosByState(@RequestParam String state) {
+	    ArrayList<Pedido> pedidos = pedidoService.getAllByState(state);
 	    //List<PedidoDTO> pedidosDTO = pedidos.stream().map(pedido -> (new PedidoDTO(pedido))).collect(Collectors.toList());
 	    return ResponseEntity.ok().body(pedidos);
 	  }
@@ -83,10 +84,19 @@ public class PedidoController {
 		List<Pedido> pedidos = pedidoService.getAllByPropietario(userName);
 		return ResponseEntity.ok().body(pedidos);
 	}
+	
+	@GetMapping("/pedidos/resumen")
+	@ResponseBody
+	public ResponseEntity<Map<String, Integer>> getResumen(@RequestHeader("authorization") String authorization) {
+		String token = authorization.split(" ")[1];
+		String userName = jwtUtils.getUserNameFromJwtToken(token);
+		Map<String, Integer> pedidos = pedidoService.getResumeByOwner(userName);
+		return ResponseEntity.ok().body(pedidos);
+	}
 	  
 	  @PutMapping("/pedidos/{id}")
 	  @ResponseBody
-	  public ResponseEntity<ResponseMessage> reservar(@PathVariable String id, @RequestBody UsuarioDTO usuarioDTO) {
+	  public ResponseEntity<ResponseMessage> reservar(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
 		String message = "";
 		try {
 			pedidoService.reservar(id, usuarioDTO);
@@ -117,7 +127,7 @@ public class PedidoController {
 	  
 	  @DeleteMapping("/pedidos/{id}")
 	  @ResponseBody
-	  public ResponseEntity<ResponseMessage> eliminar(@PathVariable String id) {
+	  public ResponseEntity<ResponseMessage> eliminar(@PathVariable Long id) {
 		  String message = "";
 			try {
 				pedidoService.delete(id);
@@ -132,7 +142,7 @@ public class PedidoController {
 	  
 	  @GetMapping("/pedidos/{id}")
 	  @ResponseBody
-	  public ResponseEntity<Pedido> getPedido(@PathVariable String id) {
+	  public ResponseEntity<Pedido> getPedido(@PathVariable Long id) {
 		  Optional<Pedido> pedido = pedidoService.findPedido(id);
 		  return ResponseEntity.status(HttpStatus.OK).body(pedido.get());
 	  }

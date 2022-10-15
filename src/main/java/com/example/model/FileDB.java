@@ -2,6 +2,7 @@ package com.example.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -24,24 +26,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class FileDB {
 	
 	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	private String name;
 	private String type;
 	@Lob
 	private byte[] data;
-	
-	
-	//@Lob
-	// Persisto la url por comodidad
-	//private byte[] url;
-	//@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name="pedido_id", nullable=false)
-    //private Pedido pedido;
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) //(mappedBy="file",
-	private List<Requerimiento> requerimientos = new ArrayList<>();
-	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
 	private List<Comentario> comentarios = new ArrayList<>();
 	
@@ -53,23 +43,10 @@ public class FileDB {
 	  this.data = data;
 	}
 	
-	public List<Requerimiento> getRequerimientos() {
-		return this.requerimientos;
-	}
 	
 	public List<Comentario> getComentarios() {
 		return this.comentarios;
 	}
-	/*
-	public void addRequerimiento(Requerimiento requerimiento) {
-		requerimientos.add(requerimiento);
-		requerimiento.setFile(this);	
-	}
-	public void removeRequerimiento(Requerimiento requerimiento) {
-		this.requerimientos.remove(requerimiento);
-		requerimiento.setFile(null);
-	}
-	
 	
 	 @Override
 	 public boolean equals(Object o) {
@@ -82,20 +59,12 @@ public class FileDB {
 	 public int hashCode() {
 		 return getClass().hashCode();
 	 }
-	/*
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
-	public Pedido getPedido() {
-		return this.pedido;
-	}
-	*/
 	
-	  public String getId() {
+	  public Long getId() {
 	    return id;
 	  }
 	  
-	  public void setId(String id) {
+	  public void setId(Long id) {
 		this.id = id;    
 	  }
 	  public String getName() {
@@ -124,9 +93,5 @@ public class FileDB {
 		  this.url = url;
 	  }
 	  */
-	
-	  public void setRequerimientos(List<Requerimiento> requerimientos) {
-		this.requerimientos = requerimientos;
-	  }
 
 }
