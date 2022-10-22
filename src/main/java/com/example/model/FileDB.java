@@ -34,6 +34,8 @@ public class FileDB {
 	private byte[] data;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
 	private List<Comentario> comentarios = new ArrayList<>();
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
+	private List<Interaccion> interacciones = new ArrayList<>();
 	
 	public FileDB() {}
 	
@@ -84,6 +86,14 @@ public class FileDB {
 	  }
 	  public void setData(byte[] data) {
 	    this.data = data;
+	  }
+	  
+	  public List<Interaccion> getInteracciones() {
+		return this.interacciones;
+	  }
+		
+	  public void setInteracciones(List<Interaccion> interacciones) {
+		this.interacciones = interacciones;
 	  }
 	  /*
 	  public byte[] getUrl() {
