@@ -23,6 +23,8 @@ import com.example.dto.UsuarioDTO;
 import com.example.model.FileDB;
 import com.example.model.Pedido;
 import com.example.model.Requerimiento;
+import com.example.model.Estado.Estado;
+import com.example.model.Estado.Reservado;
 import com.example.repository.PedidoDBRepository;
 import com.example.repository.PosicionDBRepository;
 
@@ -61,8 +63,8 @@ public class PedidoStorageService {
 	}
 
 	@Transactional(readOnly=true)
-	public ArrayList<Pedido> getAllByState(String state) {
-		return pedidoDBRepository.findByState(state) ;
+	public ArrayList<Pedido> getAllByState(String value) {
+		return pedidoDBRepository.findByStateValue(value) ;
 	}
 
 	@Transactional(readOnly=true)
@@ -73,7 +75,8 @@ public class PedidoStorageService {
 	@Transactional
 	public void reservar(Long id, UsuarioDTO usuarioDTO) throws IOException {
 		Pedido pedido = pedidoDBRepository.findById(id).get();
-		pedido.setState("reservado");
+		Estado reservado = new Reservado();
+		pedido.setState(reservado);
 		pedido.setEncargado(usuarioDTO.getNombre());
 		pedidoDBRepository.save(pedido);
 	}
@@ -104,8 +107,8 @@ public class PedidoStorageService {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("reservado", 0);
 		map.put("Pendiente atencion", 0);
-		map.put("reservado", pedidoDBRepository.countByPropietarioUsernameAndState(username, "reservado"));
-		map.put("Pendiente atencion", pedidoDBRepository.countByPropietarioUsernameAndState(username, "Pendiente atencion"));
+		map.put("reservado", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "reservado"));
+		map.put("Pendiente atencion", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "pendAtencion"));
 		return map;
 	}
 

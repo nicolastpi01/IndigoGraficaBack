@@ -4,10 +4,12 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import com.example.model.*;
+import com.example.model.Estado.Estado;
 import com.example.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.example.repository.ColorDBRepository;
+import com.example.repository.EstadoDBRepository;
 import com.example.repository.PedidoDBRepository;
 import com.example.repository.TipoDBRepository;
 
@@ -23,6 +25,9 @@ public class InitDataLoader {
 	@Autowired
 	private RoleRepository roleRepository;
 	
+	@Autowired
+	private EstadoDBRepository estadoRepository;
+	
 	@PostConstruct
 	public void loadSeed() {
 		Tipo tipo1 = new Tipo(1,"Logo", 60, 60, "sans serif");
@@ -35,6 +40,9 @@ public class InitDataLoader {
 		tipoRepo.save(tipo3);
 		tipoRepo.save(tipo4);
 		
+		Estado estado1 = new Estado(1, "pendAtencion", "Pendiente de atención", "#2db7f5");
+		Estado estado2 = new Estado(2, "reservado", "Reservado", "#87d068");
+		
 		Color color1 = new Color(10, "Rojo", "#FF0000");
 		Color color2 = new Color(9, "Azul", "#0000FF");
 		Color color3 = new Color(8, "Amarillo", "#FFFF00");
@@ -45,6 +53,9 @@ public class InitDataLoader {
 		Color color8 = new Color(3, "Naranja", "#FF8000");
 		Color color9 = new Color(2, "Violeta", "#EE82EE");
 		Color color10 = new Color(1, "Rosa", "#FFB6C1");
+		
+		estadoRepository.save(estado1);
+		estadoRepository.save(estado2);
 		
 		
 		colorRepo.save(color1);

@@ -21,6 +21,9 @@ import com.example.dto.UsuarioDTO;
 import com.example.message.ResponseMessage;
 import com.example.model.Pedido;
 import com.example.model.Requerimiento;
+import com.example.model.Estado.Estado;
+import com.example.model.Estado.PendienteAtencion;
+import com.example.services.EstadoService;
 import com.example.services.PedidoStorageService;
 
 @Controller
@@ -28,6 +31,8 @@ public class PedidoController {
 	
 	@Autowired
 	private PedidoStorageService pedidoService;
+	@Autowired
+	private EstadoService estadoService;
 
 	@Autowired
 	JwtUtils jwtUtils;
@@ -57,8 +62,9 @@ public class PedidoController {
 			//busco al usuario de este token
 			String token = authorization.split(" ")[1];
 			String userName = jwtUtils.getUserNameFromJwtToken(token);
-			
-			//pedido.setPropietario(userName);
+			Estado pendAtencion = new PendienteAtencion(); // Agrego el Estado, en este caso PendAtención
+			estadoService.save(pendAtencion);
+			pedido.setState(pendAtencion);
 	      Pedido pedidoRet = pedidoService.create(pedido);
 	      //message = "Se Agrego el pedido: " + pedido.getNombre();
 	      return ResponseEntity.status(HttpStatus.OK).body(pedidoRet);
