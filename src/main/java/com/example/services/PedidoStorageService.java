@@ -104,8 +104,10 @@ public class PedidoStorageService {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("reservado", 0);
 		map.put("Pendiente atencion", 0);
+		map.put("propios", 0);
 		map.put("reservado", pedidoDBRepository.countByEncargadoAndState(username, "reservado"));
 		map.put("Pendiente atencion", pedidoDBRepository.countByState("Pendiente atencion"));
+		map.put("propios", pedidoDBRepository.countByPropietarioUsername(username));
 		return map;
 	}
 
