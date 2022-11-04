@@ -29,7 +29,7 @@ public class FileStorageService {
 	}
 	
 	@Transactional(readOnly=true)
-	public FileDB getFile(String id) {
+	public FileDB getFile(Long id) {
 	  return fileDBRepository.findById(id).get();
 	}
 	
@@ -44,7 +44,7 @@ public class FileStorageService {
 	}
 
 	@Transactional
-	public void delete(String id) throws IOException {
+	public void delete(Long id) throws IOException {
 		fileDBRepository.deleteById(id);
 	}
 

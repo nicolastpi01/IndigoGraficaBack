@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import com.example.model.Comentario;
 
 @Repository
-public interface ComentarioDBRepository extends JpaRepository<Comentario, String> {
+public interface ComentarioDBRepository extends JpaRepository<Comentario, Long> {
 
 }

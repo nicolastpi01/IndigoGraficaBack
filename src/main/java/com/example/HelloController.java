@@ -57,7 +57,7 @@ public class HelloController {
 	
 	@DeleteMapping("/files/{id}")
 	  @ResponseBody
-	  public ResponseEntity<ResponseMessage> eliminar(@PathVariable String id) {
+	  public ResponseEntity<ResponseMessage> eliminar(@PathVariable Long id) {
 		  String message = "";
 			try {
 				 storageService.delete(id);

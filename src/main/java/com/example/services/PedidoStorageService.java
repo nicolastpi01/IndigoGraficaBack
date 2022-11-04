@@ -3,12 +3,16 @@ package com.example.services;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import com.example.exception.PedidoIncorrectoException;
+
+import org.hibernate.annotations.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -42,7 +46,7 @@ public class PedidoStorageService {
 				if(!requerimientos.isEmpty()) {
 					if(requerimientos.get(index) != null) {
 						//FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toSet()));
-						FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toList()));
+						//FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toList()));
 						System.out.println("Index: " + index); 
 					}
 				}
@@ -57,17 +61,17 @@ public class PedidoStorageService {
 	}
 
 	@Transactional(readOnly=true)
-	public List<Pedido> getAllByState(String state) {
+	public ArrayList<Pedido> getAllByState(String state) {
 		return pedidoDBRepository.findByState(state) ;
 	}
 
 	@Transactional(readOnly=true)
-	public List<Pedido> getAllByPropietario(String userName) {
-		return pedidoDBRepository.findByPropietario(userName);
+	public List<Pedido> getAllByPropietario(String username) {
+		return pedidoDBRepository.findByPropietarioUsername(username);
 	}
 
 	@Transactional
-	public void reservar(String id, UsuarioDTO usuarioDTO) throws IOException {
+	public void reservar(Long id, UsuarioDTO usuarioDTO) throws IOException {
 		Pedido pedido = pedidoDBRepository.findById(id).get();
 		pedido.setState("reservado");
 		pedido.setEncargado(usuarioDTO.getNombre());
@@ -85,13 +89,24 @@ public class PedidoStorageService {
 	}
 
 	@Transactional
-	public void delete(String id) throws IOException {
+	public void delete(Long id) throws IOException {
 		pedidoDBRepository.deleteById(id);
 	}
 
 	@Transactional(readOnly=true)
-	public Optional<Pedido> findPedido(String id) {
+	public Optional<Pedido> findPedido(Long id) {
 		return pedidoDBRepository.findById(id);
+	}
+
+	@Transactional(readOnly=true)
+	public Map<String, Integer> getResumeByOwner(String username) {
+		// TODO Auto-generated method stub
+		Map<String, Integer> map = new HashMap<>();
+		map.put("reservado", 0);
+		map.put("Pendiente atencion", 0);
+		map.put("reservado", pedidoDBRepository.countByPropietarioUsernameAndState(username, "reservado"));
+		map.put("Pendiente atencion", pedidoDBRepository.countByPropietarioUsernameAndState(username, "Pendiente atencion"));
+		return map;
 	}
 
 }
