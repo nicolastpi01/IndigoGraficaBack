@@ -25,6 +25,8 @@ public interface PedidoDBRepository extends JpaRepository<Pedido, Long> {
 	List<Pedido> findByPropietarioUsernameAndState(String Username, String state);
 	
 	Integer countByPropietarioUsernameAndState(String Username, String state);
+	Integer countByEncargadoAndState(String Username, String state);
+	Integer countByState(String state);
 }
 
 

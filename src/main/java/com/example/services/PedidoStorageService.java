@@ -71,10 +71,10 @@ public class PedidoStorageService {
 	}
 
 	@Transactional
-	public void reservar(Long id, UsuarioDTO usuarioDTO) throws IOException {
+	public void reservar(Long id, String usuarioDTO) throws IOException {
 		Pedido pedido = pedidoDBRepository.findById(id).get();
 		pedido.setState("reservado");
-		pedido.setEncargado(usuarioDTO.getNombre());
+		pedido.setEncargado(usuarioDTO);
 		pedidoDBRepository.save(pedido);
 	}
 
@@ -104,8 +104,8 @@ public class PedidoStorageService {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("reservado", 0);
 		map.put("Pendiente atencion", 0);
-		map.put("reservado", pedidoDBRepository.countByPropietarioUsernameAndState(username, "reservado"));
-		map.put("Pendiente atencion", pedidoDBRepository.countByPropietarioUsernameAndState(username, "Pendiente atencion"));
+		map.put("reservado", pedidoDBRepository.countByEncargadoAndState(username, "reservado"));
+		map.put("Pendiente atencion", pedidoDBRepository.countByState("Pendiente atencion"));
 		return map;
 	}
 
