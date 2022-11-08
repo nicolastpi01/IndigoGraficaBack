@@ -75,8 +75,9 @@ public class PedidoStorageService {
 	@Transactional
 	public void reservar(Long id) throws IOException {
 		Pedido pedido = pedidoDBRepository.findById(id).get();
-		
-		
+		System.out.println("Estoy en el metodo reservar");
+		Estado reservado = new Estado(2, "reservado", "Reservado", "#87d068"); 
+		pedido.setState(reservado);
 		//pedido.setEncargado(pedido.getPropietario());
 		pedidoDBRepository.save(pedido);
 	}

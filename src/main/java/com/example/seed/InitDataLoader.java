@@ -74,7 +74,6 @@ public class InitDataLoader {
 		Role encargado = new Role(ERole.ROLE_ENCARGADO);
 		cliente.setId(1);
 		encargado.setId(2);
-
 		
 		roleRepository.save(cliente);
 		roleRepository.save(encargado);
