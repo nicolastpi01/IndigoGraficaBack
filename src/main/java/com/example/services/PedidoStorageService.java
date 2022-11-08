@@ -11,8 +11,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import com.example.exception.PedidoIncorrectoException;
-
-import org.hibernate.annotations.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,6 +21,10 @@ import com.example.dto.UsuarioDTO;
 import com.example.model.FileDB;
 import com.example.model.Pedido;
 import com.example.model.Requerimiento;
+import com.example.model.Estado.Estado;
+import com.example.model.Estado.PendienteAtencion;
+import com.example.model.Estado.Reservado;
+import com.example.repository.EstadoDBRepository;
 import com.example.repository.PedidoDBRepository;
 import com.example.repository.PosicionDBRepository;
 
@@ -61,8 +63,8 @@ public class PedidoStorageService {
 	}
 
 	@Transactional(readOnly=true)
-	public ArrayList<Pedido> getAllByState(String state) {
-		return pedidoDBRepository.findByState(state) ;
+	public ArrayList<Pedido> getAllByState(String value) {
+		return pedidoDBRepository.findByStateValue(value) ;
 	}
 
 	@Transactional(readOnly=true)
@@ -71,10 +73,11 @@ public class PedidoStorageService {
 	}
 
 	@Transactional
-	public void reservar(Long id, UsuarioDTO usuarioDTO) throws IOException {
+	public void reservar(Long id) throws IOException {
 		Pedido pedido = pedidoDBRepository.findById(id).get();
-		pedido.setState("reservado");
-		pedido.setEncargado(usuarioDTO.getNombre());
+		
+		
+		//pedido.setEncargado(pedido.getPropietario());
 		pedidoDBRepository.save(pedido);
 	}
 
@@ -85,6 +88,7 @@ public class PedidoStorageService {
 
 	@Transactional
 	public Pedido create(Pedido pedido)  throws IllegalArgumentException {
+		
 		return pedidoDBRepository.save(pedido);
 	}
 
@@ -104,8 +108,8 @@ public class PedidoStorageService {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("reservado", 0);
 		map.put("Pendiente atencion", 0);
-		map.put("reservado", pedidoDBRepository.countByPropietarioUsernameAndState(username, "reservado"));
-		map.put("Pendiente atencion", pedidoDBRepository.countByPropietarioUsernameAndState(username, "Pendiente atencion"));
+		map.put("Pendiente atencion", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "PendAtencion"));
+		map.put("reservado", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "reservado"));
 		return map;
 	}
 

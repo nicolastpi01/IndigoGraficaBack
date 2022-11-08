@@ -18,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import com.example.exception.PedidoIncorrectoException;
+import com.example.model.Estado.Estado;
+
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -35,11 +37,16 @@ public class Pedido {
 	private Integer ancho;
 	private String descripcion;
 	private Date fechaEntrega;
-	private String state; // Por ahora el estado es un string
+	@ManyToOne 
+	@JoinColumn(name="estado_id", nullable=false)
+	private Estado state;
 	@ManyToOne 
 	@JoinColumn(name="user_id", nullable=false)
-	private User propietario; // El propietario que pidio el encargo del pedido 
-	private String encargado; // El editor encargado de resolver el pedido
+	private User propietario; // El propietario que pidio el encargo del pedido
+	//@ManyToOne 
+	//@JoinColumn(name="encargado_id", nullable=false)
+	//private User encargado; // El editor encargado de resolver el pedido
+	private String encargado;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
 	private List<FileDB> files = new ArrayList<>();	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
@@ -58,7 +65,7 @@ public class Pedido {
 	
 	public Pedido() {}
 	
-	public Pedido(String nombre, String nombreExtendido, String tipografia, Integer alto, Integer ancho, String descripcion, Integer cantidad, String state, Tipo tipo) {
+	public Pedido(String nombre, String nombreExtendido, String tipografia, Integer alto, Integer ancho, String descripcion, Integer cantidad, Estado state, Tipo tipo) {
 		  this.setNombre(nombre);
 		  this.setNombreExtendido(nombreExtendido);
 		  this.setTipografia(tipografia);
@@ -68,7 +75,6 @@ public class Pedido {
 		  this.setCantidad(cantidad);
 		  this.setState(state);
 		  this.setTipo(tipo);
-		  //this.setNumero(numero);
 	}
 	
 	
@@ -180,11 +186,11 @@ public class Pedido {
 		this.descripcion = descripcion;
 	}
 	
-	public String getState() {
+	public Estado getState() {
 		return state;
 	}
 
-	public void setState(String state) {
+	public void setState(Estado state) {
 		this.state = state;
 	}
 	

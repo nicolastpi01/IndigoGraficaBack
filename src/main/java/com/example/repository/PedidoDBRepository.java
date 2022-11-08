@@ -13,7 +13,7 @@ import com.example.model.Pedido;
 public interface PedidoDBRepository extends JpaRepository<Pedido, Long> {
 	
 	//ArrayList<Pedido> findByStateOrderByNumeroAsc(String state);
-	ArrayList<Pedido> findByState(String state);
+	ArrayList<Pedido> findByStateValue(String value);
 	//List<Pedido> findBy;
 	// findByStudent_Grades_ClassName
 	//List<Pedido> findByPropietario_User_Username(final String Username);
@@ -22,9 +22,9 @@ public interface PedidoDBRepository extends JpaRepository<Pedido, Long> {
 	//List<Pedido> find findByPropietario(String userName);
 	
 	
-	List<Pedido> findByPropietarioUsernameAndState(String Username, String state);
+	List<Pedido> findByPropietarioUsernameAndStateValue(String Username, String value);
 	
-	Integer countByPropietarioUsernameAndState(String Username, String state);
+	Integer countByPropietarioUsernameAndStateValue(String Username, String value);
 }
 
 

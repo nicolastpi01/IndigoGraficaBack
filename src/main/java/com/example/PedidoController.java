@@ -21,10 +21,16 @@ import com.example.dto.UsuarioDTO;
 import com.example.message.ResponseMessage;
 import com.example.model.Pedido;
 import com.example.model.Requerimiento;
+import com.example.model.Estado.Estado;
+import com.example.model.Estado.PendienteAtencion;
+import com.example.repository.EstadoDBRepository;
+import com.example.services.EstadoService;
 import com.example.services.PedidoStorageService;
 
 @Controller
 public class PedidoController {
+	@Autowired
+	private EstadoService estadoService;
 	
 	@Autowired
 	private PedidoStorageService pedidoService;
@@ -57,11 +63,15 @@ public class PedidoController {
 			//busco al usuario de este token
 			String token = authorization.split(" ")[1];
 			String userName = jwtUtils.getUserNameFromJwtToken(token);
+			Estado pendAtencion = new Estado(1, "pendAtencion", "Pendiente de atención", "#2db7f5"); //new PendienteAtencion(); // // Agrego el Estado, en este caso PendAtención
+			//estadoService.save(pendAtencion);
+			pedido.setState(pendAtencion);
 			
 			//pedido.setPropietario(userName);
-	      Pedido pedidoRet = pedidoService.create(pedido);
+			Pedido pedidoRet = pedidoService.create(pedido);
+			System.out.println("Estoy en el metodo");
 	      //message = "Se Agrego el pedido: " + pedido.getNombre();
-	      return ResponseEntity.status(HttpStatus.OK).body(pedidoRet);
+			return ResponseEntity.status(HttpStatus.OK).body(pedidoRet);
 		} catch (Exception e) {
 	      //message = "No se pudo agregar el pedido: " + pedido.getNombre() + "!";
 	      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pedido);
@@ -96,10 +106,10 @@ public class PedidoController {
 	  
 	  @PutMapping("/pedidos/{id}")
 	  @ResponseBody
-	  public ResponseEntity<ResponseMessage> reservar(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
+	  public ResponseEntity<ResponseMessage> reservar(@PathVariable Long id) {
 		String message = "";
 		try {
-			pedidoService.reservar(id, usuarioDTO);
+			pedidoService.reservar(id);
 			message = "Se reservo el pedido con id: " + id;
 		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
 		}
