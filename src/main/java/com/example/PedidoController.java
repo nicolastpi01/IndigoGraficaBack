@@ -106,10 +106,14 @@ public class PedidoController {
 	  
 	  @PutMapping("/pedidos/{id}")
 	  @ResponseBody
-	  public ResponseEntity<ResponseMessage> reservar(@PathVariable Long id) {
+	  public ResponseEntity<ResponseMessage> reservar(@PathVariable Long id, @RequestHeader("authorization") String authorization) {
 		String message = "";
 		try {
-			pedidoService.reservar(id);
+			String token = authorization.split(" ")[1];
+			//String userName = jwtUtils.getUserNameFromJwtToken(token);
+			String userName = jwtUtils.getUserNameFromJwtToken(token);
+			
+			pedidoService.reservar(id, userName);
 			message = "Se reservo el pedido con id: " + id;
 		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
 		}

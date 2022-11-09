@@ -21,12 +21,14 @@ import com.example.dto.UsuarioDTO;
 import com.example.model.FileDB;
 import com.example.model.Pedido;
 import com.example.model.Requerimiento;
+import com.example.model.User;
 import com.example.model.Estado.Estado;
 import com.example.model.Estado.PendienteAtencion;
 import com.example.model.Estado.Reservado;
 import com.example.repository.EstadoDBRepository;
 import com.example.repository.PedidoDBRepository;
 import com.example.repository.PosicionDBRepository;
+import com.example.repository.UserRepository;
 
 @Service
 public class PedidoStorageService {
@@ -35,6 +37,8 @@ public class PedidoStorageService {
 	private PedidoDBRepository pedidoDBRepository;
 	@Autowired
 	private PosicionDBRepository posDBRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Transactional
 	public Pedido store(MultipartFile[] files, Pedido pedido, List<List<Requerimiento>> requerimientos) throws PedidoIncorrectoException {
@@ -73,14 +77,21 @@ public class PedidoStorageService {
 	}
 
 	@Transactional
-	public void reservar(Long id) throws IOException {
+	public void reservar(Long id, String username) throws IOException {
 		Pedido pedido = pedidoDBRepository.findById(id).get();
+		Optional<User> encargado = userRepository.findByUsername(username);
 		System.out.println("Estoy en el metodo reservar");
 		Estado reservado = new Estado(2, "reservado", "Reservado", "#87d068"); 
 		pedido.setState(reservado);
-		//pedido.setEncargado(pedido.getPropietario());
+		//User encargado = pedido.getPropietario(); // Editor encargado de darle resolución al Pedido
+		if(encargado.isPresent()) {
+			System.out.println("TIENE ENCARGADO");
+			User encargadoToSave = encargado.get(); 
+			userRepository.save(encargadoToSave);
+			pedido.setEncargado(encargadoToSave);
+		};
 		pedidoDBRepository.save(pedido);
-	}
+	};
 
 	@Transactional
 	public Pedido actualizar(Pedido pedido) throws IllegalArgumentException {

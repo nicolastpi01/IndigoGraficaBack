@@ -43,10 +43,10 @@ public class Pedido {
 	@ManyToOne 
 	@JoinColumn(name="user_id", nullable=false)
 	private User propietario; // El propietario que pidio el encargo del pedido
-	//@ManyToOne 
-	//@JoinColumn(name="encargado_id", nullable=false)
-	//private User encargado; // El editor encargado de resolver el pedido
-	private String encargado;
+	@ManyToOne 
+	@JoinColumn(name="encargado_id", nullable=true)
+	private User encargado; // El editor encargado de resolver el pedido
+	//private String encargado;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
 	private List<FileDB> files = new ArrayList<>();	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
@@ -217,11 +217,11 @@ public class Pedido {
 		this.propietario = propietario;
 	}
 
-	public String getEncargado() {
+	public User getEncargado() {
 		return encargado;
 	}
 
-	public void setEncargado(String encargado) {
+	public void setEncargado(User encargado) {
 		this.encargado = encargado;
 	}
 
