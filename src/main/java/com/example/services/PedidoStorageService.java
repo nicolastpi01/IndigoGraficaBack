@@ -11,8 +11,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import com.example.exception.PedidoIncorrectoException;
-
-import org.hibernate.annotations.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,20 +21,28 @@ import com.example.dto.UsuarioDTO;
 import com.example.model.FileDB;
 import com.example.model.Pedido;
 import com.example.model.Requerimiento;
+import com.example.model.User;
+import com.example.model.Estado.Estado;
+import com.example.model.Estado.PendienteAtencion;
+import com.example.model.Estado.Reservado;
+import com.example.repository.EstadoDBRepository;
 import com.example.repository.PedidoDBRepository;
 import com.example.repository.PosicionDBRepository;
+import com.example.repository.UserRepository;
 
 @Service
 public class PedidoStorageService {
-	
+
 	@Autowired
 	private PedidoDBRepository pedidoDBRepository;
 	@Autowired
 	private PosicionDBRepository posDBRepository;
-	
+	@Autowired
+	private UserRepository userRepository;
+
 	@Transactional
 	public Pedido store(MultipartFile[] files, Pedido pedido, List<List<Requerimiento>> requerimientos) throws PedidoIncorrectoException {
-		
+
 		List<FileDB> filesDB = new ArrayList<>();
 		pedido.validar();
 		for(int index = 0;index < files.length; index++) {
@@ -47,7 +53,7 @@ public class PedidoStorageService {
 					if(requerimientos.get(index) != null) {
 						//FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toSet()));
 						//FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toList()));
-						System.out.println("Index: " + index); 
+						System.out.println("Index: " + index);
 					}
 				}
 				filesDB.add(FileDB);
@@ -55,14 +61,14 @@ public class PedidoStorageService {
 				throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
 			}
 		}
-    	
-    	pedido.setFiles(filesDB);
-    	return pedidoDBRepository.save(pedido);
+
+		pedido.setFiles(filesDB);
+		return pedidoDBRepository.save(pedido);
 	}
 
 	@Transactional(readOnly=true)
-	public ArrayList<Pedido> getAllByState(String state) {
-		return pedidoDBRepository.findByState(state) ;
+	public ArrayList<Pedido> getAllByState(String value) {
+		return pedidoDBRepository.findByStateValue(value) ;
 	}
 
 	@Transactional(readOnly=true)
@@ -70,13 +76,26 @@ public class PedidoStorageService {
 		return pedidoDBRepository.findByPropietarioUsername(username);
 	}
 
+	//	public void reservar(Long id, String usuarioDTO) throws IOException {
+//		Pedido pedido = pedidoDBRepository.findById(id).get();
+//		pedido.setState("reservado");
+//		pedido.setEncargado(usuarioDTO);
 	@Transactional
-	public void reservar(Long id, String usuarioDTO) throws IOException {
+	public void reservar(Long id, String username) throws IOException {
 		Pedido pedido = pedidoDBRepository.findById(id).get();
-		pedido.setState("reservado");
-		pedido.setEncargado(usuarioDTO);
+		Optional<User> encargado = userRepository.findByUsername(username);
+		System.out.println("Estoy en el metodo reservar");
+		Estado reservado = new Estado(2, "reservado", "Reservado", "#87d068");
+		pedido.setState(reservado);
+		//User encargado = pedido.getPropietario(); // Editor encargado de darle resolución al Pedido
+		if(encargado.isPresent()) {
+			System.out.println("TIENE ENCARGADO");
+			User encargadoToSave = encargado.get();
+			userRepository.save(encargadoToSave);
+			pedido.setEncargado(encargadoToSave);
+		};
 		pedidoDBRepository.save(pedido);
-	}
+	};
 
 	@Transactional
 	public Pedido actualizar(Pedido pedido) throws IllegalArgumentException {
@@ -85,6 +104,7 @@ public class PedidoStorageService {
 
 	@Transactional
 	public Pedido create(Pedido pedido)  throws IllegalArgumentException {
+
 		return pedidoDBRepository.save(pedido);
 	}
 
@@ -104,10 +124,15 @@ public class PedidoStorageService {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("reservado", 0);
 		map.put("Pendiente atencion", 0);
+
 		map.put("propios", 0);
-		map.put("reservado", pedidoDBRepository.countByEncargadoAndState(username, "reservado"));
-		map.put("Pendiente atencion", pedidoDBRepository.countByState("Pendiente atencion"));
+		map.put("reservado", pedidoDBRepository.countByEncargadoUsernameAndStateValue(username, "reservado"));
+		map.put("Pendiente atencion", pedidoDBRepository.countByStateValue("PendAtencion"));
 		map.put("propios", pedidoDBRepository.countByPropietarioUsername(username));
+
+//		map.put("Pendiente atencion", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "PendAtencion"));
+//		map.put("reservado", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "reservado"));
+
 		return map;
 	}
 

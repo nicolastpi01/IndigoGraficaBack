@@ -3,6 +3,8 @@ package com.example.demo;
 import com.example.dto.request.LoginRequest;
 import com.example.dto.request.SignupRequest;
 import com.example.model.*;
+import com.example.model.Estado.Estado;
+import com.example.model.Estado.PendienteAtencion;
 import com.example.repository.PedidoDBRepository;
 import com.example.repository.UserRepository;
 import com.example.security.jwt.JwtUtils;
@@ -46,8 +48,9 @@ class PedidoTests {
 	UserRepository userRepository;
 
 	private Tipo tipo = new Tipo(1, "Fotografia", 30, 30, "Arial");
+	private Estado pendienteAtencion = new PendienteAtencion();
 	private Optional<User> user;
-	private Pedido pedido = new Pedido("Pedido test", "Pedido sub", "Arial", 30, 30, "Desc", 1, "Solicitado", tipo);
+	private Pedido pedido = new Pedido("Pedido test", "Pedido sub", "Arial", 30, 30, "Desc", 1, pendienteAtencion, tipo);
 	private String accessToken;
 
 

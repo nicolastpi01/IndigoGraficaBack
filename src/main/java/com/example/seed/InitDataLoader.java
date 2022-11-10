@@ -4,10 +4,14 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import com.example.model.*;
+import com.example.model.Estado.Estado;
+import com.example.model.Estado.PendienteAtencion;
+import com.example.model.Estado.Reservado;
 import com.example.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.example.repository.ColorDBRepository;
+import com.example.repository.EstadoDBRepository;
 import com.example.repository.PedidoDBRepository;
 import com.example.repository.TipoDBRepository;
 
@@ -19,6 +23,9 @@ public class InitDataLoader {
 	private TipoDBRepository tipoRepo;
 	@Autowired
 	private ColorDBRepository colorRepo;
+	
+	@Autowired
+	private EstadoDBRepository estadoRepo;
 
 	@Autowired
 	private RoleRepository roleRepository;
@@ -34,6 +41,11 @@ public class InitDataLoader {
 		tipoRepo.save(tipo2);
 		tipoRepo.save(tipo3);
 		tipoRepo.save(tipo4);
+		
+		Estado estado1 = new Estado(1, "pendAtencion", "Pendiente de atención", "#2db7f5");
+		Estado estado2 = new Estado(2, "reservado", "Reservado", "#87d068");
+		estadoRepo.save(estado1);
+		estadoRepo.save(estado2);
 		
 		Color color1 = new Color(10, "Rojo", "#FF0000");
 		Color color2 = new Color(9, "Azul", "#0000FF");
@@ -62,8 +74,7 @@ public class InitDataLoader {
 		Role encargado = new Role(ERole.ROLE_ENCARGADO);
 		cliente.setId(1);
 		encargado.setId(2);
-
-		//
+		
 		roleRepository.save(cliente);
 		roleRepository.save(encargado);
 

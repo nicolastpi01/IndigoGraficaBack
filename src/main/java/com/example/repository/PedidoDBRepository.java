@@ -11,22 +11,23 @@ import com.example.model.Pedido;
 @SuppressWarnings("deprecation")
 @Repository
 public interface PedidoDBRepository extends JpaRepository<Pedido, Long> {
-	
+
 	//ArrayList<Pedido> findByStateOrderByNumeroAsc(String state);
-	ArrayList<Pedido> findByState(String state);
+	ArrayList<Pedido> findByStateValue(String value);
 	//List<Pedido> findBy;
 	// findByStudent_Grades_ClassName
 	//List<Pedido> findByPropietario_User_Username(final String Username);
-	
+
 	List<Pedido> findByPropietarioUsername(String Username);
 	//List<Pedido> find findByPropietario(String userName);
-	
-	
-	List<Pedido> findByPropietarioUsernameAndState(String Username, String state);
-	
+
+
+	List<Pedido> findByPropietarioUsernameAndStateValue(String Username, String value);
+
 	Integer countByPropietarioUsername(String userName);
-	Integer countByEncargadoAndState(String Username, String state);
-	Integer countByState(String state);
+	Integer countByEncargadoUsernameAndStateValue(String Username, String state);
+	Integer countByStateValue(String state);
+	Integer countByPropietarioUsernameAndStateValue(String Username, String value);
 }
 
 
