@@ -85,6 +85,16 @@ public class PedidoController {
 	    //List<PedidoDTO> pedidosDTO = pedidos.stream().map(pedido -> (new PedidoDTO(pedido))).collect(Collectors.toList());
 	    return ResponseEntity.ok().body(pedidos);
 	  }
+	  
+	@GetMapping("/todos")
+	@ResponseBody
+	public ResponseEntity<List<Pedido>> getAllPedidos(@RequestHeader("authorization") String authorization) {
+		String token = authorization.split(" ")[1];
+		String userName = jwtUtils.getUserNameFromJwtToken(token);
+	    ArrayList<Pedido> pedidos = pedidoService.getAllPedidos(userName);
+	    //List<PedidoDTO> pedidosDTO = pedidos.stream().map(pedido -> (new PedidoDTO(pedido))).collect(Collectors.toList());
+	    return ResponseEntity.ok().body(pedidos);
+	}
 
 	@GetMapping("/pedidos/porUsuario")
 	@ResponseBody

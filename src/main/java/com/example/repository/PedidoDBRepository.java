@@ -14,17 +14,21 @@ public interface PedidoDBRepository extends JpaRepository<Pedido, Long> {
 	
 	//ArrayList<Pedido> findByStateOrderByNumeroAsc(String state);
 	ArrayList<Pedido> findByStateValue(String value);
+	
+	Integer countByStateValue(String value);
 	//List<Pedido> findBy;
 	// findByStudent_Grades_ClassName
 	//List<Pedido> findByPropietario_User_Username(final String Username);
 	
-	List<Pedido> findByPropietarioUsername(String Username);
+	ArrayList<Pedido> findByPropietarioUsername(String Username);
 	//List<Pedido> find findByPropietario(String userName);
 	
 	
 	List<Pedido> findByPropietarioUsernameAndStateValue(String Username, String value);
 	
 	Integer countByPropietarioUsernameAndStateValue(String Username, String value);
+
+	Integer countByEncargadoUsernameAndStateValue(String Username, String value);
 }
 
 

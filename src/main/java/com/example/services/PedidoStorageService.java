@@ -75,6 +75,24 @@ public class PedidoStorageService {
 	public List<Pedido> getAllByPropietario(String username) {
 		return pedidoDBRepository.findByPropietarioUsername(username);
 	}
+	
+	@Transactional(readOnly=true)
+	public ArrayList<Pedido> getAllPedidos(String username) {
+		// Si soy Editor quiero todos los pedidos Pend. Atención, si soy Cliente quiero todos los Pedidos donde soy el Propietario
+		Optional<User> optUsuario = userRepository.findByUsername(username);
+		if(optUsuario.isPresent()) {
+			User usuario = optUsuario.get();
+			if(usuario.esEditor()) {
+				return pedidoDBRepository.findByStateValue("pendAtencion");
+			}
+			else {
+				return pedidoDBRepository.findByPropietarioUsername(username);
+			}
+		}
+		else {
+			return new ArrayList<Pedido>();
+		}
+	};
 
 	@Transactional
 	public void reservar(Long id, String username) throws IOException {
@@ -116,12 +134,21 @@ public class PedidoStorageService {
 
 	@Transactional(readOnly=true)
 	public Map<String, Integer> getResumeByOwner(String username) {
-		// TODO Auto-generated method stub
 		Map<String, Integer> map = new HashMap<>();
 		map.put("reservado", 0);
 		map.put("Pendiente atencion", 0);
-		map.put("Pendiente atencion", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "PendAtencion"));
-		map.put("reservado", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "reservado"));
+		Optional<User> optUsuario = userRepository.findByUsername(username);
+		if(optUsuario.isPresent()) {
+			User usuario = optUsuario.get();
+			if(usuario.esEditor()) {
+				map.put("Pendiente atencion", pedidoDBRepository.countByStateValue("pendAtencion"));
+				map.put("reservado", pedidoDBRepository.countByEncargadoUsernameAndStateValue(username, "reservado"));
+			}
+			else {
+				map.put("Pendiente atencion", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "pendAtencion"));
+				map.put("reservado", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "reservado"));
+			}
+		}
 		return map;
 	}
 
