@@ -31,7 +31,7 @@ import com.example.services.PedidoStorageService;
 public class PedidoController {
 	@Autowired
 	private EstadoService estadoService;
-	
+
 	@Autowired
 	private PedidoStorageService pedidoService;
 
@@ -66,7 +66,7 @@ public class PedidoController {
 			Estado pendAtencion = new Estado(1, "pendAtencion", "Pendiente de atención", "#2db7f5"); //new PendienteAtencion(); // // Agrego el Estado, en este caso PendAtención
 			//estadoService.save(pendAtencion);
 			pedido.setState(pendAtencion);
-			
+
 			//pedido.setPropietario(userName);
 			Pedido pedidoRet = pedidoService.create(pedido);
 			System.out.println("Estoy en el metodo");
@@ -110,9 +110,7 @@ public class PedidoController {
 		String message = "";
 		try {
 			String token = authorization.split(" ")[1];
-			//String userName = jwtUtils.getUserNameFromJwtToken(token);
 			String userName = jwtUtils.getUserNameFromJwtToken(token);
-			
 			pedidoService.reservar(id, userName);
 			message = "Se reservo el pedido con id: " + id;
 		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
