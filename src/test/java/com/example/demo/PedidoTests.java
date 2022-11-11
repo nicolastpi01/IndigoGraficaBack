@@ -54,7 +54,7 @@ class PedidoTests {
 	private String accessToken;
 
 
-	@BeforeAll
+	@BeforeEach
 	public void setupUser() throws Exception {
 		//test pull request
 		SignupRequest signupRequest = new SignupRequest();
