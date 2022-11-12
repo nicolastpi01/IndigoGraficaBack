@@ -142,6 +142,7 @@ public class PedidoStorageService {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("reservado", 0);
 		map.put("Pendiente atencion", 0);
+		map.put("PROPIOS", 0);
 		Optional<User> optUsuario = userRepository.findByUsername(username);
 		if(optUsuario.isPresent()) {
 			User usuario = optUsuario.get();
@@ -153,11 +154,11 @@ public class PedidoStorageService {
 				map.put("Pendiente atencion", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "pendAtencion"));
 				map.put("reservado", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "reservado"));
 			}
+			map.put("PROPIOS", pedidoDBRepository.countByPropietarioUsername(username));
 		}
-
 		return map;
-	}
-
+	};
+	
 	/*
 	public Optional<Pedido> allowsEdit(Long id) throws CustomException {
 		Optional<Pedido> pedidoOpt = pedidoDBRepository.findById(id);
