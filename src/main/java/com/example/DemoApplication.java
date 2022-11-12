@@ -55,7 +55,7 @@ public class DemoApplication {
 		mailSender.setPort(587);
 
 		mailSender.setUsername("indigo.grafica.tip@gmail.com");
-		mailSender.setPassword("kxuoyubrepcifutv");
+		mailSender.setPassword("zcjrulqawvcpqvpk");
 
 		Properties props = mailSender.getJavaMailProperties();
 		props.put("mail.transport.protocol", "smtp");
