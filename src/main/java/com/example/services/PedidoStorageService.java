@@ -34,17 +34,17 @@ import com.example.repository.UserRepository;
 
 @Service
 public class PedidoStorageService {
-	
+
 	@Autowired
 	private PedidoDBRepository pedidoDBRepository;
 	@Autowired
 	private PosicionDBRepository posDBRepository;
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Transactional
 	public Pedido store(MultipartFile[] files, Pedido pedido, List<List<Requerimiento>> requerimientos) throws PedidoIncorrectoException {
-		
+
 		List<FileDB> filesDB = new ArrayList<>();
 		pedido.validar();
 		for(int index = 0;index < files.length; index++) {
@@ -55,7 +55,7 @@ public class PedidoStorageService {
 					if(requerimientos.get(index) != null) {
 						//FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toSet()));
 						//FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toList()));
-						System.out.println("Index: " + index); 
+						System.out.println("Index: " + index);
 					}
 				}
 				filesDB.add(FileDB);
@@ -63,9 +63,9 @@ public class PedidoStorageService {
 				throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
 			}
 		}
-    	
-    	pedido.setFiles(filesDB);
-    	return pedidoDBRepository.save(pedido);
+
+		pedido.setFiles(filesDB);
+		return pedidoDBRepository.save(pedido);
 	}
 
 	@Transactional(readOnly=true)
@@ -96,17 +96,21 @@ public class PedidoStorageService {
 		}
 	};
 
+	//	public void reservar(Long id, String usuarioDTO) throws IOException {
+//		Pedido pedido = pedidoDBRepository.findById(id).get();
+//		pedido.setState("reservado");
+//		pedido.setEncargado(usuarioDTO);
 	@Transactional
 	public void reservar(Long id, String username) throws IOException {
 		Pedido pedido = pedidoDBRepository.findById(id).get();
 		Optional<User> encargado = userRepository.findByUsername(username);
 		System.out.println("Estoy en el metodo reservar");
-		Estado reservado = new Estado(2, "reservado", "Reservado", "#87d068"); 
+		Estado reservado = new Estado(2, "reservado", "Reservado", "#87d068");
 		pedido.setState(reservado);
 		//User encargado = pedido.getPropietario(); // Editor encargado de darle resolución al Pedido
 		if(encargado.isPresent()) {
 			System.out.println("TIENE ENCARGADO");
-			User encargadoToSave = encargado.get(); 
+			User encargadoToSave = encargado.get();
 			userRepository.save(encargadoToSave);
 			pedido.setEncargado(encargadoToSave);
 		};
@@ -150,10 +154,10 @@ public class PedidoStorageService {
 				map.put("reservado", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "reservado"));
 			}
 		}
+
 		return map;
 	}
 
-	
 	/*
 	public Optional<Pedido> allowsEdit(Long id) throws CustomException {
 		Optional<Pedido> pedidoOpt = pedidoDBRepository.findById(id);

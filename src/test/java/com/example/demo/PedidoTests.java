@@ -55,7 +55,8 @@ class PedidoTests {
 
 
 	@BeforeEach
-	void setupUser() throws Exception {
+	public void setupUser() throws Exception {
+		//test pull request
 		SignupRequest signupRequest = new SignupRequest();
 		signupRequest.setEmail("a@a.a");
 		signupRequest.setUsername("user");
