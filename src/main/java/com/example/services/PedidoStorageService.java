@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.example.exception.CustomException;
 import com.example.exception.PedidoIncorrectoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -118,7 +120,6 @@ public class PedidoStorageService {
 
 	@Transactional
 	public Pedido create(Pedido pedido)  throws IllegalArgumentException {
-		
 		return pedidoDBRepository.save(pedido);
 	}
 
@@ -151,5 +152,27 @@ public class PedidoStorageService {
 		}
 		return map;
 	}
+
+	
+	/*
+	public Optional<Pedido> allowsEdit(Long id) throws CustomException {
+		Optional<Pedido> pedidoOpt = pedidoDBRepository.findById(id);
+		if(pedidoOpt.isPresent()) {
+			Pedido pedido = pedidoOpt.get();
+			if(pedido.getState().getValue() == "reservado") {
+				// Lanzo la Excepción 'El pedido se encuentra reservado'
+			}
+			else {
+				// retorno el Pedido con el avalaible = false;
+				pedido.setAvalaible(false);
+				return Optional.of(pedido);
+			}
+		}
+		else {
+			throw new CustomException("","Failed to connect to database");
+			// Lanzo Excepcion no encuentro el Pedido
+		}
+	}
+	*/
 
 }

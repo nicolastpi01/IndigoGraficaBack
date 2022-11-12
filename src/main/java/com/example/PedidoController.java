@@ -133,6 +133,23 @@ public class PedidoController {
 		}
 	  }
 	  
+	  /*
+	  @PutMapping("/pedidos/AllowsEdit/{id}")
+	  @ResponseBody
+	  public ResponseEntity<ResponseMessage> AllowsEdit(@PathVariable Long id) {
+		String message = "";
+		try {
+			pedidoService.allowsEdit(id);
+			message = "Se reservo el pedido con id: " + id;
+		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+		}
+		catch (Exception e) { // Revisar el try catch. Atomizar las excepciones.. Ver 3.3 en docu discord
+		    message = "No se pudo reservar el pedido con id: " + id + "!";
+		    return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+		}
+	  }
+	  */
+	  
 	  @PutMapping("/pedidos/update")
 	  @ResponseBody
 	  public ResponseEntity<Pedido> update(@RequestBody Pedido pedido) {

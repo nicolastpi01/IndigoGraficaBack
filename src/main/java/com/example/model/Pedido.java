@@ -46,7 +46,7 @@ public class Pedido {
 	@ManyToOne 
 	@JoinColumn(name="encargado_id", nullable=true)
 	private User encargado; // El editor encargado de resolver el pedido
-	//private String encargado;
+	//private boolean avalaible; 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
 	private List<FileDB> files = new ArrayList<>();	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
@@ -75,6 +75,7 @@ public class Pedido {
 		  this.setCantidad(cantidad);
 		  this.setState(state);
 		  this.setTipo(tipo);
+		  //this.setAvalaible(true);
 	}
 	
 	
@@ -248,5 +249,14 @@ public class Pedido {
 		this.fechaEntrega = fechaEntrega;
 	}
 
+	/*
+	public boolean isAvalaible() {
+		return avalaible;
+	}
+
+	public void setAvalaible(boolean avalaible) {
+		this.avalaible = avalaible;
+	}
+	*/
 
 }
