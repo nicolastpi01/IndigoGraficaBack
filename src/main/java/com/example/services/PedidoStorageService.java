@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import com.example.exception.CustomException;
 import com.example.exception.PedidoIncorrectoException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -157,6 +158,41 @@ public class PedidoStorageService {
 			map.put("PROPIOS", pedidoDBRepository.countByPropietarioUsername(username));
 		}
 		return map;
+	};
+	
+	@Transactional
+	public void resolver(Long id) throws CustomException {
+		Pedido pedido = pedidoDBRepository.findById(id).get();
+		System.out.println("Estoy en el metodo resolver");
+		if(pedido.haveFiles()) {
+			// revisar que todos los Files tengan Solución
+			if(pedido.allFilesHaveSolution()) {
+				System.out.println("TODOS LOS FILES TIENEN SOLUCIÓN");
+				// Todo bien, cambio el Estado del Pedido y continuo
+				Estado reservado = new Estado(3, "pendRevision", "Pendiente de revisión", "rgba(167, 37, 165, 0.755)"); // Cambiar resuelto por una cte, Color Violeta
+				pedido.setState(reservado);
+				pedidoDBRepository.save(pedido);
+			}
+			else {
+				System.out.println("EXISTEN FILES QUE NO TIENEN SOLUCIÓN");
+				throw new CustomException(HttpStatus.BAD_REQUEST, "Algún File no tiene Solucion");
+			}
+		}
+		else {
+			// No tiene Files
+			if(pedido.haveSolution()) {
+				System.out.println("NO TIENE FILES PERO SI TIENE SOLUCION");
+				// Todo bien, cambio el Estado del Pedido y continuo
+				Estado reservado = new Estado(3, "pendRevision", "Pendiente de revisión", "rgba(167, 37, 165, 0.755)"); // Cambiar resuelto por una cte, Color Violeta
+				pedido.setState(reservado);
+				pedidoDBRepository.save(pedido);
+			}
+			else {
+				System.out.println("NO TIENE FILES, Y NO TIENE SOLUCIÓN");
+				throw new CustomException(HttpStatus.BAD_REQUEST, "No se puede resolver un Pedido que no cuenta con Solución");
+			}
+		}
+		
 	};
 	
 	/*

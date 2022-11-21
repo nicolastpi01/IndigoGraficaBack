@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.example.exception.CustomException;
 import com.example.exception.PedidoIncorrectoException;
 import com.example.security.authService.UserDetailsImpl;
 import com.example.security.jwt.JwtUtils;
@@ -185,9 +186,25 @@ public class PedidoController {
 		  Optional<Pedido> pedido = pedidoService.findPedido(id);
 		  return ResponseEntity.status(HttpStatus.OK).body(pedido.get());
 	  }
+	  
+	  @PutMapping("/pedidos/resolver/{id}")
+	  @ResponseBody
+	  public ResponseEntity<ResponseMessage> resolver(@PathVariable Long id) {
+		String message = "";
+		try {
+			pedidoService.resolver(id);
+			message = "Se resolvió el pedido con id: " + id;
+		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+		}
+		catch (CustomException e) { // Revisar el try catch. Atomizar las excepciones.. Ver 3.3 en docu discord
+		    return ResponseEntity.status(e.getHttpStatus()).body(new ResponseMessage(e.getMessage()));
+		}
+	  }
 
 	public boolean dummyMethod(){
 		return true;
 	}
+	
+	
 
 }

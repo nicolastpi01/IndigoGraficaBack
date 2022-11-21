@@ -63,6 +63,8 @@ public class Pedido {
 	inverseJoinColumns = @JoinColumn(name = "color_id"))
 	private Set<Color> colores = new HashSet<>();
 	
+	private boolean ret = true;
+	
 	public Pedido() {}
 	
 	public Pedido(String nombre, String nombreExtendido, String tipografia, Integer alto, Integer ancho, String descripcion, Integer cantidad, Estado state, Tipo tipo) {
@@ -247,6 +249,29 @@ public class Pedido {
 
 	public void setFechaEntrega(Date fechaEntrega) {
 		this.fechaEntrega = fechaEntrega;
+	}
+
+	// Revisar los nombres
+	public boolean haveSolution() {
+		return !this.getSolutions().isEmpty();
+	}
+
+	public boolean allFilesHaveSolution() {
+		// ret almacena si AllFiles tienen Solution
+		//ret = true;
+		//this.getFiles().stream().map(file -) .haveSolution(this)
+		boolean ret = this.getFiles().stream().allMatch(x -> x.haveSolution(this));
+		System.out.println("TODOS LOS FILES TIENEN SOLUCIÓN? " + ret);
+		return ret;
+		/* this.getFiles().stream().map(x -> {
+		ret = ret && x.haveSolution(this);	
+		 return x;
+		});
+		return ret; */
+	}
+
+	public boolean haveFiles() {
+		return !this.getFiles().isEmpty();
 	}
 
 	/*

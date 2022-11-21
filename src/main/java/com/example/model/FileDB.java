@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -103,5 +104,13 @@ public class FileDB {
 		  this.url = url;
 	  }
 	  */
+
+	public boolean haveSolution(Pedido pedido) {
+		// TODO Auto-generated method stub
+		//return false;
+		boolean any = pedido.getSolutions().stream().anyMatch(x -> x.getIdFileToSolution().equals(this.getId().toString()) );
+		System.out.println("FILE TIENE SOLUCIÓN? " + any);
+		return any;
+	}
 
 }
