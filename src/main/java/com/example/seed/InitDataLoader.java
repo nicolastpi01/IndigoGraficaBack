@@ -45,9 +45,11 @@ public class InitDataLoader {
 		Estado estado1 = new Estado(1, "pendAtencion", "Pendiente de atención", "#2db7f5");
 		Estado estado2 = new Estado(2, "reservado", "Reservado", "#87d068");
 		Estado estado3 = new Estado(3, "pendRevision", "Pendiente de revisión", "rgba(167, 37, 165, 0.755)");
+		Estado estado5 = new Estado(5, "finalizados", "Finalizado", "darkorange");
 		estadoRepo.save(estado1);
 		estadoRepo.save(estado2);
 		estadoRepo.save(estado3);
+		estadoRepo.save(estado5);
 		
 		Color color1 = new Color(10, "Rojo", "#FF0000");
 		Color color2 = new Color(9, "Azul", "#0000FF");
