@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import com.example.exception.CustomException;
 import com.example.exception.PedidoIncorrectoException;
 import com.example.security.authService.UserDetailsImpl;
@@ -24,6 +23,7 @@ import com.example.model.Pedido;
 import com.example.model.Requerimiento;
 import com.example.model.Estado.Estado;
 import com.example.model.Estado.PendienteAtencion;
+import com.example.objects.ApproveSolution;
 import com.example.repository.EstadoDBRepository;
 import com.example.services.EstadoService;
 import com.example.services.PedidoStorageService;
@@ -215,6 +215,26 @@ public class PedidoController {
 		}
 		catch (CustomException e) {
 		    return ResponseEntity.status(e.getHttpStatus()).body(new ResponseMessage(e.getMessage()));
+		}
+	  };
+	  
+	  @PutMapping("/pedidos/agreeToTheSolution")
+	  @ResponseBody
+	  public ResponseEntity<ResponseMessage> sendApproveSolution(@RequestBody ApproveSolution solution, @RequestHeader("authorization") String authorization) {
+		String message = "";
+		try {
+			String token = authorization.split(" ")[1];
+			String userName = jwtUtils.getUserNameFromJwtToken(token);
+			String result = "desaprobado";
+			if(solution.approve) {
+				result = "aprobado";
+			}
+			pedidoService.sendApproveSolution(solution.pedido, userName); 
+			message = "Se marco como" + result + " el pedido con id: " + solution.pedido.getId();
+		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+			}
+		catch (CustomException e) {
+			return ResponseEntity.status(e.getHttpStatus()).body(new ResponseMessage(e.getMessage()));
 		}
 	  };
 

@@ -213,6 +213,28 @@ public class PedidoStorageService {
 		else {
 			throw new CustomException(HttpStatus.NOT_FOUND,"No exíte un Cliente con ese nombre de Usuario");
 		}
+	}
+
+	@Transactional
+	public void sendApproveSolution(Pedido pedido, String userName) throws CustomException {
+		Optional<User> optUser = userRepository.findByUsername(userName);
+		if(optUser.isPresent()) {
+			User user = optUser.get();
+			/* Cliente o Editor pueden realizar la acción, pero lo que habria que validar es si el token es valido!!
+			if(user.esEditor() || user.esCliente()) {
+				throw new CustomException(HttpStatus.FORBIDDEN,"Solo un Cliente puede realizar la acción requerida!");
+			}
+			*/
+			if(!(user.getId().equals(pedido.getPropietario().getId()))) {
+				throw new CustomException(HttpStatus.FORBIDDEN,"El Cliente que intenta realizar la acción no coincide con el Propietario del Pedido!");
+			}
+			this.pedidoDBRepository.save(pedido);
+		}
+		else {
+			throw new CustomException(HttpStatus.NOT_FOUND,"No exíte un Cliente con ese nombre de Usuario");
+		}
+		// TODO Auto-generated method stub
+		
 	};
 	
 	/*
