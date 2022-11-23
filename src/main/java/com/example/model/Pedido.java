@@ -37,6 +37,7 @@ public class Pedido {
 	private Integer ancho;
 	private String descripcion;
 	private Date fechaEntrega;
+	private Boolean hasPayment = false;
 	@ManyToOne 
 	@JoinColumn(name="estado_id", nullable=false)
 	private Estado state;
@@ -272,6 +273,18 @@ public class Pedido {
 
 	public boolean haveFiles() {
 		return !this.getFiles().isEmpty();
+	}
+
+	public Boolean getHasPayment() {
+		return hasPayment;
+	}
+
+	public void setHasPayment(Boolean hasPayment) {
+		this.hasPayment = hasPayment;
+	}
+
+	public boolean hasPayment() {
+		return this.getHasPayment();
 	}
 
 	/*

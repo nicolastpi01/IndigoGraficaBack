@@ -163,36 +163,56 @@ public class PedidoStorageService {
 	@Transactional
 	public void resolver(Long id) throws CustomException {
 		Pedido pedido = pedidoDBRepository.findById(id).get();
-		System.out.println("Estoy en el metodo resolver");
-		if(pedido.haveFiles()) {
-			// revisar que todos los Files tengan Solución
-			if(pedido.allFilesHaveSolution()) {
-				System.out.println("TODOS LOS FILES TIENEN SOLUCIÓN");
-				// Todo bien, cambio el Estado del Pedido y continuo
-				Estado reservado = new Estado(3, "pendRevision", "Pendiente de revisión", "rgba(167, 37, 165, 0.755)"); // Cambiar resuelto por una cte, Color Violeta
-				pedido.setState(reservado);
-				pedidoDBRepository.save(pedido);
+		if(pedido.hasPayment()) {
+			if(pedido.haveFiles()) {
+				if(pedido.allFilesHaveSolution()) {
+					// Todo bien, cambio el Estado del Pedido y continuo
+					Estado reservado = new Estado(3, "pendRevision", "Pendiente de revisión", "rgba(167, 37, 165, 0.755)"); // Cambiar resuelto por una cte, Color Violeta
+					pedido.setState(reservado);
+					pedidoDBRepository.save(pedido);
+				}
+				else {
+					throw new CustomException(HttpStatus.BAD_REQUEST, "Algún File no tiene Solucion");
+				}
 			}
 			else {
-				System.out.println("EXISTEN FILES QUE NO TIENEN SOLUCIÓN");
-				throw new CustomException(HttpStatus.BAD_REQUEST, "Algún File no tiene Solucion");
+				// No tiene Files
+				if(pedido.haveSolution()) {
+					// Todo bien, cambio el Estado del Pedido y continuo
+					Estado reservado = new Estado(3, "pendRevision", "Pendiente de revisión", "rgba(167, 37, 165, 0.755)"); // Cambiar resuelto por una cte, Color Violeta
+					pedido.setState(reservado);
+					pedidoDBRepository.save(pedido);
+				}
+				else {
+					throw new CustomException(HttpStatus.BAD_REQUEST, "No se puede resolver un Pedido que no cuenta con Solución");
+				}
 			}
 		}
 		else {
-			// No tiene Files
-			if(pedido.haveSolution()) {
-				System.out.println("NO TIENE FILES PERO SI TIENE SOLUCION");
-				// Todo bien, cambio el Estado del Pedido y continuo
-				Estado reservado = new Estado(3, "pendRevision", "Pendiente de revisión", "rgba(167, 37, 165, 0.755)"); // Cambiar resuelto por una cte, Color Violeta
-				pedido.setState(reservado);
-				pedidoDBRepository.save(pedido);
-			}
-			else {
-				System.out.println("NO TIENE FILES, Y NO TIENE SOLUCIÓN");
-				throw new CustomException(HttpStatus.BAD_REQUEST, "No se puede resolver un Pedido que no cuenta con Solución");
-			}
+			throw new CustomException(HttpStatus.FORBIDDEN, "No se puede resolver un Pedido que no cuenta con un pago por parte del Cliente Propietario");
 		}
-		
+			
+	};
+
+	@Transactional
+	public void notifyPayment(Long id, String userName) throws CustomException {
+		Pedido pedido = pedidoDBRepository.findById(id).get();
+		Optional<User> optUser = userRepository.findByUsername(userName);
+		if(optUser.isPresent()) {
+			User user = optUser.get();
+			if(!user.esEditor()) {
+				throw new CustomException(HttpStatus.FORBIDDEN,"Solo un Usuario con rango de Editor puede realizar la acción requerida!");
+			}
+			if(user.esEditor() && !(user.getId().equals(pedido.getEncargado().getId()))) {
+				throw new CustomException(HttpStatus.FORBIDDEN,"El editor no coincide con el encargado de darle resolución al Pedido, solo este último puede resolverlo!");
+			}
+			// Falta la excepción que se dispara si el Pedido no tiene un Presupuesto asociado
+			pedido.setHasPayment(true);
+			this.pedidoDBRepository.save(pedido);
+		}
+		else {
+			throw new CustomException(HttpStatus.NOT_FOUND,"No exíte un Cliente con ese nombre de Usuario");
+		}
 	};
 	
 	/*

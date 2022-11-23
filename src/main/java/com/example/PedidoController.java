@@ -196,10 +196,27 @@ public class PedidoController {
 			message = "Se resolvió el pedido con id: " + id;
 		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
 		}
-		catch (CustomException e) { // Revisar el try catch. Atomizar las excepciones.. Ver 3.3 en docu discord
+		catch (CustomException e) {
 		    return ResponseEntity.status(e.getHttpStatus()).body(new ResponseMessage(e.getMessage()));
 		}
 	  }
+	  
+	  @PutMapping("/pedidos/notifyPayment/{id}")
+	  @ResponseBody
+	  // Falta verificar que el Pedido cuenta con un Presupuesto asociado (O sea, se adjunto el Presupuesto previamente)
+	  public ResponseEntity<ResponseMessage> notifyPayment(@PathVariable Long id, @RequestHeader("authorization") String authorization) {
+		String message = "";
+		try {
+			String token = authorization.split(" ")[1];
+			String userName = jwtUtils.getUserNameFromJwtToken(token);
+			pedidoService.notifyPayment(id, userName);
+			message = "Se ha notificado exitosamente el pago para el pedido con id: " + id;
+		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+		}
+		catch (CustomException e) {
+		    return ResponseEntity.status(e.getHttpStatus()).body(new ResponseMessage(e.getMessage()));
+		}
+	  };
 
 	public boolean dummyMethod(){
 		return true;
