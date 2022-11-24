@@ -20,7 +20,7 @@ public class Solucion {
 	@JoinColumn(name="file_id", nullable=false)
 	private FileDB file;
 	private String idFileToSolution;
-	private boolean approved = false;
+	private Boolean approved;
 	
 	public Solucion() {}
 	
@@ -53,11 +53,11 @@ public class Solucion {
 		this.idFileToSolution = idFileToSolution;
 	}
 
-	public boolean isApproved() {
+	public Boolean isApproved() {
 		return approved;
 	}
 
-	public void setApproved(boolean approved) {
+	public void setApproved(Boolean approved) {
 		this.approved = approved;
 	}	
 
