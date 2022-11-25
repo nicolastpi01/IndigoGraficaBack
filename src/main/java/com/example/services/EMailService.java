@@ -4,11 +4,7 @@ import com.example.model.Pedido;
 import com.example.util.MailContentBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +12,17 @@ import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
-import java.util.Properties;
 
 @Service
-public class EMailCosoService {
+public class EMailService {
 
 
     @Qualifier("getJavaMailSender")
     @Autowired
     public JavaMailSender emailSender;
+
+    @Autowired
+    public PedidoStorageService pedidoStorageService;
 
     @Autowired
     MailContentBuilder mailContentBuilder;
@@ -40,11 +38,12 @@ public class EMailCosoService {
         emailSender.send(message);
     }
 
-    public void send(Pedido pedido) throws MessagingException {
+    public void send(Long idPedido) throws MessagingException, Exception {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setTo(pedido.getPropietario().getEmail());
-        helper.setSubject("Solicitud de pedido" + pedido.getNombre());
+        helper.setTo("d.caminos54@gmail.com");
+        helper.setSubject("Presupuesto de pedido listo");
+        Pedido pedido = pedidoStorageService.findPedido(idPedido).orElseThrow(() -> new Exception("pedido no encontrado"));
         String body = mailContentBuilder.build(pedido);
         helper.setText(body,true); //TODO html here!
         addAttachment(helper,pedido);

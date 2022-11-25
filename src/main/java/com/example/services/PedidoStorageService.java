@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.example.exception.CustomException;
 import com.example.exception.PedidoIncorrectoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -75,6 +77,24 @@ public class PedidoStorageService {
 	public List<Pedido> getAllByPropietario(String username) {
 		return pedidoDBRepository.findByPropietarioUsername(username);
 	}
+	
+	@Transactional(readOnly=true)
+	public ArrayList<Pedido> getAllPedidos(String username) {
+		// Si soy Editor quiero todos los pedidos Pend. Atención, si soy Cliente quiero todos los Pedidos donde soy el Propietario
+		Optional<User> optUsuario = userRepository.findByUsername(username);
+		if(optUsuario.isPresent()) {
+			User usuario = optUsuario.get();
+			if(usuario.esEditor()) {
+				return pedidoDBRepository.findByStateValue("pendAtencion");
+			}
+			else {
+				return pedidoDBRepository.findByPropietarioUsername(username);
+			}
+		}
+		else {
+			return new ArrayList<Pedido>();
+		}
+	};
 
 	//	public void reservar(Long id, String usuarioDTO) throws IOException {
 //		Pedido pedido = pedidoDBRepository.findById(id).get();
@@ -104,7 +124,6 @@ public class PedidoStorageService {
 
 	@Transactional
 	public Pedido create(Pedido pedido)  throws IllegalArgumentException {
-
 		return pedidoDBRepository.save(pedido);
 	}
 
@@ -120,20 +139,45 @@ public class PedidoStorageService {
 
 	@Transactional(readOnly=true)
 	public Map<String, Integer> getResumeByOwner(String username) {
-		// TODO Auto-generated method stub
 		Map<String, Integer> map = new HashMap<>();
 		map.put("reservado", 0);
 		map.put("Pendiente atencion", 0);
-
-		map.put("propios", 0);
-		map.put("reservado", pedidoDBRepository.countByEncargadoUsernameAndStateValue(username, "reservado"));
-		map.put("Pendiente atencion", pedidoDBRepository.countByStateValue("PendAtencion"));
-		map.put("propios", pedidoDBRepository.countByPropietarioUsername(username));
-
-//		map.put("Pendiente atencion", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "PendAtencion"));
-//		map.put("reservado", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "reservado"));
-
+		map.put("PROPIOS", 0);
+		Optional<User> optUsuario = userRepository.findByUsername(username);
+		if(optUsuario.isPresent()) {
+			User usuario = optUsuario.get();
+			if(usuario.esEditor()) {
+				map.put("Pendiente atencion", pedidoDBRepository.countByStateValue("pendAtencion"));
+				map.put("reservado", pedidoDBRepository.countByEncargadoUsernameAndStateValue(username, "reservado"));
+			}
+			else {
+				map.put("Pendiente atencion", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "pendAtencion"));
+				map.put("reservado", pedidoDBRepository.countByPropietarioUsernameAndStateValue(username, "reservado"));
+			}
+			map.put("PROPIOS", pedidoDBRepository.countByPropietarioUsername(username));
+		}
 		return map;
+	};
+	
+	/*
+	public Optional<Pedido> allowsEdit(Long id) throws CustomException {
+		Optional<Pedido> pedidoOpt = pedidoDBRepository.findById(id);
+		if(pedidoOpt.isPresent()) {
+			Pedido pedido = pedidoOpt.get();
+			if(pedido.getState().getValue() == "reservado") {
+				// Lanzo la Excepción 'El pedido se encuentra reservado'
+			}
+			else {
+				// retorno el Pedido con el avalaible = false;
+				pedido.setAvalaible(false);
+				return Optional.of(pedido);
+			}
+		}
+		else {
+			throw new CustomException("","Failed to connect to database");
+			// Lanzo Excepcion no encuentro el Pedido
+		}
 	}
+	*/
 
 }

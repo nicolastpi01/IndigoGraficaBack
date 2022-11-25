@@ -46,6 +46,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+	private boolean ret;
+
     public User() {
     }
 
@@ -129,5 +131,20 @@ public class User {
 
 	public void setContacto(String contacto) {
 		this.contacto = contacto;
+	}
+
+	public boolean esEditor() {
+		//boolean ret = false;
+		ERole encargado = ERole.ROLE_ENCARGADO;
+		/*
+		this.roles.stream().map(r -> {
+			ret = ret || (r.getName() == encargado);
+			return r;
+		});
+		*/
+		return this.roles.stream().anyMatch(r -> {
+			return r.getName() == encargado;
+		});
+		//return ret;
 	}
 }
