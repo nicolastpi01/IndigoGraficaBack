@@ -250,13 +250,15 @@ public class PedidoStorageService {
 	}
 
 	@Transactional
-	public void revisar(Long id) throws CustomException {
+	public String revisar(Long id) throws CustomException {
 		Pedido pedido = pedidoDBRepository.findById(id).get();
+		String message = "";
 		if(pedido.allSolutionsWasApproved()) {
 			// Todo bien, todas las soluciones estan aprobadas entonces el Pedido pasa a 'Finalizado'
 			System.out.print("TODAS LAS SOLUCIONES APROBADAS. REVISAR SI EL PEDIDO QUEDO EN ESTADO 'FINALIZADO' ");
 			Estado finalizado = new Estado(5, "finalizados", "Finalizado", "darkorange");
 			pedido.setState(finalizado);
+			message = "Todas las soluciones fueron aprobadas!";
 		}
 		else {
 			// Pedido tiene Soluciones Desaprobadas o tiene Soluciones sin indicar conformidad
@@ -279,10 +281,11 @@ public class PedidoStorageService {
 				Estado finalizado = new Estado(4, "rechazado", "Rechazado", "#f6180d");
 				pedido.setState(finalizado);
 				System.out.print("EXÍSTEN SOLUCIONES DESAPROBADAS. REVISAR SI EL PEDIDO QUEDO EN ESTADO 'RECHAZADO' Y HAY SOLUCIONES QUE QUEDARON 'VISIBLE' IGUAL FALSE");
+				message = "Se marcaron soluciones como desaprobadas, y el Editor las revisará a la brevedad";
 			}
 		}
-		// En el front mando un F5 para reflejar los cambios!!
 		this.pedidoDBRepository.save(pedido);
+		return message;
 	};
 	
 	/*

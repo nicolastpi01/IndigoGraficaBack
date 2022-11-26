@@ -244,8 +244,8 @@ public class PedidoController {
 	  public ResponseEntity<ResponseMessage> revisar(@PathVariable Long id) {
 		String message = "";
 		try {
-			pedidoService.revisar(id);
-			message = "Se reviso el pedido con id: " + id;
+			message = pedidoService.revisar(id);
+			message = "Se reviso el pedido con id: " + id + "." + message;
 		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
 		}
 		catch (CustomException e) {
