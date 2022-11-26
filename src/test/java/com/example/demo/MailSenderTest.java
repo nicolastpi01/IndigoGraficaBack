@@ -1,8 +1,7 @@
 package com.example.demo;
 
-import com.example.services.EMailCosoService;
+import com.example.services.EMailService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,12 +15,12 @@ import javax.mail.MessagingException;
 public class MailSenderTest {
 
     @Autowired
-    EMailCosoService eMailCosoService;
+    EMailService eMailService;
 
     //@Test
     public void sendTest(){
         try {
-            eMailCosoService.send();
+            eMailService.send();
             Assertions.assertTrue(true);
         } catch (MessagingException e) {
             throw new RuntimeException(e);

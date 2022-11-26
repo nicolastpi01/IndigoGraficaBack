@@ -38,24 +38,6 @@ public class PedidoController {
 
 	@Autowired
 	JwtUtils jwtUtils;
-
-	/*
-	@PostMapping("/pedidos")
-	public ResponseEntity<ResponseMessage> altaPedido(@RequestParam("files[]") MultipartFile[] files, @RequestPart("pedido") Pedido pedido, @RequestPart("requerimientos") List<List<Requerimiento>> requerimientos) {
-		String message = "";
-	    try {
-	      pedidoService.store(files, pedido, requerimientos);
-	      message = "Se Agrego el pedido: " + pedido.getNombre();
-	      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-		} catch (PedidoIncorrectoException e) {
-			message = e.getMessage() + ". Pedido: " + pedido.getNombre() + "!";
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
-	    } catch (Exception e) {
-	      message = "No se pudo agregar el pedido: " + pedido.getNombre() + "!";
-	      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
-	    }
-	}
-	*/
 	
 	@PostMapping("/pedidos/create")
 	public ResponseEntity<Pedido> create(@RequestBody Pedido pedido, @RequestHeader("authorization") String authorization) {
@@ -152,16 +134,8 @@ public class PedidoController {
 	  @PutMapping("/pedidos/update")
 	  @ResponseBody
 	  public ResponseEntity<Pedido> update(@RequestBody Pedido pedido) {
-		//String message = "";
-		//try {
-			Pedido pedidoActualizado = pedidoService.actualizar(pedido);
-			//message = "Se actualizo el pedido con id: " + pedido.getId();
-		    return ResponseEntity.status(HttpStatus.OK).body(pedidoActualizado);
-		//}
-		//catch (IllegalArgumentException e) { // Revisar el try catch. Atomizar las excepciones.. Ver 3.3 en docu discord
-		    //message = "No se pudo actualizar el pedido con id: " + pedido.getId() + "!";
-		    //return ResponseEntity.status(HttpStatus.BAD_REQUEST);
-		//}
+		  Pedido pedidoActualizado = pedidoService.actualizar(pedido);
+		  return ResponseEntity.status(HttpStatus.OK).body(pedidoActualizado);
 	  }
 	  
 	  

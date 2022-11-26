@@ -5,18 +5,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import com.example.exception.PedidoIncorrectoException;
 import com.example.model.Estado.Estado;
 
@@ -48,9 +38,11 @@ public class Pedido {
 	@JoinColumn(name="encargado_id", nullable=true)
 	private User encargado; // El editor encargado de resolver el pedido
 	//private boolean avalaible; 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
-	private List<FileDB> files = new ArrayList<>();	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+	private List<FileDB> files = new ArrayList<>();
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+	private List<Presupuesto> presupuesto = new ArrayList<>();;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
 	private List<Solucion> solutions = new ArrayList<>();
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true) 
 	private List<Interaccion> interacciones = new ArrayList<>();
@@ -104,28 +96,7 @@ public class Pedido {
 	public void setInteracciones(List<Interaccion> interacciones) {
 		this.interacciones = interacciones;
 	}
-	
-	/*
-	public void addColor(Color color) {
-		colores.add(color);
-		color.getPedidos().add(this);
-	}
-	
-	public void removeColor(Color color) {
-		this.colores.remove(color);
-		color.getPedidos().remove(this);
-	}
-	
-	public void addFile(FileDB file1) {
-		files.add(file1);
-		file1.setPedido(this);	
-	}
-	public void removeFile(FileDB file) {
-		this.files.remove(file);
-		file.setPedido(null);
-	}
-	
-	*/
+
 	public Set<Color> getColores() {
 		return this.colores;
 	}
@@ -136,15 +107,6 @@ public class Pedido {
 	public void setId(Long id) {
 	    this.id = id;
 	}
-	
-	/*
-	public Long getNumero() {
-	    return this.numero;
-	}
-	public void setNumero(Long numero) {
-	    this.numero = numero;
-	}
-	*/
 	
 	public String getNombre() {
 		return nombre;
@@ -233,15 +195,6 @@ public class Pedido {
 			throw new PedidoIncorrectoException(PedidoIncorrectoException.ALTO_O_ANCHO_INVALIDOS);
 		}
 	}
-	/*
-	public Tipo getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(Tipo tipo) {
-		this.tipo = tipo;
-	}
-	*/
 
 	public Date getFechaEntrega() {
 		return fechaEntrega;
@@ -302,10 +255,13 @@ public class Pedido {
 	public boolean isAvalaible() {
 		return avalaible;
 	}
-
-	public void setAvalaible(boolean avalaible) {
-		this.avalaible = avalaible;
-	}
 	*/
+	
+	public List<Presupuesto> getPresupuesto() {
+		return presupuesto;
+	}
 
+	public void setPresupuesto(List<Presupuesto> presupuesto) {
+		this.presupuesto = presupuesto;
+	}
 }
