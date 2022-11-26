@@ -29,7 +29,7 @@ public class MailController {
         return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 
-    @PostMapping("/mail/{id}")
+    @PostMapping("/mail/presupuesto/{id}")
     public ResponseEntity<Object> send(@PathVariable Long id){
         try {
             eMailService.send(id);

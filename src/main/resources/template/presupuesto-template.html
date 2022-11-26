@@ -1,0 +1,24 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<head>
+    <title>My first templates with Thymeleaf</title>
+    <style type="text/css">
+
+    </style>
+</head>
+<body>
+<p>Hola <span th:text="${pedido.propietario.nombre}"></span>.</p>
+<p>Nos comunicamos desde Indigo Gráfica para alcanzarte el presupuesto de tu solicitud.</p>
+<p>Los pedidos se abonan por adelantado. Luego del pago comenzaremos con la realizacion del mísmo.</p>
+
+<b>Solicitud nro: </b><span th:text="${pedido.id}"></span><br/>
+<b>Titulo: </b><span th:text="${pedido.nombre}"></span><br/>
+<b>Subtitulo: </b><span th:text="${pedido.nombreExtendido}"></span><br/>
+<b> Tipo: </b><span th:text="${pedido.tipo.nombre}"></span>
+<b> Cantidad: </b><span th:text="${pedido.cantidad}"></span><br/>
+<b> Descripción: </b><span th:text="${pedido.descripcion}"></span><br/>
+
+</body>
+</html>

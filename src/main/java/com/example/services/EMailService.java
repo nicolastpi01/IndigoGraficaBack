@@ -1,5 +1,6 @@
 package com.example.services;
 
+import com.example.model.FileDB;
 import com.example.model.Pedido;
 import com.example.util.MailContentBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,13 +52,14 @@ public class EMailService {
     }
 
     private void addAttachment(MimeMessageHelper helper, Pedido pedido) {
-        pedido.getFiles().forEach( file -> {
-            DataSource dataSource = new ByteArrayDataSource(file.getData(), "application/png");
+        if(!pedido.getPresupuesto().isEmpty()){
+            FileDB fileDB = pedido.getPresupuesto().get(0).getFile();
+            DataSource dataSource = new ByteArrayDataSource(fileDB.getData(), fileDB.getType());
             try {
-                helper.addAttachment("imagen_item_" + file.getName() + ".png", dataSource);
+                helper.addAttachment("Presupuesto pedido nro " + pedido.getId() + fileDB.getName() , dataSource);
             } catch (MessagingException e) {
                 e.printStackTrace();
             }
-        });
+        }
     }
 }
