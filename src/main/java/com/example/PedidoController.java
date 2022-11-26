@@ -237,6 +237,21 @@ public class PedidoController {
 			return ResponseEntity.status(e.getHttpStatus()).body(new ResponseMessage(e.getMessage()));
 		}
 	  };
+	  
+	  
+	  @PutMapping("/pedidos/revisar/{id}")
+	  @ResponseBody
+	  public ResponseEntity<ResponseMessage> revisar(@PathVariable Long id) {
+		String message = "";
+		try {
+			pedidoService.revisar(id);
+			message = "Se reviso el pedido con id: " + id;
+		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+		}
+		catch (CustomException e) {
+		    return ResponseEntity.status(e.getHttpStatus()).body(new ResponseMessage(e.getMessage()));
+		}
+	  };
 
 	public boolean dummyMethod(){
 		return true;

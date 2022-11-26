@@ -21,6 +21,7 @@ public class Solucion {
 	private FileDB file;
 	private String idFileToSolution;
 	private Boolean approved;
+	private boolean visible = true;
 	
 	public Solucion() {}
 	
@@ -54,11 +55,30 @@ public class Solucion {
 	}
 
 	public Boolean isApproved() {
-		return approved;
+		Boolean check = this.getApproved();
+		if(check != null) return check.booleanValue() == true;
+		else return false;
+		
+	}
+	
+	public Boolean getApproved() {
+		return this.approved;
 	}
 
 	public void setApproved(Boolean approved) {
 		this.approved = approved;
-	}	
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible  = visible;	
+	}
+	
+	public boolean getVisible() {
+		return this.visible;	
+	}
+
+	public boolean WithoutAgreement() {
+		return this.getApproved() == null;
+	}
 
 }

@@ -64,7 +64,6 @@ public class Pedido {
 	inverseJoinColumns = @JoinColumn(name = "color_id"))
 	private Set<Color> colores = new HashSet<>();
 	
-	private boolean ret = true;
 	
 	public Pedido() {}
 	
@@ -286,6 +285,18 @@ public class Pedido {
 	public boolean hasPayment() {
 		return this.getHasPayment();
 	}
+
+	public boolean allSolutionsWasApproved() {
+		boolean allApproved = this.getSolutions().stream().allMatch(x -> x.isApproved());
+		System.out.println("ALL APPROVED? " + allApproved);
+		return allApproved;
+	}
+
+	public boolean existsSolutionsWithoutAgreement() {
+		boolean anyNotApproved = this.getSolutions().stream().anyMatch(x -> x.WithoutAgreement());
+		System.out.print("ANY NOT APPROVED: " + anyNotApproved);
+		return anyNotApproved;
+	};
 
 	/*
 	public boolean isAvalaible() {

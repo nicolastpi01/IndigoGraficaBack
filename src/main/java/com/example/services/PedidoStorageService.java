@@ -31,6 +31,7 @@ import com.example.model.Estado.Reservado;
 import com.example.repository.EstadoDBRepository;
 import com.example.repository.PedidoDBRepository;
 import com.example.repository.PosicionDBRepository;
+import com.example.repository.SolucionDBRepository;
 import com.example.repository.UserRepository;
 
 @Service
@@ -42,6 +43,8 @@ public class PedidoStorageService {
 	private PosicionDBRepository posDBRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private SolucionDBRepository solutionDBRepository;
 
 	@Transactional
 	public Pedido store(MultipartFile[] files, Pedido pedido, List<List<Requerimiento>> requerimientos) throws PedidoIncorrectoException {
@@ -244,6 +247,42 @@ public class PedidoStorageService {
 		}
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Transactional
+	public void revisar(Long id) throws CustomException {
+		Pedido pedido = pedidoDBRepository.findById(id).get();
+		if(pedido.allSolutionsWasApproved()) {
+			// Todo bien, todas las soluciones estan aprobadas entonces el Pedido pasa a 'Finalizado'
+			System.out.print("TODAS LAS SOLUCIONES APROBADAS. REVISAR SI EL PEDIDO QUEDO EN ESTADO 'FINALIZADO' ");
+			Estado finalizado = new Estado(5, "finalizados", "Finalizado", "darkorange");
+			pedido.setState(finalizado);
+		}
+		else {
+			// Pedido tiene Soluciones Desaprobadas o tiene Soluciones sin indicar conformidad
+			if(pedido.existsSolutionsWithoutAgreement()) {
+				System.out.print("EXÍSTEN SOLUCIONES SIN CONFORMIDAD. REVISAR SI SALTO LA EXCEPCIÓN!");
+				// Exíten soluciones sin conformidad (no aprobo ni desaprobo las mismas), lanza excepción! 
+				throw new CustomException(HttpStatus.BAD_REQUEST, "Exísten soluciones para las cuáles no se ha brindado una conformidad-- Aprobado o Desaprobado. Indique conformidad y pruebe de nuevo");
+			}
+			else {
+				// Exísten soluciones desaprobadas, entonces pongo las Aprobadas como no visibles (de este modo el Cliente ya no puede interactuar sobre las
+				// mismas desde el Carrito), paso el Pedido a 'Rechazado'
+				// De todas formas una vez el Pedido esta marcado como 'Rechazado' el Cliente no deberia poder interactuar con las Soluciones del pedido,
+				// En este caso con el Pedido con Estado 'Rechazado'. Debe esperar que el Editor brinde una nueva Solución
+				pedido.getSolutions().forEach(sol -> {
+					if(sol.getApproved().booleanValue() == true) {
+						sol.setVisible(false);
+						this.solutionDBRepository.save(sol);
+					}
+				});
+				Estado finalizado = new Estado(4, "rechazado", "Rechazado", "#f6180d");
+				pedido.setState(finalizado);
+				System.out.print("EXÍSTEN SOLUCIONES DESAPROBADAS. REVISAR SI EL PEDIDO QUEDO EN ESTADO 'RECHAZADO' Y HAY SOLUCIONES QUE QUEDARON 'VISIBLE' IGUAL FALSE");
+			}
+		}
+		// En el front mando un F5 para reflejar los cambios!!
+		this.pedidoDBRepository.save(pedido);
 	};
 	
 	/*

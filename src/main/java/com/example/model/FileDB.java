@@ -109,7 +109,7 @@ public class FileDB {
 		// TODO Auto-generated method stub
 		//return false;
 		boolean any = pedido.getSolutions().stream().anyMatch(x -> x.getIdFileToSolution().equals(this.getId().toString()) );
-		System.out.println("FILE TIENE SOLUCIÓN? " + any);
+		//System.out.println("FILE TIENE SOLUCIÓN? " + any);
 		return any;
 	}
 
