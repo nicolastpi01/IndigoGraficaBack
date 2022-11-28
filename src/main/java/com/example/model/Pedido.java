@@ -264,4 +264,9 @@ public class Pedido {
 	public void setPresupuesto(List<Presupuesto> presupuesto) {
 		this.presupuesto = presupuesto;
 	}
+
+	public boolean hasBudget() {
+		// Presupuestos? no es vacio entonces tiena al menos un presupuesto!
+		return !this.getPresupuesto().isEmpty();
+	}
 }
