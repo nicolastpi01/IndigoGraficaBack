@@ -28,6 +28,7 @@ public class Pedido {
 	private String descripcion;
 	private Date fechaEntrega;
 	private Boolean hasPayment = false;
+	private Boolean isEditing = false;
 	@ManyToOne 
 	@JoinColumn(name="estado_id", nullable=false)
 	private Estado state;
@@ -36,8 +37,7 @@ public class Pedido {
 	private User propietario; // El propietario que pidio el encargo del pedido
 	@ManyToOne 
 	@JoinColumn(name="encargado_id", nullable=true)
-	private User encargado; // El editor encargado de resolver el pedido
-	//private boolean avalaible; 
+	private User encargado; // El editor encargado de resolver el pedido 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
 	private List<FileDB> files = new ArrayList<>();
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
@@ -56,7 +56,6 @@ public class Pedido {
 	inverseJoinColumns = @JoinColumn(name = "color_id"))
 	private Set<Color> colores = new HashSet<>();
 	
-	
 	public Pedido() {}
 	
 	public Pedido(String nombre, String nombreExtendido, String tipografia, Integer alto, Integer ancho, String descripcion, Integer cantidad, Estado state, Tipo tipo) {
@@ -69,9 +68,9 @@ public class Pedido {
 		  this.setCantidad(cantidad);
 		  this.setState(state);
 		  this.setTipo(tipo);
+		  this.setIsEditing(false);
 		  //this.setAvalaible(true);
-	}
-	
+	};
 	
 	public List<FileDB> getFiles() {
 		return this.files;
@@ -263,5 +262,18 @@ public class Pedido {
 
 	public void setPresupuesto(List<Presupuesto> presupuesto) {
 		this.presupuesto = presupuesto;
+	}
+
+	public boolean hasBudget() {
+		// Presupuestos? no es vacio entonces tiena al menos un presupuesto!
+		return !this.getPresupuesto().isEmpty();
+	}
+
+	public Boolean getIsEditing() {
+		return isEditing;
+	}
+
+	public void setIsEditing(Boolean isEditing) {
+		this.isEditing = isEditing;
 	}
 }
