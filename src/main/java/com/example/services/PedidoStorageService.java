@@ -100,24 +100,26 @@ public class PedidoStorageService {
 		}
 	};
 
-	//	public void reservar(Long id, String usuarioDTO) throws IOException {
-//		Pedido pedido = pedidoDBRepository.findById(id).get();
-//		pedido.setState("reservado");
-//		pedido.setEncargado(usuarioDTO);
 	@Transactional
-	public void reservar(Long id, String username) throws IOException {
+	public void reservar(Long id, String username) throws CustomException {
 		Pedido pedido = pedidoDBRepository.findById(id).get();
 		Optional<User> encargado = userRepository.findByUsername(username);
-		System.out.println("Estoy en el metodo reservar");
-		Estado reservado = new Estado(2, "reservado", "Reservado", "#87d068");
-		pedido.setState(reservado);
-		//User encargado = pedido.getPropietario(); // Editor encargado de darle resolución al Pedido
-		if(encargado.isPresent()) {
-			System.out.println("TIENE ENCARGADO");
-			User encargadoToSave = encargado.get();
-			userRepository.save(encargadoToSave);
-			pedido.setEncargado(encargadoToSave);
-		};
+		if(pedido.getIsEditing()) {
+			// Lo están Editando lanzo la Excepción
+			System.out.println("El Cliente lo esta Editando...");
+			throw new CustomException(HttpStatus.FORBIDDEN, "No puede reservar el Pedido en este momento, ya que el Cliente lo esta Editando");
+		}
+		else {
+			Estado reservado = new Estado(2, "reservado", "Reservado", "#87d068");
+			pedido.setState(reservado);
+			//User encargado = pedido.getPropietario(); // Editor encargado de darle resolución al Pedido
+			if(encargado.isPresent()) {
+				//System.out.println("TIENE ENCARGADO");
+				User encargadoToSave = encargado.get();
+				userRepository.save(encargadoToSave);
+				pedido.setEncargado(encargadoToSave);
+			}
+		}
 		pedidoDBRepository.save(pedido);
 	};
 
@@ -294,25 +296,24 @@ public class PedidoStorageService {
 		return message;
 	};
 	
-	/*
-	public Optional<Pedido> allowsEdit(Long id) throws CustomException {
+	@Transactional
+	public void allowsEdit(Long id) throws CustomException {
 		Optional<Pedido> pedidoOpt = pedidoDBRepository.findById(id);
 		if(pedidoOpt.isPresent()) {
 			Pedido pedido = pedidoOpt.get();
-			if(pedido.getState().getValue() == "reservado") {
-				// Lanzo la Excepción 'El pedido se encuentra reservado'
+			System.out.print("A VER: " + pedido.getState().getValue());
+			if(pedido.getState().getValue().equals("reservado")) {
+				System.out.print("ESTOY DENTRO DEL IF");
+				throw new CustomException(HttpStatus.FORBIDDEN, "El pedido se encuentra 'Reservado'. De ser necesaria la edición de este pedido pongase en contacto con el Editor por medio del 'Chat' para concordar como continuar");
 			}
 			else {
-				// retorno el Pedido con el avalaible = false;
-				pedido.setAvalaible(false);
-				return Optional.of(pedido);
+				pedido.setIsEditing(true);
+				this.pedidoDBRepository.save(pedido);
 			}
 		}
 		else {
-			throw new CustomException("","Failed to connect to database");
-			// Lanzo Excepcion no encuentro el Pedido
+			throw new CustomException(HttpStatus.NOT_FOUND,"No exíte un Cliente con ese nombre de Usuario");
 		}
 	}
-	*/
 
 }

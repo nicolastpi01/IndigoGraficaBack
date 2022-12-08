@@ -108,28 +108,29 @@ public class PedidoController {
 			message = "Se reservo el pedido con id: " + id;
 		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
 		}
-		catch (Exception e) { // Revisar el try catch. Atomizar las excepciones.. Ver 3.3 en docu discord
-		    message = "No se pudo reservar el pedido con id: " + id + "!";
-		    return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+		catch (CustomException e) { // Revisar el try catch. Atomizar las excepciones.. Ver 3.3 en docu discord
+		    //message = "No se pudo reservar el pedido con id: " + id + "!";
+		    return ResponseEntity.status(e.getHttpStatus()).body(new ResponseMessage(e.getMessage()));
 		}
 	  }
 	  
-	  /*
+	  
 	  @PutMapping("/pedidos/AllowsEdit/{id}")
 	  @ResponseBody
+	  // Revisa que el Pedido no esté en un Estado distinto de 'pendAtención' si no es asi lanza Excep
+	  // Si esta todo bien no lanza excepción y pone el Pedido en 'isEditing' = true
+	  // Desde el Front, si esta mal lanza Excep y no permite avanzar, si esta bien Ok no retorna nada, y en la otra pantalla
+	  // de Editar ya trae el pedido desde db con 'isEditing' = true
 	  public ResponseEntity<ResponseMessage> AllowsEdit(@PathVariable Long id) {
 		String message = "";
 		try {
 			pedidoService.allowsEdit(id);
-			message = "Se reservo el pedido con id: " + id;
 		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
 		}
-		catch (Exception e) { // Revisar el try catch. Atomizar las excepciones.. Ver 3.3 en docu discord
-		    message = "No se pudo reservar el pedido con id: " + id + "!";
-		    return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+		catch (CustomException e) {
+		    return ResponseEntity.status(e.getHttpStatus()).body(new ResponseMessage(e.getMessage()));
 		}
-	  }
-	  */
+	  };
 	  
 	  @PutMapping("/pedidos/update")
 	  @ResponseBody
