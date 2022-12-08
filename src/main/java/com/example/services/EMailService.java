@@ -1,5 +1,7 @@
 package com.example.services;
 
+import com.example.exception.PedidoConComentariosNoCerradosException;
+import com.example.model.Comentario;
 import com.example.model.FileDB;
 import com.example.model.Pedido;
 import com.example.util.MailContentBuilder;
@@ -42,9 +44,27 @@ public class EMailService {
     public void send(Long idPedido) throws MessagingException, Exception {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setTo("d.caminos54@gmail.com");
-        helper.setSubject("Presupuesto de pedido listo");
         Pedido pedido = pedidoStorageService.findPedido(idPedido).orElseThrow(() -> new Exception("pedido no encontrado"));
+
+        boolean ableToSend = true;
+
+        for (FileDB file : pedido.getFiles()) {
+            for (Comentario comentario: file.getComentarios()) {
+                ableToSend = ableToSend && comentario.getTerminado();
+                if(!ableToSend) break;
+            }
+            if(!ableToSend) break;
+        }
+
+        if(!ableToSend){
+            throw new PedidoConComentariosNoCerradosException("Aun quedan comentarios sin cerrar");
+        }
+
+        if(pedido.getPresupuesto() == null || pedido.getPresupuesto().isEmpty()){
+            throw new PedidoConComentariosNoCerradosException("Aún no se ha cargado un presupuesto");
+        }
+        helper.setTo(pedido.getPropietario().getEmail());
+        helper.setSubject("Presupuesto de pedido #" + pedido.getId() + " listo");
         String body = mailContentBuilder.build(pedido);
         helper.setText(body,true); //TODO html here!
         addAttachment(helper,pedido);
