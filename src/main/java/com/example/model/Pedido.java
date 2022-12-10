@@ -276,4 +276,9 @@ public class Pedido {
 	public void setIsEditing(Boolean isEditing) {
 		this.isEditing = isEditing;
 	}
+
+	public boolean allFilesHaveBeenReplacement() {
+		boolean allHasReplacement = this.getSolutions().stream().allMatch(x -> x.isHasReplacement() || x.isApproved() );
+		return allHasReplacement;
+	}
 }

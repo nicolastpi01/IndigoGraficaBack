@@ -82,6 +82,13 @@ public class PedidoStorageService {
 		return pedidoDBRepository.findByPropietarioUsername(username);
 	}
 	
+	/*
+	@Transactional(readOnly=true)
+	public List<Pedido> getAllCarrito(String username, String stateValue) {
+		return pedidoDBRepository.findByPropietarioUsernameAndStateValueDistinct(username, stateValue);
+	}
+	*/
+	
 	@Transactional(readOnly=true)
 	public ArrayList<Pedido> getAllPedidos(String username) {
 		// Si soy Editor quiero todos los pedidos Pend. Atención, si soy Cliente quiero todos los Pedidos donde soy el Propietario
@@ -172,6 +179,45 @@ public class PedidoStorageService {
 			map.put("PROPIOS", pedidoDBRepository.countByPropietarioUsername(username));
 		}
 		return map;
+	};
+	
+	@Transactional
+	public void resolverRechazados(Long id) throws CustomException {
+		Pedido pedido = pedidoDBRepository.findById(id).get();
+		if(pedido.haveFiles()) {
+			if(pedido.allFilesHaveSolution()) {
+				if(pedido.allFilesHaveBeenReplacement()) {
+					// Todo bien, cambio el Estado del Pedido y continuo
+					Estado pend = new Estado(3, "pendRevision", "Pendiente de revisión", "rgba(167, 37, 165, 0.755)"); 
+					pedido.setState(pend);
+					pedidoDBRepository.save(pedido);
+				}
+				else {
+					throw new CustomException(HttpStatus.BAD_REQUEST, "Algún File cuenta con una Solución rechazada por el Cliente");
+				}	
+			}
+			else {
+				throw new CustomException(HttpStatus.BAD_REQUEST, "Algún File no tiene Solucion");
+			}
+		}
+		else {
+			// No tiene Files
+			if(pedido.haveSolution()) {
+				if(pedido.getSolutions().get(0).isHasReplacement()) {
+					// Si solo tengo una solución debo verificar que la misma tenga reemplazo!
+					// Todo bien, cambio el Estado del Pedido y continuo
+					Estado pend = new Estado(3, "pendRevision", "Pendiente de revisión", "rgba(167, 37, 165, 0.755)"); // Cambiar resuelto por una cte, Color Violeta
+					pedido.setState(pend);
+					pedidoDBRepository.save(pedido);
+				}
+				else {
+					throw new CustomException(HttpStatus.BAD_REQUEST, "El file cuenta con una Solución rechazada por el Cliente");
+				}
+			}
+			else {
+				throw new CustomException(HttpStatus.BAD_REQUEST, "No se puede resolver un Pedido que no cuenta con Solución");
+			}
+		}
 	};
 	
 	@Transactional
@@ -315,5 +361,7 @@ public class PedidoStorageService {
 			throw new CustomException(HttpStatus.NOT_FOUND,"No exíte un Cliente con ese nombre de Usuario");
 		}
 	}
+
+	
 
 }

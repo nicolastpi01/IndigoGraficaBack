@@ -22,6 +22,8 @@ public class Solucion {
 	private String idFileToSolution;
 	private Boolean approved;
 	private boolean visible = true;
+	private boolean hasReplacement = false;
+	private String rejectionReason = "";
 	
 	public Solucion() {}
 	
@@ -57,8 +59,7 @@ public class Solucion {
 	public Boolean isApproved() {
 		Boolean check = this.getApproved();
 		if(check != null) return check.booleanValue() == true;
-		else return false;
-		
+		else return false;	
 	}
 	
 	public Boolean getApproved() {
@@ -79,6 +80,22 @@ public class Solucion {
 
 	public boolean WithoutAgreement() {
 		return this.getApproved() == null;
+	}
+
+	public boolean isHasReplacement() {
+		return hasReplacement;
+	}
+
+	public void setHasReplacement(boolean hasReplacement) {
+		this.hasReplacement = hasReplacement;
+	}
+
+	public String getRejectionReason() {
+		return rejectionReason;
+	}
+
+	public void setRejectionReason(String rejectionReason) {
+		this.rejectionReason = rejectionReason;
 	}
 
 }

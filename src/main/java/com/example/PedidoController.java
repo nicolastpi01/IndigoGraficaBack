@@ -88,6 +88,7 @@ public class PedidoController {
 		return ResponseEntity.ok().body(pedidos);
 	}
 	
+	
 	@GetMapping("/pedidos/resumen")
 	@ResponseBody
 	public ResponseEntity<Map<String, Integer>> getResumen(@RequestHeader("authorization") String authorization) {
@@ -176,6 +177,20 @@ public class PedidoController {
 		}
 	  }
 	  
+	  @PutMapping("/pedidos/resolver/rechazados/{id}")
+	  @ResponseBody
+	  public ResponseEntity<ResponseMessage> resolverRechazados(@PathVariable Long id) {
+		String message = "";
+		try {
+			pedidoService.resolverRechazados(id);
+			message = "Se volvió a reenviar la resolución para el pedido con id: " + id;
+		    return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+		}
+		catch (CustomException e) {
+		    return ResponseEntity.status(e.getHttpStatus()).body(new ResponseMessage(e.getMessage()));
+		}
+	  }
+	  
 	  @PutMapping("/pedidos/notifyPayment/{id}")
 	  @ResponseBody
 	  // Falta verificar que el Pedido cuenta con un Presupuesto asociado (O sea, se adjunto el Presupuesto previamente)
@@ -212,7 +227,6 @@ public class PedidoController {
 			return ResponseEntity.status(e.getHttpStatus()).body(new ResponseMessage(e.getMessage()));
 		}
 	  };
-	  
 	  
 	  @PutMapping("/pedidos/revisar/{id}")
 	  @ResponseBody
