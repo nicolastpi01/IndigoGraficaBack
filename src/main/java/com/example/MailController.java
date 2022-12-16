@@ -1,6 +1,8 @@
 package com.example;
 
 import com.example.exception.PedidoConComentariosNoCerradosException;
+import com.example.exception.PedidoNoEncontrado;
+import com.example.exception.PedidoSinPresupuestoException;
 import com.example.services.EMailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +38,10 @@ public class MailController {
             eMailService.send(id);
         } catch (PedidoConComentariosNoCerradosException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Todavía quedan comentarios por revisar");
+        } catch (PedidoSinPresupuestoException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El pedido no tiene un presupuesto cargado");
+        } catch (PedidoNoEncontrado e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El pedido no existe");
         } catch (MessagingException e) {
             Logger.getLogger("Falló el envio de mail").log(Level.SEVERE, e.toString());
         } catch (Exception e){

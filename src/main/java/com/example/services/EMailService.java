@@ -1,6 +1,8 @@
 package com.example.services;
 
 import com.example.exception.PedidoConComentariosNoCerradosException;
+import com.example.exception.PedidoNoEncontrado;
+import com.example.exception.PedidoSinPresupuestoException;
 import com.example.model.Comentario;
 import com.example.model.FileDB;
 import com.example.model.Pedido;
@@ -44,7 +46,7 @@ public class EMailService {
     public void send(Long idPedido) throws MessagingException, Exception {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        Pedido pedido = pedidoStorageService.findPedido(idPedido).orElseThrow(() -> new Exception("pedido no encontrado"));
+        Pedido pedido = pedidoStorageService.findPedido(idPedido).orElseThrow(() -> new PedidoNoEncontrado("pedido no encontrado"));
 
         boolean ableToSend = true;
 
@@ -56,12 +58,11 @@ public class EMailService {
             if(!ableToSend) break;
         }
 
+        if(pedido.getPresupuesto() == null || pedido.getPresupuesto().isEmpty()){
+            throw new PedidoSinPresupuestoException("No se ha cargado un presupuesto");
+        }
         if(!ableToSend){
             throw new PedidoConComentariosNoCerradosException("Aun quedan comentarios sin cerrar");
-        }
-
-        if(pedido.getPresupuesto() == null || pedido.getPresupuesto().isEmpty()){
-            throw new PedidoConComentariosNoCerradosException("Aún no se ha cargado un presupuesto");
         }
         helper.setTo(pedido.getPropietario().getEmail());
         helper.setSubject("Presupuesto de pedido #" + pedido.getId() + " listo");
