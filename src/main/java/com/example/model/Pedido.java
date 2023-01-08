@@ -28,6 +28,7 @@ public class Pedido {
 	private String descripcion;
 	private Date fechaEntrega;
 	private Boolean hasPayment = false;
+	private Boolean sendBudgetMail = false;
 	private Boolean isEditing = false;
 	@ManyToOne 
 	@JoinColumn(name="estado_id", nullable=false)
@@ -280,5 +281,13 @@ public class Pedido {
 	public boolean allFilesHaveBeenReplacement() {
 		boolean allHasReplacement = this.getSolutions().stream().allMatch(x -> x.isHasReplacement() || x.isApproved() );
 		return allHasReplacement;
+	}
+
+	public Boolean getSendBudgetMail() {
+		return sendBudgetMail;
+	}
+
+	public void setSendBudgetMail(Boolean sendBudgetMail) {
+		this.sendBudgetMail = sendBudgetMail;
 	}
 }

@@ -268,11 +268,14 @@ public class PedidoStorageService {
 			}
 			// Falta la excepción que se dispara si el Pedido no tiene un Presupuesto asociado
 			// Lo comento porque la generación del presupuesto no esta funcionando actualmente
-			/*
+			
 			if(!pedido.hasBudget()) {
 				throw new CustomException(HttpStatus.FORBIDDEN, "No se puede notificar el pago de un Pedido para el cual no se envío un Presupuesto, envíe el Presupuesto primero!");
 			}
-			*/
+			
+			if(!pedido.getSendBudgetMail()) {
+				throw new CustomException(HttpStatus.FORBIDDEN, "No se puede notificar el pago de un Pedido para el cual no se envio por mail el Presupuesto al Cliente, envie el mail al Cliente primero!");
+			}
 			pedido.setHasPayment(true);
 			this.pedidoDBRepository.save(pedido);
 		}

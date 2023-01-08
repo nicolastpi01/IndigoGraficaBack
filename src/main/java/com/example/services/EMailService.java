@@ -6,9 +6,11 @@ import com.example.exception.PedidoSinPresupuestoException;
 import com.example.model.Comentario;
 import com.example.model.FileDB;
 import com.example.model.Pedido;
+import com.example.repository.PedidoDBRepository;
 import com.example.util.MailContentBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,9 @@ public class EMailService {
 
     @Autowired
     public PedidoStorageService pedidoStorageService;
+    
+    @Autowired
+	private PedidoDBRepository pedidoDBRepository;
 
     @Autowired
     MailContentBuilder mailContentBuilder;
@@ -69,7 +74,14 @@ public class EMailService {
         String body = mailContentBuilder.build(pedido);
         helper.setText(body,true); //TODO html here!
         addAttachment(helper,pedido);
-        emailSender.send(message);
+        try {
+        	emailSender.send(message);
+        	pedido.setSendBudgetMail(true);;
+    		this.pedidoDBRepository.save(pedido);
+        }
+        catch(MailException e) {
+        	throw e;
+        }
     }
 
     private void addAttachment(MimeMessageHelper helper, Pedido pedido) {

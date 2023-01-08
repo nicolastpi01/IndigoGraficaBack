@@ -7,6 +7,7 @@ import com.example.services.EMailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,8 @@ public class MailController {
     public ResponseEntity<Object> send(@PathVariable Long id){
         try {
             eMailService.send(id);
+        }catch (MailException e) {
+        	return ResponseEntity.status(HttpStatus.CONFLICT).body("Hubo un error al enviar el mail. Intente mas tarde");
         } catch (PedidoConComentariosNoCerradosException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Todavía quedan comentarios por revisar");
         } catch (PedidoSinPresupuestoException e) {
@@ -44,7 +47,8 @@ public class MailController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El pedido no existe");
         } catch (MessagingException e) {
             Logger.getLogger("Falló el envio de mail").log(Level.SEVERE, e.toString());
-        } catch (Exception e){
+        }
+        catch (Exception e){
             Logger.getLogger("se rompio pero mas fuerte").log(Level.SEVERE, e.toString());
         }
         return ResponseEntity.status(HttpStatus.OK).body("{}");
