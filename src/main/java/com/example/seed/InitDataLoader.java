@@ -32,10 +32,10 @@ public class InitDataLoader {
 	
 	@PostConstruct
 	public void loadSeed() {
-		Tipo tipo1 = new Tipo(1,"Logo", 60, 60, "sans serif");
-		Tipo tipo2 = new Tipo(2,"Folleto", 60, 60, "sans serif");
-		Tipo tipo3 = new Tipo(3,"Carta", 60, 60, "sans serif");
-		Tipo tipo4 = new Tipo(4,"Fotografia", 60, 60, "sans serif");
+		Tipo tipo1 = new Tipo(1,"Logo", 60, 60, "san serif");
+		Tipo tipo2 = new Tipo(2,"Folleto", 60, 60, "san serif");
+		Tipo tipo3 = new Tipo(3,"Carta", 60, 60, "san serif");
+		Tipo tipo4 = new Tipo(4,"Fotografia", 60, 60, "san serif");
 		
 		tipoRepo.save(tipo1);
 		tipoRepo.save(tipo2);

@@ -19,7 +19,7 @@ public class Pedido {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Integer cantidad;
+	private Integer cantidad = 1;
 	private String nombre;
 	private String nombreExtendido;
 	private String tipografia;

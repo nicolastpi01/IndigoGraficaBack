@@ -59,7 +59,6 @@ public class PedidoStorageService {
 					if(requerimientos.get(index) != null) {
 						//FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toSet()));
 						//FileDB.setRequerimientos(requerimientos.get(index).stream().collect(Collectors.toList()));
-						System.out.println("Index: " + index);
 					}
 				}
 				filesDB.add(FileDB);

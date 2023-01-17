@@ -49,10 +49,19 @@ public class PedidoController {
 			Estado pendAtencion = new Estado(1, "pendAtencion", "Pendiente de atención", "#2db7f5"); //new PendienteAtencion(); // // Agrego el Estado, en este caso PendAtención
 			//estadoService.save(pendAtencion);
 			pedido.setState(pendAtencion);
-
+			
+			
+			if(pedido.getAlto() == null) {
+				pedido.setAlto(pedido.getTipo().getAlto());
+			}
+			if(pedido.getAncho() == null) {
+				pedido.setAncho(pedido.getTipo().getAncho());
+			}
+			if(pedido.getTipografia() == null) {
+				pedido.setTipografia(pedido.getTipo().getTipografia());
+			}
 			//pedido.setPropietario(userName);
 			Pedido pedidoRet = pedidoService.create(pedido);
-			System.out.println("Estoy en el metodo");
 	      //message = "Se Agrego el pedido: " + pedido.getNombre();
 			return ResponseEntity.status(HttpStatus.OK).body(pedidoRet);
 		} catch (Exception e) {
