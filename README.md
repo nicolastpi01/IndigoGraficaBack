@@ -1,5 +1,5 @@
 ![example workflow](https://github.com/nicolastpi01/IndigoGraficaBack/actions/workflows/build.yml/badge.svg)
-# IndigoGraficaBack
+# Indigo
 Este proyecto fue generado con Spring Boot v2.6.7 y utiliza Java 8.
 
 ## Para correr la aplicación para desarrollo:
