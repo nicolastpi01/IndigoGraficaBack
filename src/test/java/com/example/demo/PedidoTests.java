@@ -1,13 +1,13 @@
 package com.example.demo;
 
-import com.example.dto.request.LoginRequest;
-import com.example.dto.request.SignupRequest;
-import com.example.model.*;
-import com.example.model.Estado.Estado;
-import com.example.model.Estado.PendienteAtencion;
-import com.example.repository.PedidoDBRepository;
-import com.example.repository.UserRepository;
-import com.example.security.jwt.JwtUtils;
+import com.example.controllers.dto.request.LoginRequest;
+import com.example.controllers.dto.request.SignupRequest;
+import com.example.controllers.model.*;
+import com.example.controllers.model.Estado.Estado;
+import com.example.controllers.model.Estado.PendienteAtencion;
+import com.example.controllers.repository.PedidoDBRepository;
+import com.example.controllers.repository.UserRepository;
+import com.example.controllers.security.jwt.JwtUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Assertions;
