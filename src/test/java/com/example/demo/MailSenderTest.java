@@ -6,7 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.example.controllers.services.EMailService;
+import com.indigo.services.EMailService;
 
 import javax.mail.MessagingException;
 

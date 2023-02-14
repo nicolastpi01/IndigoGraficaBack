@@ -1,14 +1,15 @@
 package com.example.demo;
 
-import com.example.controllers.dto.request.LoginRequest;
-import com.example.controllers.dto.request.SignupRequest;
-import com.example.controllers.model.*;
-import com.example.controllers.model.Estado.Estado;
-import com.example.controllers.model.Estado.PendienteAtencion;
-import com.example.controllers.repository.PedidoDBRepository;
-import com.example.controllers.repository.UserRepository;
-import com.example.controllers.security.jwt.JwtUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.indigo.dto.request.LoginRequest;
+import com.indigo.dto.request.SignupRequest;
+import com.indigo.model.*;
+import com.indigo.model.Estado.Estado;
+import com.indigo.model.Estado.PendienteAtencion;
+import com.indigo.repository.PedidoDBRepository;
+import com.indigo.repository.UserRepository;
+import com.indigo.security.jwt.JwtUtils;
+
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

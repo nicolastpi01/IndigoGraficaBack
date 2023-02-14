@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.controllers.model.User;
+import com.indigo.model.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
