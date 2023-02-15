@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.indigo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+//@ContextConfiguration(classes = IndigoApplication.class)
 public class AuthControllerTest {
 
     @Autowired

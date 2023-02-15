@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.indigo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.indigo.dto.request.LoginRequest;
@@ -10,9 +10,7 @@ import com.indigo.repository.PedidoDBRepository;
 import com.indigo.repository.UserRepository;
 import com.indigo.security.jwt.JwtUtils;
 
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +19,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -34,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@ContextConfiguration(classes = IndigoApplication.class)
 class PedidoTests {
 
 	@Autowired

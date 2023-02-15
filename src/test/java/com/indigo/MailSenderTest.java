@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.indigo;
 
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
